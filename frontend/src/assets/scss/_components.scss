@@ -1,0 +1,194 @@
+
+// INPUT PADRÃO
+    *,
+    *:focus{outline: none}
+
+    .input {
+        position: relative;
+        margin-bottom: 25px;
+
+        input {
+            display: block;
+            width: 328px;
+            height: 48px;
+            background: transparent;
+            border: 1px solid #D5D4DC;
+            border-radius: 8px;
+            transition: all .3s ease;
+            padding: 0 15px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+            font-size: 1.6rem;
+            color: #10002E;
+            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            &:focus {
+                border-color: rgb(0, 0, 0)
+            }
+        }
+
+        label {
+            position: absolute;
+            cursor: text;
+            z-index: 2;
+            top: 13px;
+            left: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: #10002E;
+            background-color: #ffffff; 
+            padding: 0 10px;
+            color: #999;
+            transition: all .3s ease;
+            &:focus {
+                border-color: rgb(0, 0, 0)
+            }
+        }
+    }
+
+    .input input:focus + label,
+    .input input:valid + label{
+        font-size: 11px;
+        top: -5px;
+        color: rgb(0, 0, 0);
+    }
+
+    .input-select {
+        display: block;
+        width: 328px;
+        height: 48px;
+        background: transparent;
+        border: 1px solid #D5D4DC;
+        border-radius: 8px;
+        transition: all .3s ease;
+        padding: 0 15px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 400;
+        font-size: 1.6rem;
+        color: #10002E;
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        &:focus {
+            border-color: rgb(0, 0, 0)
+        }
+
+        label {
+            position: absolute;
+            cursor: text;
+            z-index: 2;
+            top: 13px;
+            left: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: #10002E;
+            background-color: #ffffff; 
+            padding: 0 10px;
+            color: #999;
+            transition: all .3s ease;
+            &:focus {
+                border-color: rgb(0, 0, 0)
+            }
+        }
+
+        .v-input {
+            padding: 0;
+            padding-top: .4rem;
+            margin: 0;
+        }
+    }
+
+// INPUT SELECTED
+    .input-select v-select:focus + label,
+    .input-select v-select:valid + label{
+        font-size: 11px;
+        top: -5px;
+        color: rgb(0, 0, 0);
+    }
+
+
+// BOTÃO PADRÃO
+    .button {
+        button {
+            width: 14.3rem;
+            height: 3.6rem;
+            background: #000000;
+            border-radius: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 1.2rem;
+            color: #FFFFFF;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            transition: all .3s;
+            &:hover {
+                opacity: 0.4;
+            }
+        }
+    }
+
+// TABLE
+
+    .table-espaco {
+        padding-right: 1.5rem;
+        padding-left: 1.5rem;
+        margin-bottom: 2rem;
+        margin-bottom: 15rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;     
+        height: 355px;
+        overflow-y: auto;             
+        .table{
+            width: 145rem;
+            border-collapse: collapse;
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 1.4rem;
+            line-height: 2.6rem;
+            color: #2e2e2e;
+            position: relative;
+            thead {
+                tr {
+                    th {
+                        padding-left: 30px;
+                        padding: 24px 30px 20px 15px;
+                        font-size: 14px;
+                        line-height: 24px;
+                        letter-spacing: 2px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        text-align: inherit;
+                        position: sticky;
+                        top: 0;
+                        background-color: rgba(255, 255, 255);
+                        white-space: nowrap;
+                    }
+                }
+            }
+            tbody {
+                tr{
+                    background-color: rgba(235, 234, 237, 0.5);
+                    &:nth-child(2n) {
+                        background-color: rgba(255, 255, 255, 0.5);
+                    }
+                    td{
+                        white-space: nowrap;
+                        padding:24px 15px 20px 15px;
+                        &:first-of-type{
+                            padding-left:30px;
+                        }
+                        &:last-of-type{
+                            padding-right:30px;
+                        }
+                        a {
+                            
+                            img {
+                                width: 1.5rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }

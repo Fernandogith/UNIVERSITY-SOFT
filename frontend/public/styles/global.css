@@ -1,0 +1,45 @@
+
+/* Resets */
+* {
+    /* Remoção das margins padrões */
+    margin: 0;                              
+    /* Remoção das paddings padrões  */
+    padding: 0;                            
+    /* Remoção das bordas  */
+    border: none;                         
+    /* Remoção as bordas de um elemento quando selecionado  */
+    outline: none;                       
+    /* Respeito ao tamanho das caixas, assim não somará quando adicionado paddings  */
+    box-sizing: border-box;             
+    /* Remoção dos pontos da lista  */
+    list-style: none;                  
+    /* Remoção das marcações de links  */
+    text-decoration: none;            
+    /* Font mais utilizada como padrão  */
+	font-family: 'Lato', sans-serif;  
+}
+
+img {
+    /* Faz com que a imagem sempre esteja a 100% do local que for colocada dentro, respeitando sempre o tamanho */
+	max-width: 100%                   
+}
+
+html {
+    /* Transformando o tamanho padrão de font para 10px */
+    font-size: 62.5%!important;               
+}
+
+html,
+body {
+    /* Não permite barra lateral Horizontal */
+    overflow-x: hidden;        
+    background-color: #F6F6F6; 
+}
+
+button {
+    /* Elimina a cor do botão */
+    background-color: transparent;  
+    /* Mãosinha  */
+    cursor: pointer;                
+}
+

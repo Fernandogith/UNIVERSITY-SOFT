@@ -1,0 +1,126 @@
+@import "@/assets/scss/main.scss";
+
+* {
+    background-color: #ffffff;
+}
+
+section.main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    .container-fluid {
+        display: flex;
+        .left {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            height: 100%;
+            padding: 7rem;
+            h1 {
+                font-family: 'Poppins', sans-serifs;
+                font-weight: 600;
+                font-size: 5rem;
+                color: #000000;
+                text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                margin-bottom: 2rem;
+            }
+            p {
+                font-family: 'Poppins', sans-serif;
+                font-weight: 400;
+                font-size: 1.5rem;
+                color: #000100;
+                text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                margin-bottom: 5rem;
+            }
+            .img {
+                display: flex;
+                justify-content: flex-end;
+            }
+        }
+        .right {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .div-user {
+                margin-bottom: 3rem;
+                input {
+                    width: 403px;
+                    height: 61px;
+                    background: #E8F1FC;
+                    border-radius: 8px;
+                    padding: 2rem;
+                    font-family: 'Poppins', sans-serif;
+                    font-weight: 400;
+                    font-size: 1.5rem;
+                    color: #000100;
+                    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                    transition: all 3s;
+                    &:focus {
+                        border: 1px solid rgb(0, 0, 0)
+                    }
+                }
+            }
+            .div-password {
+                margin-bottom: 3rem;
+                input {
+                    width: 403px;
+                    height: 61px;
+                    background: #E8F1FC;
+                    border-radius: 8px;
+                    padding: 2rem;
+                    font-family: 'Poppins', sans-serif;
+                    font-weight: 400;
+                    font-size: 1.5rem;
+                    color: #000100;
+                    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                    transition: all 3s;
+                    &:focus {
+                        border: 1px solid rgb(0, 0, 0)
+                    }
+                }
+            }
+            .btn-access {
+                margin-bottom: 6rem;
+                button {
+                    width: 402px;
+                    height: 60px;
+                    background: #4461F2;
+                    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                    border-radius: 10px;
+                    font-family: 'Poppins', sans-serif;
+                    font-weight: 500;
+                    font-size: 1.5rem;
+                    color: #ffffff;
+                    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                    transition: all .3s;
+                    &:hover {
+                        opacity: 0.4;
+                    }
+                }
+            }
+            span {
+                font-family: 'Poppins', sans-serif;
+                font-weight: 400;
+                font-size: 1.5rem;
+                color: #000100;
+                text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            }
+            .social {
+                display: flex;
+                justify-content: center;
+                margin-top: 4.5rem;
+                width: 100%;
+                gap: 2rem;
+                a {
+                transition: all .3s;
+                &:hover {
+                    opacity: 0.4;
+                }
+            }
+            }
+        }
+    }
+}
