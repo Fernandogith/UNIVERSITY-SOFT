@@ -20,30 +20,14 @@
 
             <div class="main">
                 <div class="filtros">
-                    <h2>FILTROS</h2>
+                    <h2>FILTRO</h2>
                     <div class="group-inputs">
                         <!-- Input Padrão -->
                         <div class="input">
-                            <input type="text" id="nome" autocomplete="off" required>
-                            <label for="nome">Nome</label>
-                        </div>
-                        <!-- Input Padrão -->
-                        <div class="input">
-                            <input type="text" id="nome" autocomplete="off" required>
-                            <label for="nome">Nome</label>
-                        </div>
-                        <!-- Input Padrão -->
-                        <div class="input">
-                            <input type="text" id="nome" autocomplete="off" required>
-                            <label for="nome">Nome</label>
-                        </div>
-                        <!-- Input Padrão -->
-                        <div class="input">
-                            <input type="text" id="nome" autocomplete="off" required>
-                            <label for="nome">Nome</label>
+                            <input class="input-filtro" type="text" id="nome" autocomplete="off" required>
+                            <label for="nome">Pesquisar</label>
                         </div>
                     </div>
-
                 </div>
                 <div class="table-espaco">
                     <table class="table table-borderless table-striped m-0 w-970">

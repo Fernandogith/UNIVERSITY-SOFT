@@ -22,38 +22,44 @@ const routes = [
         name: 'login',
         component: Login
     },
-  {
+    {
     path: '/inicio',
     name: 'inicio',
     component: Inicio
-  },
-  // PESSOAS
-  {
+    },
+    // PESSOAS
+    {
     path: '/pessoas-consulta',
     name: 'pessoas-consulta',
     component: PessoasConsulta
-  },
-  {
+    },
+    {
     path: '/pessoas-cadastro',
     name: 'pessoas-cadastro',
     component: PessoasCadastro
-  },
-  // CURSOS
-  {
+    },
+    // PESSOAS CADASTRO COM PARAMETRO
+    {
+        path: '/pessoas-cadastro:id',
+        name: 'pessoas-cadastro-parametro',
+        component: PessoasCadastro
+    },
+    // CURSOS
+    {
     path: '/cursos-consulta',
     name: 'cursos-consulta',
     component: CursosConsulta
-  },
-  {
+    },
+    {
     path: '/cursos-cadastro',
     name: 'cursos-cadastro',
     component: CursosCadastro
-  },
-  {
+    },
+    {
     path: '/components',
     name: 'components',
     component: Components
-  },
+    },
 ]
 
 const router = new VueRouter({

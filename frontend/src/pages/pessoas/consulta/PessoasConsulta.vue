@@ -10,40 +10,24 @@
                 <span>| Consulta</span>
                 <div class="actions">
                     <div class="button">
-                        <button class="btn-padrao">Voltar</button>
+                        <button @click="buscarNoBack()" class="btn-padrao">Voltar</button>
                     </div>
                     <div class="button">
-                        <button @click="PessoasCadastro()" class="btn-padrao">Novo</button>
+                        <button @click="DirecionarPaginaPessoasCadastro()" class="btn-padrao">Novo</button>
                     </div>
                 </div>
             </div>
 
             <div class="main">
                 <div class="filtros">
-                    <h2>FILTROS</h2>
+                    <h2>FILTRO</h2>
                     <div class="group-inputs">
                         <!-- Input Padrão -->
                         <div class="input">
-                            <input type="text" id="nome" autocomplete="off" required>
-                            <label for="nome">Nome</label>
-                        </div>
-                        <!-- Input Padrão -->
-                        <div class="input">
-                            <input type="text" id="nome" autocomplete="off" required>
-                            <label for="nome">Nome</label>
-                        </div>
-                        <!-- Input Padrão -->
-                        <div class="input">
-                            <input type="text" id="nome" autocomplete="off" required>
-                            <label for="nome">Nome</label>
-                        </div>
-                        <!-- Input Padrão -->
-                        <div class="input">
-                            <input type="text" id="nome" autocomplete="off" required>
-                            <label for="nome">Nome</label>
+                            <input class="input-filtro" type="text" id="nome" autocomplete="off" required>
+                            <label for="nome">Pesquisar</label>
                         </div>
                     </div>
-
                 </div>
                 <div class="table-espaco">
                     <table class="table table-borderless table-striped m-0 w-970">
@@ -53,10 +37,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="dadosFiltrado in dadosFiltrados" :key="dadosFiltrado.id">
-                                <td>{{ dadosFiltrado.descricao }}</td>
-                                <td>{{ dadosFiltrado.carga_horaria }}</td>
-                                <td>{{ dadosFiltrado.situacao }}</td>
+                            <tr v-for="listaPessoa in listaPessoas" :key="listaPessoa.id">
+                                <td>{{ listaPessoa.id }}</td>
+                                <td>{{ listaPessoa.nome }}</td>
                                 <td><a><img src="@/assets/img/icones/icon-editar.svg"></a></td>
                                 <td><a><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
                             </tr>
@@ -88,38 +71,43 @@ export default {
 
             // Cabeçalho da table
             headers: [
-                {texto: 'Descrição', },
-                {texto: 'Carga Horaria', },
-                {texto: 'Situação', },
+                {texto: 'Código', },
+                {texto: 'Nome', },
                 {texto: '.', },
                 {texto: '..', },
 
             ],
 
-            dadosFiltrados: [
-                {id: 1, descricao: 'Curso de HTML', carga_horaria: 100, situacao: 'ativo'},
-                {id: 2, descricao: 'Curso de CSS', carga_horaria: 100, situacao: 'ativo'},
-                {id: 3, descricao: 'Curso de SASS', carga_horaria: 80, situacao: 'ativo'},
-                {id: 4, descricao: 'Curso de JavaScript', carga_horaria: 200, situacao: 'inativo'},
-            ]
+            // Dados da Table
+            listaPessoas: [],
         }
     },
     
     methods: {
 
-        buscarNoBack: function () {
+        carregarDados: function () {
 
-            api.get('/').then(response => {
+            api.get('/pessoas').then(response => {
 
-                console.log(response.data); 
+
+                response.data.forEach(resposta => {
+                    this.listaPessoas.push(resposta)
+                });
+
             });
         },
 
-        PessoasCadastro: function() {
-            window.location.href = '/pessoas-cadastro'
+        DirecionarPaginaPessoasCadastro: function() {
+            let ultimo = this.listaPessoas[this.listaPessoas.length - 1];
+
+            window.location.href = 'pessoas-cadastro' + ultimo.id
         }
         
     },
+
+    mounted() {
+        this.carregarDados ()
+    }
 }
 
 </script>

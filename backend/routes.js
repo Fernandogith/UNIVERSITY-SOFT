@@ -2,9 +2,15 @@ const express = require("express")
 const routes = express.Router()
 const DashboardController = require ('./controllers/DashboardController')
 
-//Rota GET
-routes.get('/', DashboardController.index)
 
+// Carrega Pessoas
+routes.get('/pessoas', DashboardController.carregaPessoas);
+
+// Carrega Pessoas
+routes.post('/pessoas', DashboardController.inserePessoas);
+
+// Busca Ultima Matricula
+routes.get('/matricula', DashboardController.ultimoNumeroMatricula);
 
 
 

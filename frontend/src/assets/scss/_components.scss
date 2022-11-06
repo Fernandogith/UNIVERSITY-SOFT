@@ -24,6 +24,14 @@
             &:focus {
                 border-color: rgb(0, 0, 0)
             }
+            &:disabled {
+                background-color: #ebebeb;
+                font-size: 11px;
+                top: -5px;
+            }
+        }
+        .input-filtro {
+            width: 500px;
         }
 
         label {
@@ -53,6 +61,8 @@
         top: -5px;
         color: rgb(0, 0, 0);
     }
+
+
 
     .input-select {
         display: block;
@@ -137,7 +147,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;     
-        height: 355px;
+        height: 56rem;
         overflow-y: auto;             
         .table{
             width: 145rem;

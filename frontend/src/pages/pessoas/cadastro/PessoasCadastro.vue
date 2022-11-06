@@ -10,10 +10,10 @@
                 <span>| Cadastro</span>
                 <div class="actions">
                     <div class="button">
-                        <button class="btn-padrao">Voltar</button>
+                        <button @click="voltar()"  class="btn-padrao">Voltar</button>
                     </div>
                     <div class="button">
-                        <button @click="PessoasCadastro()" class="btn-padrao">Novo</button>
+                        <button @click="salvarPessoa(objPessoa)" class="btn-padrao">Salvar</button>
                     </div>
                 </div>
             </div>
@@ -24,32 +24,42 @@
                     <div class="group-inputs">
                         <!-- Input Padrão -->
                         <div class="input">
-                            <input type="text" id="nome" autocomplete="off" required>
-                            <label for="nome">Código</label>
+                            <input type="text" id="codigo" autocomplete="off" required v-model="objPessoa.id">
+                            <label for="codigo" >Código</label>
                         </div>
                         <!-- Input Padrão -->
                         <div class="input">
-                            <input type="text" id="nome" autocomplete="off" required>
+                            <input type="text" id="nome" autocomplete="off" required v-model="objPessoa.nome">
                             <label for="nome">Nome</label>
                         </div>
                         <!-- Input Padrão -->
                         <div class="input">
-                            <input type="text" id="data_nascimento" autocomplete="off" required>
+                            <input type="text" id="data_nascimento" autocomplete="off" required v-model="objPessoa.data_nascimento">
                             <label for="data_nascimento">Data Nascimento</label>
                         </div>
                         <!-- Selected Padrão -->
                         <div class="input-select" id="tipo">
-                            <v-select v-model="tipo_pessoa_selecionada" :items="tipos_pessoas" attach chips rounded></v-select>
+                            <v-select v-model="objPessoa.tipo" @change="objPessoa.tipo == 'Aluno' ? BuscaProximoNumeroMatricula() : objPessoa.tipo" :items="tipos_pessoas" placeholder="Tipo" attach chips rounded></v-select>
                         </div>
                         
                     </div>
                 </div>
-                <div class="dados informacoes-matricula" v-if="tipo_pessoa_selecionada == 'Aluno'">
+                <div class="dados informacoes-matricula" v-if="objPessoa.tipo == 'Professor'">
+                    <h2>INFORMAÇÕES SALARIAIS</h2>
+                    <div class="group-inputs">
+                        <!-- Input Padrão -->
+                        <div class="input">
+                            <input type="text" id="salario" autocomplete="off" required v-model="objPessoa.salarioProfessor">
+                            <label for="salario">Salário Negociado</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="dados informacoes-salariais" v-if="objPessoa.tipo == 'Aluno'">
                     <h2>INFORMAÇÕES SOBRE MATRICULA</h2>
                     <div class="group-inputs">
                         <!-- Input Padrão -->
                         <div class="input">
-                            <input type="text" id="matricula" autocomplete="off" required>
+                            <input type="text" id="matricula" autocomplete="off" required v-model="objPessoa.numeroMatricula">
                             <label for="matricula">N° Matricula</label>
                         </div>
                         <!-- Input Padrão -->
@@ -60,7 +70,7 @@
                     </div>
                 </div>
                 
-                <div class="dados notas" v-if="tipo_pessoa_selecionada == 'Aluno'">
+                <div class="dados notas" v-if="objPessoa.tipo == 'Aluno'">
                     <h2>INFORMAÇÕES SOBRE MATRICULA</h2>
                     <!-- Table -->
                     <div class="table-espaco">
@@ -132,20 +142,21 @@ export default {
             ],
 
             // Dados da Table
-            dadosFiltrados: [
-                {id: 1, descricao: 'Curso de HTML', nota: 8.5,},
-                {id: 2, descricao: 'Curso de CSS', nota: 10,},
-                {id: 3, descricao: 'Curso de SASS', nota: 9.4,},
-                {id: 4, descricao: 'Curso de JavaScript', nota: 10,},
-            ],
+            objPessoa: {id: '', nome: '', data_nascimento: '', tipo: '', numeroMatricula: '', salarioProfessor: null},
 
-            tipo_pessoa_selecionada: [],
+            // Lista apresentada no Select Tipo Pessoa
             tipos_pessoas: ['Aluno', 'Professor'],
 
         }
     },
     
     methods: {
+
+        salvarPessoa: async function (pPessoa) {
+            await api.post('/pessoas', pPessoa).then(response => {
+                window.location.href = '/pessoas-consulta'
+            });
+        },
 
         buscarNoBack: function () {
 
@@ -155,11 +166,31 @@ export default {
             });
         },
 
-        PessoasCadastro: function() {
-            window.location.href = '/pessoas-cadastro'
-        }
-        
+        voltar: function() {
+            window.location.href = '/pessoas-consulta'
+        },
+
+        // Retorna o parametro passado pela rota (caso exista)
+        PegaParametro: function () {
+            return parseInt(this.$route.params.id) + 1
+        },
+
+        BuscaProximoNumeroMatricula: async function () {
+            if (this.objPessoa.numeroMatricula == '' || this.objPessoa.numeroMatricula == null) {
+                api.get('/matricula').then(response => {
+                    
+                this.objPessoa.numeroMatricula = response.data[0]
+            
+                });
+            }
+        },
     },
+
+    mounted() {
+
+        this.objPessoa.id = this.PegaParametro()
+        
+    }
 }
 
 </script>
