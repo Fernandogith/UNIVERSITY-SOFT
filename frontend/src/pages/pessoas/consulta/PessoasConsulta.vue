@@ -40,8 +40,8 @@
                             <tr v-for="listaPessoa in listaPessoas" :key="listaPessoa.id">
                                 <td>{{ listaPessoa.id }}</td>
                                 <td>{{ listaPessoa.nome }}</td>
-                                <td><a><img src="@/assets/img/icones/icon-editar.svg"></a></td>
-                                <td><a><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
+                                <td><a @click="editarPessoa(listaPessoa)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
+                                <td><a @click="deletaPessoa(listaPessoa)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -87,7 +87,7 @@ export default {
 
         carregarDados: function () {
 
-            api.get('/pessoas').then(response => {
+            api.post('/pessoas').then(response => {
 
 
                 response.data.forEach(resposta => {
@@ -97,10 +97,25 @@ export default {
             });
         },
 
-        DirecionarPaginaPessoasCadastro: function() {
-            let ultimo = this.listaPessoas[this.listaPessoas.length - 1];
+        editarPessoa: function(pPessoa) {
+            window.location.href = '/pessoas-cadastro'+ pPessoa.id
+        },
 
-            window.location.href = 'pessoas-cadastro' + ultimo.id
+        deletaPessoa: function (pPessoa) {
+            debugger
+            api.post('/deleta-pessoas', pPessoa).then(response => {
+                if (response.data == 'Sucesso') {
+                    window.location.href = ('/pessoas-consulta')
+                }
+                
+                debugger
+
+
+            });
+        },
+
+        DirecionarPaginaPessoasCadastro: function() {
+            window.location.href = 'pessoas-cadastro'
         }
         
     },

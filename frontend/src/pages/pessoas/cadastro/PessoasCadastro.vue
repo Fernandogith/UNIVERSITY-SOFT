@@ -59,7 +59,7 @@
                     <div class="group-inputs">
                         <!-- Input Padrão -->
                         <div class="input">
-                            <input type="text" id="matricula" autocomplete="off" required v-model="objPessoa.numeroMatricula">
+                            <input type="text" id="matricula" autocomplete="off" required v-model="objPessoa.numeroMatriculaAluno">
                             <label for="matricula">N° Matricula</label>
                         </div>
                         <!-- Input Padrão -->
@@ -132,6 +132,8 @@ export default {
 
     data() {
         return {
+            // Utilizado para verificar se é um novo registro sendo inserido
+            novoRegistro: null,
 
             // Cabeçalho da table
             headers: [
@@ -142,7 +144,7 @@ export default {
             ],
 
             // Dados da Table
-            objPessoa: {id: '', nome: '', data_nascimento: '', tipo: '', numeroMatricula: '', salarioProfessor: null},
+            objPessoa: {id: '', nome: '', data_nascimento: '', tipo: '', numeroMatriculaAluno: '', salarioProfessor: null},
 
             // Lista apresentada no Select Tipo Pessoa
             tipos_pessoas: ['Aluno', 'Professor'],
@@ -152,34 +154,80 @@ export default {
     
     methods: {
 
+        // Carrega dados da pessoa pelo ID para popular os campos e atualizar
+        carregarDados: function (pId) {
+
+            api.post('/pessoas', pId).then(response => {
+
+            this.populaCampos(response.data[0])
+                
+
+            });
+        },
+
+        // Salva Pessoa ou manda para atualizar
         salvarPessoa: async function (pPessoa) {
-            await api.post('/pessoas', pPessoa).then(response => {
+
+            if (this.novoRegistro == true) {
+                
+                await api.post('/insere-pessoas', pPessoa).then(response => {
+                
                 window.location.href = '/pessoas-consulta'
+
             });
+            } else {
+                this.atualizar(pPessoa)
+            }
         },
 
-        buscarNoBack: function () {
+        // Atualiza Pessoa
+        atualizar: function (pPessoa) {
+            api.put('/atualiza-pessoas', pPessoa).then(response => {
+                window.location.href = '/pessoas-consulta'
 
-            api.get('/').then(response => {
+            })
 
-                console.log(response.data); 
-            });
         },
 
-        voltar: function() {
+        // Volta para o Pessoa Consulta
+        voltar: function () {
             window.location.href = '/pessoas-consulta'
+        },
+
+        // Utilizada para popular os campos clicar em atualizar
+        populaCampos: function(pPessoa){
+            this.objPessoa.id = pPessoa.id,
+            this.objPessoa.nome = pPessoa.nome,
+            this.objPessoa.data_nascimento = pPessoa.data_nascimento,
+            this.objPessoa.tipo = pPessoa.tipo,
+            this.objPessoa.numeroMatriculaAluno = pPessoa.numeroMatriculaAluno,
+            this.objPessoa.salarioProfessor = pPessoa.salarioProfessor
         },
 
         // Retorna o parametro passado pela rota (caso exista)
         PegaParametro: function () {
-            return parseInt(this.$route.params.id) + 1
+            return this.$route.params.id
         },
 
+        // Utilizado para buscar o proximo numero de matricula do aluno
         BuscaProximoNumeroMatricula: async function () {
-            if (this.objPessoa.numeroMatricula == '' || this.objPessoa.numeroMatricula == null) {
+            debugger
+            if (this.objPessoa.numeroMatriculaAluno == '' || this.objPessoa.numeroMatriculaAluno == null) {
                 api.get('/matricula').then(response => {
-                    
-                this.objPessoa.numeroMatricula = response.data[0]
+                    debugger
+                this.objPessoa.numeroMatriculaAluno = response.data[0]
+            
+                });
+            }
+        },
+
+        // Utilizado para buscar o proximo ID
+        BuscaProximoId: async function () {
+            debugger
+            if (this.objPessoa.id == '' || this.objPessoa.id == null) {
+                api.get('/proximo-id').then(response => {
+                    debugger
+                this.objPessoa.id = response.data[0]
             
                 });
             }
@@ -187,8 +235,19 @@ export default {
     },
 
     mounted() {
+        debugger
+        let parametro = {}
+        parametro.id = this.PegaParametro()
 
-        this.objPessoa.id = this.PegaParametro()
+        if (parametro.id != undefined) {
+            this.carregarDados(parametro)
+        } else {
+            this.novoRegistro = true
+            this.objPessoa.id = this.BuscaProximoId()
+
+        }
+
+
         
     }
 }
