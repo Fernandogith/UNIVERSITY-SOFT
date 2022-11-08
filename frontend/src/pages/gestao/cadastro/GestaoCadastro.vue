@@ -39,6 +39,7 @@
                     <div class="group-inputs">
                         <!-- Selected Padrão -->
                         <div class="input-select disciplinas" id="disciplinas">
+
                             <v-select v-model="arrDisciplinasSelecionadas" :items="arrDisciplinas" item-text="nome" return-object @click="carregaDisciplinas()" multiple placeholder="Disciplinas" attach chips rounded>
                             </v-select>
 
@@ -57,7 +58,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="listaDisciplina in listaDisciplinas" :key="listaDisciplina.id">
-                                <td>{{ listaDisciplina.disciplina_id }}</td>
+                                <td>{{ listaDisciplina.disciplinas_id }}</td>
                                 <td>{{ listaDisciplina.nome }}</td>
                                 <td><a @click="editarDisciplinas(listaDisciplina)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
                                 <td><a @click="deletaDisciplinas(listaDisciplina)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
@@ -120,11 +121,11 @@ export default {
         // Carrega dados da pessoa pelo ID para popular os campos e atualizar
         carregarDados: async function (pId) {
             let vDadosCurso
+            let vDadosCursoDisciplina = []
 
             await api.post('/cursos', pId).then(response => {
-                debugger
             vDadosCurso = response.data[0]
-            debugger
+    
 
             });
 
@@ -132,29 +133,21 @@ export default {
                     debugger
                 response.data.forEach(DadosCursoDisciplina => {
                     debugger
-                    this.listaDisciplinas.push(DadosCursoDisciplina)
+                    vDadosCursoDisciplina.push(DadosCursoDisciplina)
                     debugger
                 });
 
             
             });
-
-
             
-            this.populaCampos(vDadosCurso)
+            this.populaCampos(vDadosCurso, vDadosCursoDisciplina)
         },
 
         // Salva Curso ou manda para atualizar
         salvarCurso: async function (pCurso) {
-            
-            for (let i = 0; i < this.listaDisciplinas.length; i++) {
-                pCurso.disciplinas.push(this.listaDisciplinas[i].disciplina_id);
-                
-            }
 
-            
             if (this.novoRegistro) {
-                debugger
+                
                 await api.post('/insere-cursos', pCurso).then(response => {
                 
                 window.location.href = '/cursos-consulta'
@@ -181,15 +174,15 @@ export default {
         },
 
         // Utilizada para popular os campos clicar em atualizar
-        populaCampos: function (pCurso) {
+        populaCampos: function (pCurso, pDadosCursoDisciplina) {
             // Popula campos
             this.objCurso.id = pCurso.id,
             this.objCurso.nome = pCurso.nome
             debugger
-
-
-
-
+            // Popula Tabela
+            this.listaDisciplinas = pDadosCursoDisciplina.tipo
+            
+            debugger
 
         },
 
@@ -237,7 +230,7 @@ export default {
             for (let i = 0; i < pDisciplinas.length; i++) {
                 
                 let addDisciplina = {
-                    disciplina_id: pDisciplinas[i].id, 
+                    disciplinas_id: pDisciplinas[i].id, 
                     nome: pDisciplinas[i].nome, 
                     professor_id: pDisciplinas[i].professor_id
                 }
@@ -275,4 +268,4 @@ debugger
 
 </script>
 
-<style src="./CursosCadastro.scss" lang="scss" scoped>
+<style src="./GestaoCadastro.scss" lang="scss" scoped>

@@ -142,7 +142,11 @@ main {
                 .group-inputs {
                     padding: 2rem;
                     display: flex;
+                    justify-content: center;
                     gap: 2rem;
+                    .lista-alunos {
+                        width: 800px;
+                    }
                 }
             }
             .table-espaco {

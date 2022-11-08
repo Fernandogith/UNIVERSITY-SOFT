@@ -6,6 +6,10 @@ import PessoasConsulta from '../pages/pessoas/consulta/PessoasConsulta.vue'
 import PessoasCadastro from '../pages/pessoas/cadastro/PessoasCadastro.vue'
 import CursosConsulta from '../pages/cursos/consulta/CursosConsulta.vue'
 import CursosCadastro from '../pages/cursos/cadastro/CursosCadastro.vue'
+import DisciplinasConsulta from '../pages/disciplinas/consulta/DisciplinasConsulta.vue'
+import DisciplinasCadastro from '../pages/disciplinas/cadastro/DisciplinasCadastro.vue'
+import GestaoConsulta from '../pages/gestao/consulta/GestaoConsulta.vue'
+import GestaoCadastro from '../pages/gestao/cadastro/GestaoCadastro.vue'
 import Components from '../components/Components..vue'
 
 Vue.use(VueRouter)
@@ -40,9 +44,9 @@ const routes = [
     },
     // PESSOAS CADASTRO COM PARAMETRO
     {
-        path: '/pessoas-cadastro:id',
-        name: 'pessoas-cadastro-parametro',
-        component: PessoasCadastro
+    path: '/pessoas-cadastro:id',
+    name: 'pessoas-cadastro-parametro',
+    component: PessoasCadastro
     },
     // CURSOS
     {
@@ -54,6 +58,46 @@ const routes = [
     path: '/cursos-cadastro',
     name: 'cursos-cadastro',
     component: CursosCadastro
+    },
+    // CURSOS CADASTRO COM PARAMETRO
+    {
+    path: '/cursos-cadastro:id',
+    name: 'cursos-cadastro-parametro',
+    component: CursosCadastro
+    },
+    // DISCIPLINAS
+    {
+    path: '/disciplinas-consulta',
+    name: 'disciplinas-consulta',
+    component: DisciplinasConsulta
+    },
+    {
+    path: '/disciplinas-cadastro',
+    name: 'disciplinas-cadastro',
+    component: DisciplinasCadastro
+    },
+    // DISCIPLINAS CADASTRO COM PARAMETRO
+    {
+    path: '/disciplinas-cadastro:id',
+    name: 'disciplinas-cadastro-parametro',
+    component: DisciplinasCadastro
+    },
+    // DISCIPLINAS
+    {
+    path: '/gestao-consulta',
+    name: 'gestao-consulta',
+    component: GestaoConsulta
+    },
+    {
+    path: '/gestao-cadastro',
+    name: 'gestao-cadastro',
+    component: GestaoCadastro
+    },
+    // DISCIPLINAS CADASTRO COM PARAMETRO
+    {
+    path: '/gestao-cadastro:id',
+    name: 'gestao-cadastro-parametro',
+    component: GestaoCadastro
     },
     {
     path: '/components',

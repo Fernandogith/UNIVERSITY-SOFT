@@ -39,12 +39,12 @@
                         </div>
                         <!-- Selected Padrão -->
                         <div class="input-select" id="tipo">
-                            <v-select v-model="objPessoa.tipo" @change="objPessoa.tipo == 'Aluno' ? BuscaProximoNumeroMatricula() : objPessoa.tipo" :items="tipos_pessoas" placeholder="Tipo" attach chips rounded></v-select>
+                            <v-select v-model="tipos_pessoas_selecionado" @click="carregaTiposPessoa()" @change="tipos_pessoas_selecionado.nome == 'Aluno' ? BuscaProximoNumeroMatricula() : tipos_pessoas_selecionado.nome" :items="tipos_pessoas" item-text="nome" return-object item-value="id" placeholder="Tipo" attach chips rounded></v-select>
                         </div>
                         
                     </div>
                 </div>
-                <div class="dados informacoes-matricula" v-if="objPessoa.tipo == 'Professor'">
+                <div class="dados informacoes-matricula" v-if="tipos_pessoas_selecionado.nome == 'Professor'">
                     <h2>INFORMAÇÕES SALARIAIS</h2>
                     <div class="group-inputs">
                         <!-- Input Padrão -->
@@ -54,7 +54,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="dados informacoes-salariais" v-if="objPessoa.tipo == 'Aluno'">
+                <div class="dados informacoes-salariais" v-if="tipos_pessoas_selecionado.nome == 'Aluno'">
                     <h2>INFORMAÇÕES SOBRE MATRICULA</h2>
                     <div class="group-inputs">
                         <!-- Input Padrão -->
@@ -62,55 +62,8 @@
                             <input type="text" id="matricula" autocomplete="off" required v-model="objPessoa.numeroMatriculaAluno">
                             <label for="matricula">N° Matricula</label>
                         </div>
-                        <!-- Input Padrão -->
-                        <div class="input">
-                            <input type="text" id="cursos" autocomplete="off" required>
-                            <label for="cursos">Cursos</label>
-                        </div>
                     </div>
                 </div>
-                
-                <div class="dados notas" v-if="objPessoa.tipo == 'Aluno'">
-                    <h2>INFORMAÇÕES SOBRE MATRICULA</h2>
-                    <!-- Table -->
-                    <div class="table-espaco">
-                        <table class="table table-borderless table-striped m-0 w-970">
-                            <thead>
-                                <tr>
-                                    <th v-for="header in headers" :key="header.texto">{{ header.texto }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="dadosFiltrado in dadosFiltrados" :key="dadosFiltrado.id">
-                                    <td>{{ dadosFiltrado.descricao }}</td>
-                                    <td>{{ dadosFiltrado.nota }}</td>
-                                    <td><a><img src="@/assets/img/icones/icon-editar.svg"></a></td>
-                                    <td><a><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-
-                <!-- <div class="table-espaco">
-                    <table class="table table-borderless table-striped m-0 w-970">
-                        <thead>
-                            <tr>
-                                <th v-for="header in headers" :key="header.texto">{{ header.texto }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="dadosFiltrado in dadosFiltrados" :key="dadosFiltrado.id">
-                                <td>{{ dadosFiltrado.descricao }}</td>
-                                <td>{{ dadosFiltrado.carga_horaria }}</td>
-                                <td>{{ dadosFiltrado.situacao }}</td>
-                                <td><a><img src="@/assets/img/icones/icon-editar.svg"></a></td>
-                                <td><a><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div> -->
 
             </div>
         </section>
@@ -146,8 +99,10 @@ export default {
             // Dados da Table
             objPessoa: {id: '', nome: '', data_nascimento: '', tipo: '', numeroMatriculaAluno: '', salarioProfessor: null},
 
+            // Utilizado para receber o tipo de pessoa selecionado
+            tipos_pessoas_selecionado: {id:44, nome: 'paulinho'},
             // Lista apresentada no Select Tipo Pessoa
-            tipos_pessoas: ['Aluno', 'Professor'],
+            tipos_pessoas: [],
 
         }
     },
@@ -158,7 +113,7 @@ export default {
         carregarDados: function (pId) {
 
             api.post('/pessoas', pId).then(response => {
-
+debugger
             this.populaCampos(response.data[0])
                 
 
@@ -167,6 +122,7 @@ export default {
 
         // Salva Pessoa ou manda para atualizar
         salvarPessoa: async function (pPessoa) {
+            pPessoa.tipo = this.tipos_pessoas_selecionado.nome
 
             if (this.novoRegistro == true) {
                 
@@ -182,6 +138,7 @@ export default {
 
         // Atualiza Pessoa
         atualizar: function (pPessoa) {
+            pPessoa.tipo = this.tipos_pessoas_selecionado.nome
             api.put('/atualiza-pessoas', pPessoa).then(response => {
                 window.location.href = '/pessoas-consulta'
 
@@ -199,7 +156,7 @@ export default {
             this.objPessoa.id = pPessoa.id,
             this.objPessoa.nome = pPessoa.nome,
             this.objPessoa.data_nascimento = pPessoa.data_nascimento,
-            this.objPessoa.tipo = pPessoa.tipo,
+            this.tipos_pessoas_selecionado.push(pPessoa.tipo),
             this.objPessoa.numeroMatriculaAluno = pPessoa.numeroMatriculaAluno,
             this.objPessoa.salarioProfessor = pPessoa.salarioProfessor
         },
@@ -213,7 +170,7 @@ export default {
         BuscaProximoNumeroMatricula: async function () {
             debugger
             if (this.objPessoa.numeroMatriculaAluno == '' || this.objPessoa.numeroMatriculaAluno == null) {
-                api.get('/matricula').then(response => {
+                api.get('/matriculas').then(response => {
                     debugger
                 this.objPessoa.numeroMatriculaAluno = response.data[0]
             
@@ -225,12 +182,22 @@ export default {
         BuscaProximoId: async function () {
             debugger
             if (this.objPessoa.id == '' || this.objPessoa.id == null) {
-                api.get('/proximo-id').then(response => {
+                api.get('/pessoas-proximo-id').then(response => {
                     debugger
                 this.objPessoa.id = response.data[0]
             
                 });
             }
+        },
+
+        // Utilizado para buscar os tipos de pessoa no banco
+        carregaTiposPessoa: async function () {
+            api.get('/tipos-pessoa').then(response => {
+            debugger
+                response.data.forEach(tipo => {
+                    this.tipos_pessoas.push(tipo)
+                })
+            });
         },
     },
 

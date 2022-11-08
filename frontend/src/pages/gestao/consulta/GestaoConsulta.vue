@@ -20,13 +20,17 @@
 
             <div class="main">
                 <div class="filtros">
-                    <h2>FILTRO</h2>
+                    <h2>SELECIONE O ALUNO</h2>
                     <div class="group-inputs">
-                        <!-- Input Padrão -->
-                        <div class="input">
-                            <input class="input-filtro" type="text" id="nome" autocomplete="off" required>
-                            <label for="nome">Pesquisar</label>
+                        <!-- Selected Padrão -->
+                        <div class="input-select lista-alunos" id="disciplinas" @click="carregaAlunos()">
+                            <v-autocomplete v-model="listaAlunoSelecionado" :items="listaAlunos" item-text="nome" return-object  @click="carregaAlunos()" placeholder="Selecione o Aluno" attach chips rounded>
+                            </v-autocomplete>
+
                         </div>
+                        <button @click="carregaCursosAluno(listaAlunoSelecionado.id)">
+                            <img src="@/assets/img/icones/icon-search.svg" alt="">
+                        </button>
                     </div>
                 </div>
                 <div class="table-espaco">
@@ -37,11 +41,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="listaCurso in listaCursos" :key="listaCurso.id">
-                                <td>{{ listaCurso.id }}</td>
-                                <td>{{ listaCurso.nome }}</td>
-                                <td><a @click="editarCurso(listaCurso)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
-                                <td><a @click="deletaCurso(listaCurso)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
+                            <tr v-for="arrCurso in arrCursos" :key="arrCurso.id">
+                                <td>{{ arrCurso.id }}</td>
+                                <td>{{ arrCurso.nome }}</td>
+                                <td><a @click="editarCurso(arrCurso)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
+                                <td><a @click="deletaCurso(arrCurso)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -79,36 +83,60 @@ export default {
             ],
 
             // Dados da Table
-            listaCursos: [],
+            listaAlunos: [],
+            
+            // Aluno selecionado
+            listaAlunoSelecionado: null,
+
+            // Utilizado para mostrar os dados na table
+            arrCursos: [],
         }
     },
     
     methods: {
 
-        carregarDados: function () {
-
-            api.post('/cursos').then(response => {
-
-
-                response.data.forEach(resposta => {
-                    this.listaCursos.push(resposta)
+        carregaAlunos: async function () {
+            this.arrCursos = []
+            await api.post('/pessoas').then(response => {
+                
+                let aux = response.data
+                aux.forEach(resposta => {
+                    
+                    if (resposta.pessoa_tipo == 1) {
+                        this.listaAlunos.push(resposta)
+                    }
+                    
                 });
 
             });
         },
+
+        carregaCursosAluno: async function (pAluno) {
+            debugger
+            await api.post('/cursos-aluno', {id: pAluno}).then(response => {
+                
+                let aux = response.data
+                aux.forEach(resposta => {
+                    debugger
+                    this.arrCursos.push(resposta)   
+                });
+
+            });
+        },
+
 
         editarCurso: function(pCurso) {
             window.location.href = '/cursos-cadastro'+ pCurso.id
         },
 
         deletaCurso: function (pCurso) {
-            debugger
+            
             api.post('/deleta-cursos', pCurso).then(response => {
                 if (response.data == 'Sucesso') {
                     window.location.href = ('/cursos-consulta')
                 }
                 
-                debugger
+                
 
 
             });
@@ -125,10 +153,10 @@ export default {
     },
 
     mounted() {
-        this.carregarDados ()
+
     }
 }
 
 </script>
 
-<style src="./CursosConsulta.scss" lang="scss" scoped>
+<style src="./GestaoConsulta.scss" lang="scss" scoped>

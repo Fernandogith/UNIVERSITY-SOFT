@@ -50,6 +50,8 @@
                         }
                         a {
                             transition: all .3s;
+                            display: flex;
+                            align-items: center;
                             &:hover {
                                 opacity: 0.4;
                             }

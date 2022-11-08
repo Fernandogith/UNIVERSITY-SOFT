@@ -29,9 +29,15 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/">
+                            <a href="/disciplinas-consulta">
                                 <img src="@/assets/img/icones/icon-materias.svg" alt="">
-                                <span>Materias</span>
+                                <span>Disciplinas</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/gestao-consulta">
+                                <img src="@/assets/img/icones/icon-gestao.svg" alt="">
+                                <span>Gestão</span>
                             </a>
                         </li>
                         <li>

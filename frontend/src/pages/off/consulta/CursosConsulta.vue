@@ -10,10 +10,10 @@
                 <span>| Consulta</span>
                 <div class="actions">
                     <div class="button">
-                        <button @click="voltar()" class="btn-padrao">Voltar</button>
+                        <button class="btn-padrao">Voltar</button>
                     </div>
                     <div class="button">
-                        <button @click="DirecionarPaginaCursoCadastro()" class="btn-padrao">Novo</button>
+                        <button @click="PessoasCadastro()" class="btn-padrao">Novo</button>
                     </div>
                 </div>
             </div>
@@ -37,11 +37,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="listaCurso in listaCursos" :key="listaCurso.id">
-                                <td>{{ listaCurso.id }}</td>
-                                <td>{{ listaCurso.nome }}</td>
-                                <td><a @click="editarCurso(listaCurso)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
-                                <td><a @click="deletaCurso(listaCurso)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
+                            <tr v-for="dadosFiltrado in dadosFiltrados" :key="dadosFiltrado.id">
+                                <td>{{ dadosFiltrado.descricao }}</td>
+                                <td>{{ dadosFiltrado.carga_horaria }}</td>
+                                <td>{{ dadosFiltrado.situacao }}</td>
+                                <td><a><img src="@/assets/img/icones/icon-editar.svg"></a></td>
+                                <td><a><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -60,10 +61,8 @@ import Menu from '../../../components/menu/Menu..vue';
 
 
 export default {
+    components: { Menu },
     name: "Login",
-    components: {
-        Menu,
-    },
     
 
     data() {
@@ -71,62 +70,40 @@ export default {
 
             // Cabeçalho da table
             headers: [
-                {texto: 'Código', },
-                {texto: 'Nome', },
+                {texto: 'Descrição', },
+                {texto: 'Carga Horaria', },
+                {texto: 'Situação', },
                 {texto: '.', },
                 {texto: '..', },
 
             ],
 
-            // Dados da Table
-            listaCursos: [],
+            // Recebe os dados para carregar a Table
+            dadosFiltrados: [
+                {id: 1, descricao: 'Curso de HTML', carga_horaria: 100, situacao: 'ativo'},
+                {id: 2, descricao: 'Curso de CSS', carga_horaria: 100, situacao: 'ativo'},
+                {id: 3, descricao: 'Curso de SASS', carga_horaria: 80, situacao: 'ativo'},
+                {id: 4, descricao: 'Curso de JavaScript', carga_horaria: 200, situacao: 'inativo'},
+            ]
         }
     },
     
     methods: {
 
-        carregarDados: function () {
+        buscarNoBack: function () {
 
-            api.post('/cursos').then(response => {
+            api.get('/').then(response => {
 
-
-                response.data.forEach(resposta => {
-                    this.listaCursos.push(resposta)
-                });
-
+                console.log(response.data); 
             });
         },
 
-        editarCurso: function(pCurso) {
-            window.location.href = '/cursos-cadastro'+ pCurso.id
-        },
-
-        deletaCurso: function (pCurso) {
-            debugger
-            api.post('/deleta-cursos', pCurso).then(response => {
-                if (response.data == 'Sucesso') {
-                    window.location.href = ('/cursos-consulta')
-                }
-                
-                debugger
-
-
-            });
-        },
-
-        DirecionarPaginaCursoCadastro: function() {
-            window.location.href = 'cursos-cadastro'
-        },
-
-        voltar: function () {
-            window.location.href = '/inicio'
+        // Leva para a Pagina de Cadastro
+        PessoasCadastro: function() {
+            window.location.href = '/cursos-cadastro'
         }
         
     },
-
-    mounted() {
-        this.carregarDados ()
-    }
 }
 
 </script>

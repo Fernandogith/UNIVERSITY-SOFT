@@ -13,7 +13,7 @@
                         <button @click="voltar()" class="btn-padrao">Voltar</button>
                     </div>
                     <div class="button">
-                        <button @click="DirecionarPaginaCursoCadastro()" class="btn-padrao">Novo</button>
+                        <button @click="DirecionarPaginaDisciplinaCadastro()" class="btn-padrao">Novo</button>
                     </div>
                 </div>
             </div>
@@ -37,11 +37,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="listaCurso in listaCursos" :key="listaCurso.id">
-                                <td>{{ listaCurso.id }}</td>
-                                <td>{{ listaCurso.nome }}</td>
-                                <td><a @click="editarCurso(listaCurso)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
-                                <td><a @click="deletaCurso(listaCurso)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
+                            <tr v-for="listaDisciplina in listaDisciplinas" :key="listaDisciplina.id">
+                                <td>{{ listaDisciplina.id }}</td>
+                                <td>{{ listaDisciplina.nome }}</td>
+                                <td><a @click="editarDisciplinas(listaDisciplina)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
+                                <td><a @click="deletaDisciplinas(listaDisciplina)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -60,7 +60,7 @@ import Menu from '../../../components/menu/Menu..vue';
 
 
 export default {
-    name: "Login",
+    name: "DisciplinaConsulta",
     components: {
         Menu,
     },
@@ -79,7 +79,7 @@ export default {
             ],
 
             // Dados da Table
-            listaCursos: [],
+            listaDisciplinas: [],
         }
     },
     
@@ -87,25 +87,25 @@ export default {
 
         carregarDados: function () {
 
-            api.post('/cursos').then(response => {
+            api.post('/disciplinas').then(response => {
 
 
                 response.data.forEach(resposta => {
-                    this.listaCursos.push(resposta)
+                    this.listaDisciplinas.push(resposta)
                 });
 
             });
         },
 
-        editarCurso: function(pCurso) {
-            window.location.href = '/cursos-cadastro'+ pCurso.id
+        editarDisciplinas: function(pDisciplinas) {
+            window.location.href = '/disciplinas-cadastro'+ pDisciplinas.id
         },
 
-        deletaCurso: function (pCurso) {
+        deletaDisciplinas: function (pDisciplinas) {
             debugger
-            api.post('/deleta-cursos', pCurso).then(response => {
+            api.post('/deleta-disciplinas', pDisciplinas).then(response => {
                 if (response.data == 'Sucesso') {
-                    window.location.href = ('/cursos-consulta')
+                    window.location.href = ('/disciplinas-consulta')
                 }
                 
                 debugger
@@ -114,8 +114,8 @@ export default {
             });
         },
 
-        DirecionarPaginaCursoCadastro: function() {
-            window.location.href = 'cursos-cadastro'
+        DirecionarPaginaDisciplinaCadastro: function() {
+            window.location.href = 'disciplinas-cadastro'
         },
 
         voltar: function () {
@@ -131,4 +131,4 @@ export default {
 
 </script>
 
-<style src="./CursosConsulta.scss" lang="scss" scoped>
+<style src="./DisciplinasConsulta.scss" lang="scss" scoped>

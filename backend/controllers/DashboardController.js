@@ -10,13 +10,20 @@ module.exports = {
         if (bind != undefined) {
             bind = parseInt(req.body.id)
             let pessoaCarregada = []
-            for (let i = 0; i < db.pessoa.length; i++) {
-                if (db.pessoa[i].id == bind) {
+            for (let i = 0; i < db.pessoas.length; i++) {
+                if (db.pessoas[i].id == bind) {
                     
                     // Adiciona a pessoa no array
-                    pessoaCarregada.push(db.pessoa[i])
+                    pessoaCarregada.push(db.pessoas[i])
 
-                    if (pessoaCarregada[0].tipo == 'Professor') {
+                    for (let i = 0; i < db.pessoasTipo.length; i++) {
+                        if (pessoaCarregada[0].tipo == db.pessoasTipo[i].nome) {
+                            pessoaCarregada[0].tipo = db.pessoasTipo[i]
+                        };
+                        
+                    }
+
+                    if (pessoaCarregada[0].pessoa_tipo == '2') {
                         // Adicionar no array o salario do professor
                         for (let i = 0; i < db.professorSalario.length; i++) {
                             if (db.professorSalario[i].pessoa_id == pessoaCarregada[0].id) {
@@ -31,7 +38,7 @@ module.exports = {
                 
             }
         } else {
-            res.send(db.pessoa)
+            res.send(db.pessoas)
         }
     },
 
@@ -49,7 +56,7 @@ module.exports = {
             }
 
             // Insere a Pessoa e faz as inserções nos devidos objetos ligados
-            db.pessoa.push(pessoa)
+            db.pessoas.push(pessoa)
 
             // Caso o tipo seja professor, insere nos objetos de Professor
             if (pessoa.tipo == 'Professor') {
@@ -94,12 +101,12 @@ module.exports = {
             }
             
             // Atualiza Objeto
-            for (let i = 0; i < db.pessoa.length; i++) {
-                if (db.pessoa[i].id == pessoa.id) {
-                    db.pessoa[i].nome = pessoa.nome
-                    db.pessoa[i].data_nascimento = pessoa.data_nascimento
-                    db.pessoa[i].tipo = pessoa.tipo
-                    db.pessoa[i].numeroMatriculaAluno = pessoa.numeroMatriculaAluno
+            for (let i = 0; i < db.pessoas.length; i++) {
+                if (db.pessoas[i].id == pessoa.id) {
+                    db.pessoas[i].nome = pessoa.nome
+                    db.pessoas[i].data_nascimento = pessoa.data_nascimento
+                    db.pessoas[i].tipo = pessoa.tipo
+                    db.pessoas[i].numeroMatriculaAluno = pessoa.numeroMatriculaAluno
                 };
                 
             }
@@ -128,15 +135,16 @@ module.exports = {
 
             // Monta objeto
             pessoa = {
-                id: req.body.id, nome: req.body.nome, 
+                id: req.body.id, 
+                nome: req.body.nome, 
                 data_nascimento: req.body.data_nascimento, 
                 tipo: req.body.tipo, 
                 numeroMatriculaAluno: req.body.numeroMatriculaAluno,
             }
 
-            for (let i = 0; i < db.pessoa.length; i++) {
-                if (db.pessoa[i].id == pessoa.id) {
-                    db.pessoa.splice(i, 1)
+            for (let i = 0; i < db.pessoas.length; i++) {
+                if (db.pessoas[i].id == pessoa.id) {
+                    db.pessoas.splice(i, 1)
                 }
             }
 
@@ -158,8 +166,8 @@ module.exports = {
     },
 
     // Utilizado para buscar o proximo numero de matricula
-    async BuscaProximoNumeroMatricula(req, res) {
-        let ultimaPessoaCadastrada = db.pessoa[db.pessoa.length - 1]
+    async buscaProximoNumeroMatricula(req, res) {
+        let ultimaPessoaCadastrada = db.pessoas[db.pessoas.length - 1]
         let proximoNumeroMatricula = []
         if (ultimaPessoaCadastrada != undefined) {
             proximoNumeroMatricula.push(ultimaPessoaCadastrada.numeroMatriculaAluno + 1)
@@ -171,8 +179,8 @@ module.exports = {
     },
 
     // Utilizado para buscar o proximo ID
-    async ProximoId(req, res) {
-        let ultimaPessoaCadastrada = db.pessoa[db.pessoa.length - 1]
+    async PessoasProximoId(req, res) {
+        let ultimaPessoaCadastrada = db.pessoas[db.pessoas.length - 1]
         let ProximoId = []
         if (ultimaPessoaCadastrada != undefined) {
             ProximoId.push(ultimaPessoaCadastrada.id + 1)
@@ -183,6 +191,345 @@ module.exports = {
         res.send(ProximoId)
     },
 
+    // Utilizado para buscar os tipos de pessoa
+    async buscaTiposPessoa(req, res) {
+        res.send(db.pessoasTipo)
+    },
+
+
+
+    async carregaAlunos(req, res) {
+        let bind = req.body.id
+        
+        
+        if (bind != undefined) {
+            bind = parseInt(req.body.id)
+            let alunosCarregados = []
+            for (let i = 0; i < db.alunos.length; i++) {
+                if (db.alunos[i].id == bind) {
+                    
+                    // Adiciona a pessoa no array
+                    alunosCarregados.push(db.pessoas[i])
+                }
+
+            }
+            res.send(alunosCarregados)
+        }
+    },
+
+
+    // Carrega Cursos
+    async carregaCursos(req, res) {
+        let bind = req.body.id
+        
+        
+        if (bind != undefined) {
+            bind = parseInt(req.body.id)
+            let cursoCarregado = []
+            for (let i = 0; i < db.cursos.length; i++) {
+                if (db.cursos[i].id == bind) {
+                    
+                    // Adiciona a pessoa no array
+                    cursoCarregado.push(db.cursos[i])
+
+                    res.send(cursoCarregado)            
+                };
+                
+            }
+        } else {
+            res.send(db.cursos)
+        }
+    },
+
+    // Carrega Cursos Aluno
+    async carregaCursosAluno(req, res) {
+        let bind = req.body.id
+        
+        
+        if (bind != undefined) {
+            bind = parseInt(req.body.id)
+            let cursosCarregados = []
+            for (let i = 0; i < db.alunos.length; i++) {
+                if (db.alunos[i].pessoa_id == bind) {
+                    
+                    for (let y = 0; y < db.cursos.length; y++) {
+                        if (db.alunos[i].curso_id == db.cursos[y].id) {
+                            cursosCarregados.push(db.cursos[y])
+                        }
+                        
+                    }
+
+                    res.send(cursosCarregados)            
+                };
+                
+            }
+        } else {
+            res.send(db.cursos)
+        }
+    },
+
+    // Insere Cursos
+    async insereCursos(req, res) {
+
+        try {
+
+            // Monta objeto para inserir novo curso
+            let curso = {
+                id: req.body.id, 
+                nome: req.body.nome, 
+            }
+
+            // Insere o curso e faz as inserções nos devidos objetos ligados
+            db.cursos.push(curso)
+
+            let cursoDisciplinaAdd = {}
+            for (let i = 0; i < req.body.disciplinas.length; i++) {
+                cursoDisciplinaAdd = {
+                    id: db.Cursodisciplinas[db.Cursodisciplinas.length - 1].id + 1,
+                    curso_id: curso.id,
+                    disciplinas_id: req.body.disciplinas[i],
+                    semestre: 1
+
+                }   
+                db.Cursodisciplinas.push(cursoDisciplinaAdd)
+            }
+
+
+            // Retorna o objeto agora com o novo curso inserido
+            res.send('Sucesso')
+
+        } catch (err) {
+            res.status(500).send(err.message);
+        } 
+
+    },
+
+    // Atualiza Pessoas
+    async atualizaCursos(req, res) {
+        try {
+
+            // Monta objeto para com informações a atualizar
+            curso = {
+                id: req.body.id, 
+                nome: req.body.nome
+            }
+            
+            // Atualiza Curso
+            for (let i = 0; i < db.cursos.length; i++) {
+                if (db.cursos[i].id == curso.id) {
+                    db.cursos[i].nome = curso.nome
+                };
+                
+            }
+            debugger
+
+            let cursoDisciplinaAdd = {}
+
+
+            for (let i = 0; i < req.body.disciplinas.length; i++) {
+                cursoDisciplinaAdd = {
+                    id: db.Cursodisciplinas[db.Cursodisciplinas.length - 1].id + 1,
+                    curso_id: curso.id,
+                    disciplinas_id: req.body.disciplinas[i],
+                    semestre: 1
+
+                }   
+                db.Cursodisciplinas.push(cursoDisciplinaAdd)
+            }
+
+            // Retorna o objeto agora com a nova pessoa inserida
+            res.send('Sucesso')
+
+        } catch (err) {
+            res.status(500).send(err.message);
+        } 
+    },
+
+    // Deleta Cursos
+    async deletaCursos(req, res) {
+        try {
+
+            // Monta objeto
+            cursos = {
+                id: req.body.id, 
+                nome: req.body.nome, 
+            }
+
+            for (let i = 0; i < db.cursos.length; i++) {
+                if (db.cursos[i].id == cursos.id) {
+                    db.cursos.splice(i, 1)
+                }
+            }
+
+            // Retorna o objeto agora com a nova pessoa inserida
+            res.send('Sucesso')
+
+        } catch (err) {
+            res.status(500).send(err.message);
+        } 
+    },
+
+    // Utilizado para buscar o proximo ID
+    async cursosProximoId(req, res) {
+        let ultimoCursoCadastrado = db.cursos[db.cursos.length - 1]
+        let ProximoId = []
+        if (ultimoCursoCadastrado != undefined) {
+            ProximoId.push(ultimoCursoCadastrado.id + 1)
+        } else {
+            let PrimeiroId = 0
+            ProximoId.push(PrimeiroId + 1)
+        }
+        res.send(ProximoId)
+    },
+
+
+
+    // Carrega Disciplinas
+    async carregaDisciplinas(req, res) {
+        let bind = req.body.id
+        
+        
+        if (bind != undefined) {
+            bind = parseInt(req.body.id)
+            let disciplinaCarregada = []
+            for (let i = 0; i < db.disciplinas.length; i++) {
+                if (db.cursos[i].id == bind) {
+                    
+                    // Adiciona a pessoa no array
+                    disciplinaCarregada.push(db.disciplinas[i])
+
+                    res.send(disciplinaCarregada)            
+                };
+                
+            }
+        } else {
+            res.send(db.disciplinas)
+        }
+    },
+
+    // Insere Disciplinas
+    async insereDisciplinas(req, res) {
+
+        try {
+
+            // Monta objeto para inserir nova disciplinas
+            disciplina = {
+                id: req.body.id, 
+                nome: req.body.nome, 
+            }
+
+            // Insere a Disciplinas e faz as inserções nos devidos objetos ligados
+            db.disciplinas.push(disciplina)
+
+            // Retorna o objeto agora com o novo curso inserido
+            res.send('Sucesso')
+
+        } catch (err) {
+            res.status(500).send(err.message);
+        } 
+
+    },
+
+    // Atualiza Disciplinas
+    async atualizaDisciplinas(req, res) {
+        try {
+
+            // Monta objeto para com informações a atualizar
+            disciplina = {
+                id: req.body.id, 
+                nome: req.body.nome
+            }
+            
+            // Atualiza Objeto
+            for (let i = 0; i < db.disciplinas.length; i++) {
+                if (db.disciplinas[i].id == disciplina.id) {
+                    db.disciplinas[i].nome = disciplina.nome
+                };
+                
+            }
+
+            // Retorna o objeto agora com a nova disciplina inserida
+            res.send('Sucesso')
+
+        } catch (err) {
+            res.status(500).send(err.message);
+        } 
+    },
+
+    // Deleta Disciplinas
+    async deletaDisciplinas(req, res) {
+        try {
+
+            // Monta objeto
+            disciplina = {
+                id: req.body.id, 
+            }
+
+            for (let i = 0; i < db.disciplinas.length; i++) {
+                if (db.disciplinas[i].id == disciplina.id) {
+                    db.disciplinas.splice(i, 1)
+                }
+            }
+
+            // Retorna o objeto agora com a nova pessoa inserida
+            res.send('Sucesso')
+
+        } catch (err) {
+            res.status(500).send(err.message);
+        } 
+    },
+
+    // Utilizado para buscar o proximo ID
+    async disciplinaProximoId(req, res) {
+        let ultimaDisciplinaCadastrada = db.disciplinas[db.disciplinas.length - 1]
+        let ProximoId = []
+        if (ultimaDisciplinaCadastrada != undefined) {
+            ProximoId.push(ultimaDisciplinaCadastrada.id + 1)
+        } else {
+            let PrimeiroId = 0
+            ProximoId.push(PrimeiroId + 1)
+        }
+        res.send(ProximoId)
+    },
+
+
+
+    // Carrega Disciplinas do curso
+    async carregaCursosDisciplinas(req, res) {
+        let bind = req.body.id
+        
+        
+        if (bind != undefined) {
+            bind = parseInt(req.body.id)
+            
+            // Array para receber as disciplinas do curso
+            let cursosDisciplinasCarregados = []
+
+            // Procura no objeto disciplinas, as que possuem o ID de bind
+            for (let i = 0; i < db.Cursodisciplinas.length; i++) {
+                if (db.Cursodisciplinas[i].curso_id == bind) {
+
+                    // Adiciona no array a disciplina encontrada
+                    cursosDisciplinasCarregados.push(db.Cursodisciplinas[i])
+         
+                };
+                
+            }
+
+            // For utilizado para procurar e adicionar a descrição das disciplinas adicionadas
+            // Para cada disciplina adicionada no array verificamos a descrição no objeto db.disciplinas
+            for (let i = 0; i < cursosDisciplinasCarregados.length; i++) {
+                for (let y = 0; y < db.disciplinas.length; y++) {
+                    if (cursosDisciplinasCarregados[i].disciplina_id == db.disciplinas[y].id) 
+                        cursosDisciplinasCarregados[i].nome = db.disciplinas[y].nome
+                }
+            }
+
+            res.send(cursosDisciplinasCarregados)
+        } else {
+            res.send(db.Cursodisciplinas)
+        }
+    },
 
 
 }
