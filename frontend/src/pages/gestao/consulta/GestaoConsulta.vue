@@ -73,6 +73,11 @@
                             <tr v-for="listaDisciplina in listaDisciplinas" :key="listaDisciplina.id">
                                 <td>{{ listaDisciplina.id }}</td>
                                 <td>{{ listaDisciplina.nome }}</td>
+                                <td>
+                                <div class="input">
+                                    <input class="input-filtro" type="text" id="nome" autocomplete="off" required>
+                                </div>
+                                </td>
                                 <td><a @click="abrirDisciplinas(true, listaDisciplina.id)"><img src="@/assets/img/icones/icon-abrir.svg"></a></td>
                             </tr>
                         </tbody>
@@ -107,6 +112,7 @@ export default {
             headers: [
                 {texto: 'Código', },
                 {texto: 'Nome', },
+                {texto: 'Nota', },
                 {texto: '.', },
 
 
