@@ -108,7 +108,7 @@ export default {
         
 
             // Dados da Table
-            objCurso: {id: '', nome: '', disciplinas: []},
+            objCurso: {},
 
 
 
@@ -146,8 +146,9 @@ export default {
 
         // Salva Curso ou manda para atualizar
         salvarCurso: async function (pCurso) {
-            
+            pCurso.disciplinas = []
             for (let i = 0; i < this.listaDisciplinas.length; i++) {
+                debugger
                 pCurso.disciplinas.push(this.listaDisciplinas[i].disciplina_id);
                 
             }
@@ -183,8 +184,8 @@ export default {
         // Utilizada para popular os campos clicar em atualizar
         populaCampos: function (pCurso) {
             // Popula campos
-            this.objCurso.id = pCurso.id,
-            this.objCurso.nome = pCurso.nome
+            this.objCurso = {id: pCurso.id, nome: pCurso.nome}
+   
             debugger
 
 

@@ -34,21 +34,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="dados dados-gerais">
-                    <h2>DISCIPLINAS</h2>
-                    <div class="group-inputs">
-                        <!-- Selected Padrão -->
-                        <div class="input-select disciplinas" id="disciplinas">
-
-                            <v-select v-model="arrDisciplinasSelecionadas" :items="arrDisciplinas" item-text="nome" return-object @click="carregaDisciplinas()" multiple placeholder="Disciplinas" attach chips rounded>
-                            </v-select>
-
-                        </div>
-                        <button @click="adicionarDisciplina(arrDisciplinasSelecionadas)">
-                            <img src="@/assets/img/icones/icon-add.svg" alt="">
-                        </button>
-                    </div>
-                </div>
                 <div class="table-espaco" v-if="listaDisciplinas.length >=1">
                     <table class="table table-borderless table-striped m-0 w-970">
                         <thead>
@@ -60,7 +45,10 @@
                             <tr v-for="listaDisciplina in listaDisciplinas" :key="listaDisciplina.id">
                                 <td>{{ listaDisciplina.disciplinas_id }}</td>
                                 <td>{{ listaDisciplina.nome }}</td>
-                                <td><a @click="editarDisciplinas(listaDisciplina)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
+                                <td><a @click="editarDisciplinas(listaDisciplina)"><img src="@/assets/img/icones/icon-editar.svg"></a>                         <div class="input">
+                            <input type="text" id="nome" autocomplete="off" required v-model="objCurso.nome">
+                            <label for="nome">Nome</label>
+                        </div></td>
                                 <td><a @click="deletaDisciplinas(listaDisciplina)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
                             </tr>
                         </tbody>

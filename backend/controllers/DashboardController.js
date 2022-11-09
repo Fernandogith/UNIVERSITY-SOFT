@@ -6,23 +6,51 @@ module.exports = {
     async carregaPessoas(req, res) {
         let bind = req.body.id
         
-        
+
         if (bind != undefined) {
             bind = parseInt(req.body.id)
             let pessoaCarregada = []
             for (let i = 0; i < db.pessoas.length; i++) {
+                // Encontra a pessoa solicitada
                 if (db.pessoas[i].id == bind) {
                     
-                    // Adiciona a pessoa no array
+                    // Adiciona a pessoa ao array que será utilizado para o retorno
                     pessoaCarregada.push(db.pessoas[i])
 
+
+                    // Adiciona o objeto de tipo da pessoa ao objeto de retorno
                     for (let i = 0; i < db.pessoasTipo.length; i++) {
-                        if (pessoaCarregada[0].tipo == db.pessoasTipo[i].nome) {
-                            pessoaCarregada[0].tipo = db.pessoasTipo[i]
+                        if (pessoaCarregada[0].pessoa_tipo == db.pessoasTipo[i].id) {
+                            pessoaCarregada[0].pessoa_tipo = db.pessoasTipo[i]
                         };
+                    }
+
+                    // Verifica se a pessoa é do tipo aluno, caso sim, manda as informações de cursos contratados do objeto aluno
+                    if (pessoaCarregada[0].pessoa_tipo.id == 1) {
+                        pessoaCarregada[0].cursosAluno = []
+                        for (let i = 0; i < db.alunos.length; i++) {
+                            if (db.alunos[i].pessoa_id == pessoaCarregada[0].id) {
+                                pessoaCarregada[0].cursosAluno.push(db.alunos[i])
+                            };
+                            
+                        }
+                        
+                        // Adiciona nome do curso ao objeto do aluno
+                        for (let i = 0; i < pessoaCarregada[0].cursosAluno.length; i++) {
+                            for (let y = 0; y < db.cursos.length; y++) {
+                                if (pessoaCarregada[0].cursosAluno[i].curso_id == db.cursos[y].id) {
+                                    pessoaCarregada[0].cursosAluno[i].nome = db.cursos[y].nome
+                                    
+                                }
+                                
+                            }
+                            
+                            
+                        }
                         
                     }
 
+                    // Verifica se a pessoa é um professor e caso seja adiciona o salario no objeto de retorno
                     if (pessoaCarregada[0].pessoa_tipo == '2') {
                         // Adicionar no array o salario do professor
                         for (let i = 0; i < db.professorSalario.length; i++) {
@@ -46,17 +74,32 @@ module.exports = {
     async inserePessoas(req, res) {
 
         try {
-
+            
             // Monta objeto para inserir nova pessoa
             pessoa = {
                 id: req.body.id, nome: req.body.nome, 
                 data_nascimento: req.body.data_nascimento, 
-                tipo: req.body.tipo, 
+                pessoa_tipo: req.body.tipo, 
                 numeroMatriculaAluno: req.body.numeroMatriculaAluno,
             }
 
             // Insere a Pessoa e faz as inserções nos devidos objetos ligados
             db.pessoas.push(pessoa)
+
+            if (parseInt(pessoa.pessoa_tipo) == 1) {
+                req.body.infos_aluno.forEach(curso => {
+                    aluno = {
+                        id: db.alunos[db.alunos.length - 1].id + 1, 
+                        curso_id: curso.id, 
+                        pessoa_id: pessoa.id, 
+                        matricula: pessoa.numeroMatriculaAluno
+                    }
+                    db.alunos.push(aluno)
+                });
+                
+            }
+
+
 
             // Caso o tipo seja professor, insere nos objetos de Professor
             if (pessoa.tipo == 'Professor') {
@@ -100,6 +143,7 @@ module.exports = {
                 salarioProfessor: req.body.salarioProfessor
             }
             
+            
             // Atualiza Objeto
             for (let i = 0; i < db.pessoas.length; i++) {
                 if (db.pessoas[i].id == pessoa.id) {
@@ -110,6 +154,26 @@ module.exports = {
                 };
                 
             }
+
+
+
+
+            if (pessoa.tipo == 1 || pessoa.tipo == "Aluno") {
+                req.body.infos_aluno.forEach(curso => {
+                    if (curso.curso_id == undefined) {
+                        aluno = {
+                            id: db.alunos[db.alunos.length - 1].id + 1, 
+                            curso_id: curso.id,
+                            pessoa_id: pessoa.id, 
+                            matricula: pessoa.numeroMatriculaAluno
+                        }
+                        db.alunos.push(aluno)
+                    }
+
+                });
+                
+            }
+
 
             // Caso o tipo seja professor, encontra a pessoa_id do professor e atualiza o salario
             if (pessoa.tipo == 'Professor') {
@@ -259,10 +323,12 @@ module.exports = {
                         
                     }
 
-                    res.send(cursosCarregados)            
+                               
                 };
                 
+                
             }
+            res.send(cursosCarregados) 
         } else {
             res.send(db.cursos)
         }
@@ -287,7 +353,7 @@ module.exports = {
                 cursoDisciplinaAdd = {
                     id: db.Cursodisciplinas[db.Cursodisciplinas.length - 1].id + 1,
                     curso_id: curso.id,
-                    disciplinas_id: req.body.disciplinas[i],
+                    disciplina_id: req.body.disciplinas[i],
                     semestre: 1
 
                 }   
@@ -308,33 +374,55 @@ module.exports = {
     async atualizaCursos(req, res) {
         try {
 
-            // Monta objeto para com informações a atualizar
+            // Monta objeto com o curso que se deseja atualizar
             curso = {
                 id: req.body.id, 
                 nome: req.body.nome
             }
             
-            // Atualiza Curso
+            // Atualiza o Curso
             for (let i = 0; i < db.cursos.length; i++) {
                 if (db.cursos[i].id == curso.id) {
                     db.cursos[i].nome = curso.nome
                 };
                 
             }
-            debugger
+            
 
+            // Remove o curso e suas disciplinas da db.Cursodisciplinas
+            for (let i = 0; i < db.Cursodisciplinas.length; i++) {  
+                if (db.Cursodisciplinas[i].curso_id == curso.id) {
+                    db.Cursodisciplinas.splice(i,1)
+                    i = i-1
+                }
+            }
+
+
+            // Adiciona o curso com suas novas disciplinas
             let cursoDisciplinaAdd = {}
 
-
             for (let i = 0; i < req.body.disciplinas.length; i++) {
+                // Objeto utilizado na verificação
                 cursoDisciplinaAdd = {
                     id: db.Cursodisciplinas[db.Cursodisciplinas.length - 1].id + 1,
                     curso_id: curso.id,
-                    disciplinas_id: req.body.disciplinas[i],
+                    disciplina_id: req.body.disciplinas[i],
                     semestre: 1
-
-                }   
+                }
                 db.Cursodisciplinas.push(cursoDisciplinaAdd)
+            }
+
+            // Adiciona o nome das disciplinas
+            for (let i = 0; i < db.Cursodisciplinas.length; i++) {
+                for (let y = 0; y < db.disciplinas.length; y++) {
+                    if (db.Cursodisciplinas[i].disciplina_id == db.disciplinas[y].id) {
+                        db.Cursodisciplinas[i].nome = db.disciplinas[y].nome
+                    }
+                }
+                
+                
+                
+                
             }
 
             // Retorna o objeto agora com a nova pessoa inserida
@@ -388,7 +476,7 @@ module.exports = {
     async carregaDisciplinas(req, res) {
         let bind = req.body.id
         
-        
+        debugger
         if (bind != undefined) {
             bind = parseInt(req.body.id)
             let disciplinaCarregada = []

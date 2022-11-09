@@ -55,7 +55,9 @@ let alunos = [
     {id: 4, curso_id: 2, pessoa_id: 6, matricula: 004},
     {id: 5, curso_id: 3, pessoa_id: 7, matricula: 005},
     {id: 6, curso_id: 4, pessoa_id: 8, matricula: 006},
-    {id: 7, curso_id: 4, pessoa_id: 9, matricula: 007},
+    {id: 7, curso_id: 3, pessoa_id: 8, matricula: 007},
+    {id: 8, curso_id: 3, pessoa_id: 8, matricula: 010},
+    
 ];
 
 let notas = [

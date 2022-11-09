@@ -39,7 +39,7 @@
                         </div>
                         <!-- Selected Padrão -->
                         <div class="input-select" id="tipo">
-                            <v-select v-model="tipos_pessoas_selecionado" @click="carregaTiposPessoa()" @change="tipos_pessoas_selecionado.nome == 'Aluno' ? BuscaProximoNumeroMatricula() : tipos_pessoas_selecionado.nome" :items="tipos_pessoas" item-text="nome" return-object item-value="id" placeholder="Tipo" attach chips rounded></v-select>
+                            <v-select v-model="tipos_pessoas_selecionado" :items="tipos_pessoas" item-text="nome" return-object @click="carregaTiposPessoa()" @change="tipos_pessoas_selecionado.nome == 'Aluno' ? BuscaProximoNumeroMatricula() : tipos_pessoas_selecionado.nome"  placeholder="Tipo" attach chips rounded></v-select>
                         </div>
                         
                     </div>
@@ -63,6 +63,37 @@
                             <label for="matricula">N° Matricula</label>
                         </div>
                     </div>
+                </div>
+                <div class="dados pessoa-cursos" v-if="tipos_pessoas_selecionado.nome == 'Aluno'">
+                    <h2>CONTRATAÇÃO DE CURSOS</h2>
+                    <div class="group-inputs">
+                        <!-- Selected Padrão -->
+                        <div class="input-select disciplinas" id="disciplinas">
+                            <v-select v-model="listaCursosSelecionado" :items="listaCursos" item-text="nome" return-object @click="carregaCursos()" multiple placeholder="Disciplinas" attach chips rounded>
+                            </v-select>
+
+                        </div>
+                        <button @click="adicionarCurso(listaCursosSelecionado)">
+                            <img src="@/assets/img/icones/icon-add.svg" alt="">
+                        </button>
+                    </div>
+                    <div class="table-espaco" v-if="listaCursosContratados.length >=1">
+                    <table class="table table-borderless table-striped m-0 w-970">
+                        <thead>
+                            <tr>
+                                <th v-for="header in headers" :key="header.texto">{{ header.texto }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="listaCursosContratado in listaCursosContratados" :key="listaCursosContratado.id">
+                                <td>{{ listaCursosContratado.id }}</td>
+                                <td>{{ listaCursosContratado.nome }}</td>
+                                <td><a @click="editarDisciplinas(listaCursosContratado)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
+                                <td><a @click="deletaDisciplinas(listaCursosContratado)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 </div>
 
             </div>
@@ -90,19 +121,28 @@ export default {
 
             // Cabeçalho da table
             headers: [
+                {texto: 'Código', },
                 {texto: 'Curso', },
-                {texto: 'Nota', },
                 {texto: '.', },
                 {texto: '..', },
             ],
 
             // Dados da Table
-            objPessoa: {id: '', nome: '', data_nascimento: '', tipo: '', numeroMatriculaAluno: '', salarioProfessor: null},
+            objPessoa: {id: '', nome: '', data_nascimento: '', tipo: '', numeroMatriculaAluno: '', salarioProfessor: null, infos_aluno: []},
 
             // Utilizado para receber o tipo de pessoa selecionado
-            tipos_pessoas_selecionado: {id:44, nome: 'paulinho'},
+            tipos_pessoas_selecionado: {},
             // Lista apresentada no Select Tipo Pessoa
             tipos_pessoas: [],
+
+            // Array para receber a lista de cursos contratados do aluno
+            listaCursosContratados: [],
+
+            // Array para receber a lista de cursos existentes
+            listaCursos: [],
+
+            // Array para receber o curso selecionado
+            listaCursosSelecionado: [],
 
         }
     },
@@ -113,7 +153,7 @@ export default {
         carregarDados: function (pId) {
 
             api.post('/pessoas', pId).then(response => {
-debugger
+            this.carregaTiposPessoa()
             this.populaCampos(response.data[0])
                 
 
@@ -122,8 +162,18 @@ debugger
 
         // Salva Pessoa ou manda para atualizar
         salvarPessoa: async function (pPessoa) {
-            pPessoa.tipo = this.tipos_pessoas_selecionado.nome
+            debugger
+            pPessoa.tipo = this.tipos_pessoas_selecionado.id
 
+            // Caso o tipo seja aluno, adiciona no objeto que estamos enviando a lista de cursos selecionados
+            if (pPessoa.tipo == 1) {
+                this.listaCursosContratados.forEach(curso => {
+                    pPessoa.infos_aluno.push(curso)
+                });
+
+                
+            }
+            debugger
             if (this.novoRegistro == true) {
                 
                 await api.post('/insere-pessoas', pPessoa).then(response => {
@@ -139,6 +189,9 @@ debugger
         // Atualiza Pessoa
         atualizar: function (pPessoa) {
             pPessoa.tipo = this.tipos_pessoas_selecionado.nome
+
+
+debugger
             api.put('/atualiza-pessoas', pPessoa).then(response => {
                 window.location.href = '/pessoas-consulta'
 
@@ -151,14 +204,40 @@ debugger
             window.location.href = '/pessoas-consulta'
         },
 
+        carregaCursos: function () {
+            api.post('/cursos').then(response => {
+                response.data.forEach(curso => {
+                    this.listaCursos.push(curso)
+                });
+
+                
+                
+
+            });
+        },
+
+        adicionarCurso: function(pCurso) {
+            pCurso.forEach(curso => {
+                this.listaCursosContratados.push(curso)
+            });
+
+            
+        },
+
         // Utilizada para popular os campos clicar em atualizar
         populaCampos: function(pPessoa){
+            debugger
             this.objPessoa.id = pPessoa.id,
             this.objPessoa.nome = pPessoa.nome,
             this.objPessoa.data_nascimento = pPessoa.data_nascimento,
-            this.tipos_pessoas_selecionado.push(pPessoa.tipo),
+            this.tipos_pessoas_selecionado = pPessoa.pessoa_tipo,
             this.objPessoa.numeroMatriculaAluno = pPessoa.numeroMatriculaAluno,
             this.objPessoa.salarioProfessor = pPessoa.salarioProfessor
+
+            pPessoa.cursosAluno.forEach(cursosAluno => {
+                this.listaCursosContratados.push(cursosAluno)
+            });
+            
         },
 
         // Retorna o parametro passado pela rota (caso exista)

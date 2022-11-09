@@ -43,6 +43,10 @@ button {
     cursor: pointer;                
 }
 
+a {
+    cursor: pointer;
+}
+
 
 /* Aplicado aqui, formatações para Input-select do VUETIFY */
     .v-select__selections > input {
