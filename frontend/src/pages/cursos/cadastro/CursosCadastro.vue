@@ -70,8 +70,7 @@
                                         <input class="input-filtro menor" type="text" id="notas" autocomplete="off" required v-model="listaDisciplina.semestre" >
                                     </div>
                                 </td>
-                                <td><a @click="editarDisciplinas(listaDisciplina)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
-                                <td><a @click="deletaDisciplinas(listaDisciplina)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
+                                <td><a @click="deletaDisciplinaCurso(listaDisciplina.disciplina_id)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -110,8 +109,7 @@ export default {
                 {texto: 'Código', },
                 {texto: 'Nome', },
                 {texto: 'Semestre', },
-                {texto: '.', },
-                {texto: '..', },
+                {texto: null, },
 
             ],
 
@@ -121,6 +119,9 @@ export default {
 
             // Dados da Table
             objCurso: {},
+
+            // Utilizado para pegar o parametro enviado pela rota ao editar
+            parametro: {},
 
 
 
@@ -245,7 +246,7 @@ export default {
             
         },
 
-        adicionarDisciplina(pDisciplinas) {
+        adicionarDisciplina: function (pDisciplinas) {
             debugger
             let addDisciplina = {
                     disciplina_id: pDisciplinas.id, 
@@ -259,18 +260,37 @@ debugger
             
                 this.arrDisciplinasSelecionadas = null;
             
+        },
+
+        deletaDisciplinaCurso: async function (pDisciplina_id) {
+
+            let itemDelete = {}
+            itemDelete.disciplina_id = pDisciplina_id;
+            itemDelete.curso_id = this.objCurso.id;
+
+
+            await api.post('/deleta-disciplina-curso', itemDelete).then(response => {
+               
+                if (response.data == 'Sucesso') {
+                    this.listaDisciplinas = []
+                    this.carregarDados(this.parametro)
+                }
+            });
+            
+
+            
         }
     },
 
     mounted() {
         
         // Utilizado para pegar o parametro vindo na rota caso seja uma atualização de registro
-        let parametro = {}
-        parametro.id = this.PegaParametro()
+
+        this.parametro.id = this.PegaParametro()
 
         // Caso veio parametro na rota, utilizando ele solicitamos o carregamento no backend
-        if (parametro.id != undefined) {
-            this.carregarDados(parametro)
+        if (this.parametro.id != undefined) {
+            this.carregarDados(this.parametro)
         } else {
             // Se for um novo registro, busca-se o próximo ID no backend
             this.novoRegistro = true

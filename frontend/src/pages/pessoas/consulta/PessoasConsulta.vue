@@ -72,8 +72,8 @@ export default {
             headers: [
                 {texto: 'Código', },
                 {texto: 'Nome', },
-                {texto: '.', },
-                {texto: '..', },
+                {texto: null, },
+                {texto: null, },
 
             ],
 

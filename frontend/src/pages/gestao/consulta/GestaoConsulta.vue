@@ -118,7 +118,7 @@ export default {
             headersCursos: [
                 {texto: 'Código', },
                 {texto: 'Nome', },
-                {texto: '', },
+                {texto: ' ', },
             ],
             
             // Cabeçalho da table

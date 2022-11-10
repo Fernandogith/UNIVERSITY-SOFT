@@ -10,8 +10,9 @@ module.exports = {
         if (bind != undefined) {
             bind = parseInt(req.body.id)
             let pessoaCarregada = []
+            // Encontra a pessoa solicitada
             for (let i = 0; i < db.pessoas.length; i++) {
-                // Encontra a pessoa solicitada
+
                 if (db.pessoas[i].id == bind) {
                     
                     // Adiciona a pessoa ao array que será utilizado para o retorno
@@ -32,6 +33,12 @@ module.exports = {
                             if (db.alunos[i].pessoa_id == pessoaCarregada[0].id) {
                                 pessoaCarregada[0].cursosAluno.push(db.alunos[i])
                             };
+                            
+                        }
+
+                        // Deleta o id de dentro do objeto cursosAluno para evitar confusão
+                        for (let i = 0; i < pessoaCarregada[0].cursosAluno.length; i++) {
+                            delete pessoaCarregada[0].cursosAluno[i].id;
                             
                         }
                         
@@ -90,7 +97,7 @@ module.exports = {
                 req.body.infos_aluno.forEach(curso => {
                     aluno = {
                         id: db.alunos[db.alunos.length - 1].id + 1, 
-                        curso_id: curso.id, 
+                        curso_id: curso.curso_id, 
                         pessoa_id: pessoa.id, 
                         matricula: pessoa.numeroMatriculaAluno
                     }
@@ -157,13 +164,13 @@ module.exports = {
 
 
 
-
+            // Se o tipo da pessoa for aluno, atualiza os cursos
             if (pessoa.tipo == 1 || pessoa.tipo == "Aluno") {
                 req.body.infos_aluno.forEach(curso => {
-                    if (curso.curso_id == undefined) {
+                    if (curso.pessoa_id == undefined) {
                         aluno = {
                             id: db.alunos[db.alunos.length - 1].id + 1, 
-                            curso_id: curso.id,
+                            curso_id: curso.curso_id,
                             pessoa_id: pessoa.id, 
                             matricula: pessoa.numeroMatriculaAluno
                         }
@@ -260,8 +267,23 @@ module.exports = {
         res.send(db.pessoasTipo)
     },
 
+    // Utilizada para carregar os professores
+    async carregaProfessores(req, res) {
+
+        let professoresCarregados = []
+        for (let i = 0; i < db.pessoas.length; i++) {
+            // Encontra a pessoa solicitada
+            if (db.pessoas[i].pessoa_tipo == 2) {
+                
+                // Adiciona a pessoa ao array que será utilizado para o retorno
+                professoresCarregados.push(db.pessoas[i])
+            }
+        }
+        res.send(professoresCarregados)
+    },
 
 
+    // Carrega Alunos
     async carregaAlunos(req, res) {
         let bind = req.body.id
         
@@ -280,7 +302,6 @@ module.exports = {
             res.send(alunosCarregados)
         }
     },
-
 
     // Carrega Cursos
     async carregaCursos(req, res) {
@@ -352,7 +373,7 @@ module.exports = {
             for (let i = 0; i < req.body.disciplinas.length; i++) {
                 cursoDisciplinaAdd = {
                     id: db.Cursodisciplinas[db.Cursodisciplinas.length - 1].id + 1,
-                    curso_id: curso.id,
+                    curso_id: curso.curso_id,
                     disciplina_id: req.body.disciplinas[i].disciplina_id,
                     semestre: req.body.disciplinas[i].semestre
 
@@ -382,7 +403,7 @@ module.exports = {
             
             // Atualiza o Curso
             for (let i = 0; i < db.cursos.length; i++) {
-                if (db.cursos[i].id == curso.id) {
+                if (db.cursos[i].id == curso.curso_id) {
                     db.cursos[i].nome = curso.nome
                 };
                 
@@ -391,7 +412,7 @@ module.exports = {
 
             // Remove o curso e suas disciplinas da db.Cursodisciplinas
             for (let i = 0; i < db.Cursodisciplinas.length; i++) {  
-                if (db.Cursodisciplinas[i].curso_id == curso.id) {
+                if (db.Cursodisciplinas[i].curso_id == curso.curso_id) {
                     db.Cursodisciplinas.splice(i,1)
                     i = i-1
                 }
@@ -405,7 +426,7 @@ module.exports = {
                 // Objeto utilizado na verificação
                 cursoDisciplinaAdd = {
                     id: db.Cursodisciplinas[db.Cursodisciplinas.length - 1].id + 1,
-                    curso_id: curso.id,
+                    curso_id: curso.curso_id,
                     disciplina_id: req.body.disciplinas[i].disciplina_id,
                     semestre: req.body.disciplinas[i].semestre
                 }
@@ -482,14 +503,23 @@ module.exports = {
             let disciplinaCarregada = []
             for (let i = 0; i < db.disciplinas.length; i++) {
                 if (db.disciplinas[i].id == bind) {
-                    
+
                     // Adiciona a pessoa no array
                     disciplinaCarregada.push(db.disciplinas[i])
-
-                    res.send(disciplinaCarregada)            
-                };
                 
+                        
+                };
             }
+                 // Insere objeto do professor
+                 for (let y = 0; y < db.pessoas.length; y++) {
+                    if (disciplinaCarregada[0].professor_id == db.pessoas[y].id) {
+                        disciplinaCarregada[0].professor = db.pessoas[y]
+                        delete disciplinaCarregada[0].professor_id
+                    }
+                }
+                
+
+            res.send(disciplinaCarregada)
         } else {
             res.send(db.disciplinas)
         }
@@ -504,6 +534,7 @@ module.exports = {
             disciplina = {
                 id: req.body.id, 
                 nome: req.body.nome, 
+                professor_id: parseInt(req.body.professor.id)
             }
 
             // Insere a Disciplinas e faz as inserções nos devidos objetos ligados
@@ -525,13 +556,15 @@ module.exports = {
             // Monta objeto para com informações a atualizar
             disciplina = {
                 id: req.body.id, 
-                nome: req.body.nome
+                nome: req.body.nome,
+                professor_id: parseInt(req.body.professor.id)
             }
             
             // Atualiza Objeto
             for (let i = 0; i < db.disciplinas.length; i++) {
                 if (db.disciplinas[i].id == disciplina.id) {
                     db.disciplinas[i].nome = disciplina.nome
+                    db.disciplinas[i].professor_id = disciplina.professor_id
                 };
                 
             }
@@ -629,6 +662,69 @@ module.exports = {
         } else {
             res.send(db.Cursodisciplinas)
         }
+    },
+
+    // Deleta Disciplinas
+    async deletaDisciplinaCurso(req, res) {
+        try {
+
+            // Monta objeto
+            disciplina = {
+                disciplina_id: req.body.disciplina_id,
+                curso_id: req.body.curso_id,
+            }
+
+            // Vereifica se o curso_id existe na db.Cursodisciplinas
+            for (let i = 0; i < db.Cursodisciplinas.length; i++) {
+                if (db.Cursodisciplinas[i].curso_id == disciplina.curso_id) {
+                    // Caso exista, agora verifica se para esse curso existe a disciplina que deve ser excluida
+                    for (let y = 0; y < db.Cursodisciplinas.length; y++) {
+                        if (db.Cursodisciplinas[i].disciplina_id == disciplina.disciplina_id) {
+                            // Caso exista, exclui
+                            db.Cursodisciplinas.splice(i, 1)
+                        }
+                    }
+                }
+                
+            }
+
+            // Retorna o objeto agora com a nova pessoa inserida
+            res.send('Sucesso')
+
+        } catch (err) {
+            res.status(500).send(err.message);
+        } 
+    },
+
+    async deletaCursoContratado(req, res) {
+        try {
+
+            // Monta objeto
+            aluno = {
+                pessoa_id: req.body.pessoa_id,
+                curso_id: req.body.curso_id,
+            }
+
+            // Vereifica se o curso_id existe na db.Cursodisciplinas
+            for (let i = 0; i < db.alunos.length; i++) {
+                if (db.alunos[i].pessoa_id == aluno.pessoa_id) {
+                    // Caso exista, agora verifica se para esse curso existe a disciplina que deve ser excluida
+                    for (let y = 0; y < db.alunos.length; y++) {
+                        if (db.alunos[i].curso_id == aluno.curso_id) {
+                            // Caso exista, exclui
+                            db.alunos.splice(i, 1)
+                        }
+                    }
+                }
+                
+            }
+
+            // Retorna o objeto agora com a nova pessoa inserida
+            res.send('Sucesso')
+
+        } catch (err) {
+            res.status(500).send(err.message);
+        } 
     },
 
     async salvaNotasDisciplinas(req, res) {

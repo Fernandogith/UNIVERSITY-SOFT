@@ -32,6 +32,10 @@
                             <input type="text" id="nome" autocomplete="off" required v-model="objDisciplina.nome">
                             <label for="nome">Nome</label>
                         </div>
+                        <!-- Selected Padrão -->
+                        <div class="input-select" id="tipo">
+                            <v-select v-model="objDisciplina.professor" :items="listaProfessores" item-text="nome" return-object @change="objDisciplina.professor" @click="carregaProfessores()" placeholder="Professor" attach chips rounded></v-select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -61,12 +65,18 @@ export default {
             headers: [
                 {texto: 'Código', },
                 {texto: 'Disciplinas', },
-                {texto: '.', },
-                {texto: '..', },
+                {texto: null, },
+                {texto: null, },
             ],
 
             // Dados da Table
             objDisciplina: {id: '', nome: ''},
+
+            // Utilzado para salvar o professor selecionado
+            listaProfessorSelecionado: [],
+
+            // Utilzado para carregar a lista de professores
+            listaProfessores: [],
 
         }
     },
@@ -116,8 +126,11 @@ export default {
 
         // Utilizada para popular os campos clicar em atualizar
         populaCampos: function (pDisciplina) {
+            debugger
+            this.carregaProfessores()
             this.objDisciplina.id = pDisciplina.id,
-            this.objDisciplina.nome = pDisciplina.nome
+            this.objDisciplina.nome = pDisciplina.nome,
+            this.objDisciplina.professor = pDisciplina.professor
         },
 
         // Retorna o parametro passado pela rota (caso exista)
@@ -136,6 +149,17 @@ export default {
                 })
             }
         },
+
+        // Utilizado para buscar os tipos de pessoa no banco
+        carregaProfessores: async function () {
+            api.get('/carrega-professores').then(response => {
+            
+                response.data.forEach(professor => {
+                    this.listaProfessores.push(professor)
+                })
+            });
+        },
+
     },
 
     mounted() {

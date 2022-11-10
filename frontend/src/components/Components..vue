@@ -61,8 +61,8 @@
                 {texto: 'Descrição', },
                 {texto: 'Carga Horaria', },
                 {texto: 'Situação', },
-                {texto: '.', },
-                {texto: '..', },
+                {texto: null, },
+                {texto: null, },
             ],
 
             // Dados da Table

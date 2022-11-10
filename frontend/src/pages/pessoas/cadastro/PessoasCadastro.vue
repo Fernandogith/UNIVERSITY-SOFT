@@ -39,7 +39,7 @@
                         </div>
                         <!-- Selected Padrão -->
                         <div class="input-select" id="tipo">
-                            <v-select v-model="tipos_pessoas_selecionado" :items="tipos_pessoas" item-text="nome" return-object @click="carregaTiposPessoa()" @change="tipos_pessoas_selecionado.nome == 'Aluno' ? BuscaProximoNumeroMatricula() : tipos_pessoas_selecionado.nome"  placeholder="Tipo" attach chips rounded></v-select>
+                            <v-select v-model="tipos_pessoas_selecionado" :disabled="novoRegistro == true ? false : true" :items="tipos_pessoas" item-text="nome" return-object @click="carregaTiposPessoa()" @change="tipos_pessoas_selecionado.nome == 'Aluno' ? BuscaProximoNumeroMatricula() : tipos_pessoas_selecionado.nome"  placeholder="Tipo" attach chips rounded></v-select>
                         </div>
                     </div>
                     <div class="group-inputs"> 
@@ -84,10 +84,9 @@
                         </thead>
                         <tbody>
                             <tr v-for="listaCursosContratado in listaCursosContratados" :key="listaCursosContratado.id">
-                                <td>{{ listaCursosContratado.id }}</td>
+                                <td>{{ listaCursosContratado.curso_id }}</td>
                                 <td>{{ listaCursosContratado.nome }}</td>
-                                <td><a @click="editarDisciplinas(listaCursosContratado)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
-                                <td><a @click="deletaDisciplinas(listaCursosContratado)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
+                                <td><a @click="deletaCurso(listaCursosContratado.id)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -121,8 +120,7 @@ export default {
             headers: [
                 {texto: 'Código', },
                 {texto: 'Curso', },
-                {texto: '.', },
-                {texto: '..', },
+                {texto: null, },
             ],
 
             // Dados da Table
@@ -142,17 +140,19 @@ export default {
             // Array para receber o curso selecionado
             listaCursosSelecionado: {},
 
+            // Utilizado para pegar o parametro enviado pela rota ao editar
+            parametro: {},
         }
     },
     
     methods: {
 
         // Carrega dados da pessoa pelo ID para popular os campos e atualizar
-        carregarDados: function (pId) {
+        carregarDados: async function (pId) {
 
-            api.post('/pessoas', pId).then(response => {
-            this.carregaTiposPessoa()
-            this.populaCampos(response.data[0])
+            await api.post('/pessoas', pId).then(response => {
+                this.carregaTiposPessoa()
+                this.populaCampos(response.data[0])
                 
 
             });
@@ -203,7 +203,14 @@ export default {
 
         carregaCursos: function () {
             api.post('/cursos').then(response => {
-                response.data.forEach(curso => {
+                let curso = {}
+                response.data.forEach(cursoAdd => {
+                    curso = {
+                        curso_id: cursoAdd.id,
+                        nome: cursoAdd.nome
+                    }
+
+
                     this.listaCursos.push(curso)
                 });
 
@@ -221,6 +228,22 @@ export default {
             this.listaCursosSelecionado = null;  
         },
 
+        deletaCurso: async function(pCursoId) {
+            
+            let itemDelete = {}
+            itemDelete.pessoa_id = this.objPessoa.id;
+            itemDelete.curso_id = pCursoId;
+
+
+            await api.post('/deleta-curso-contratado', itemDelete).then(response => {
+               
+                if (response.data == 'Sucesso') {
+                    this.listaCursos = []
+                    this.carregarDados(this.parametro)
+                }
+            });
+        },
+
         // Utilizada para popular os campos clicar em atualizar
         populaCampos: function(pPessoa){
             
@@ -231,9 +254,13 @@ export default {
             this.objPessoa.numeroMatriculaAluno = pPessoa.numeroMatriculaAluno,
             this.objPessoa.salarioProfessor = pPessoa.salarioProfessor
 
-            pPessoa.cursosAluno.forEach(cursoContratado => {
-                this.listaCursosContratados.push(cursoContratado)
-            });
+            if (pPessoa.cursosAluno.length > 0) {
+                pPessoa.cursosAluno.forEach(cursoContratado => {
+                    this.listaCursosContratados.push(cursoContratado)
+                });
+            } else {
+                this.listaCursosContratados = [];
+            }
 
        
             
@@ -281,11 +308,11 @@ export default {
 
     mounted() {
         
-        let parametro = {}
-        parametro.id = this.PegaParametro()
+        this.parametro = {}
+        this.parametro.id = this.PegaParametro()
 
-        if (parametro.id != undefined) {
-            this.carregarDados(parametro)
+        if (this.parametro.id != undefined) {
+            this.carregarDados(this.parametro)
         } else {
             this.novoRegistro = true
             this.objPessoa.id = this.BuscaProximoId()

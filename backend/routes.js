@@ -73,8 +73,17 @@ routes.post('/insere-disciplinas', DashboardController.insereDisciplinas);
 // Carrega Curso Disciplinas
 routes.post('/cursos-disciplinas', DashboardController.carregaCursosDisciplinas);
 
+// Deleta Curso Disciplinas
+routes.post('/deleta-disciplina-curso', DashboardController.deletaDisciplinaCurso);
+
+// Deleta Curso Contratado
+routes.post('/deleta-curso-contratado', DashboardController.deletaCursoContratado);
+
 // Carrega Curso Disciplinas
 routes.post('/salva-notas-disciplinas', DashboardController.salvaNotasDisciplinas);
+
+// Carrega professores
+routes.get('/carrega-professores', DashboardController.carregaProfessores);
 
 
 
