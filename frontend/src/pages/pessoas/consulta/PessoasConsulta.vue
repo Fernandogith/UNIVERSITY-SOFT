@@ -20,11 +20,10 @@
 
             <div class="main">
                 <div class="filtros">
-                    <h2>FILTRO</h2>
                     <div class="group-inputs">
                         <!-- Input Padrão -->
                         <div class="input">
-                            <input class="input-filtro" type="text" id="nome" autocomplete="off" required>
+                            <input class="input-filtro" v-model="campoFiltro" @change="filter(campoFiltro)" v-on:keyup.enter="filter(campoFiltro)" type="text" id="nome" autocomplete="off" required>
                             <label for="nome">Pesquisar</label>
                         </div>
                     </div>
@@ -37,11 +36,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="listaPessoa in listaPessoas" :key="listaPessoa.id">
-                                <td>{{ listaPessoa.id }}</td>
-                                <td>{{ listaPessoa.nome }}</td>
-                                <td><a @click="editarPessoa(listaPessoa)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
-                                <td><a @click="deletaPessoa(listaPessoa)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
+                            <tr v-for="listaPessoasFiltrada in listaPessoasFiltradas" :key="listaPessoasFiltrada.id">
+                                <td>{{ listaPessoasFiltrada.id }}</td>
+                                <td>{{ listaPessoasFiltrada.nome }}</td>
+                                <td><a @click="editarPessoa(listaPessoasFiltrada)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
+                                <td><a @click="deletaPessoa(listaPessoasFiltrada)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -80,6 +79,10 @@ export default {
 
             // Dados da Table
             listaPessoas: [],
+
+            
+            campoFiltro: '',
+            listaPessoasFiltradas: '',
         }
     },
     
@@ -88,11 +91,10 @@ export default {
         carregarDados: function () {
 
             api.post('/pessoas').then(response => {
-
-
                 response.data.forEach(resposta => {
                     this.listaPessoas.push(resposta)
                 });
+                this.listaPessoasFiltradas = this.listaPessoas
 
             });
         },
@@ -116,7 +118,16 @@ export default {
 
         DirecionarPaginaPessoasCadastro: function() {
             window.location.href = 'pessoas-cadastro'
-        }
+        },
+
+        // FUNÇÕES PARA FILTROS
+        filter (pCampoFiltro) {
+            this.listaPessoasFiltradas = this.listaPessoas.filter(item => {
+
+                return ((`${item.id}`).includes(pCampoFiltro) || !pCampoFiltro)
+                    || ((`${item.nome}`).includes(pCampoFiltro) || !pCampoFiltro)
+            })
+        },
         
     },
 

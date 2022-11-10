@@ -9,7 +9,6 @@ import CursosCadastro from '../pages/cursos/cadastro/CursosCadastro.vue'
 import DisciplinasConsulta from '../pages/disciplinas/consulta/DisciplinasConsulta.vue'
 import DisciplinasCadastro from '../pages/disciplinas/cadastro/DisciplinasCadastro.vue'
 import GestaoConsulta from '../pages/gestao/consulta/GestaoConsulta.vue'
-import GestaoCadastro from '../pages/gestao/cadastro/GestaoCadastro.vue'
 import Components from '../components/Components..vue'
 
 Vue.use(VueRouter)
@@ -87,17 +86,6 @@ const routes = [
     path: '/gestao-consulta',
     name: 'gestao-consulta',
     component: GestaoConsulta
-    },
-    {
-    path: '/gestao-cadastro',
-    name: 'gestao-cadastro',
-    component: GestaoCadastro
-    },
-    // DISCIPLINAS CADASTRO COM PARAMETRO
-    {
-    path: '/gestao-cadastro:id',
-    name: 'gestao-cadastro-parametro',
-    component: GestaoCadastro
     },
     {
     path: '/components',

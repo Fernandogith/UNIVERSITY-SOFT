@@ -34,20 +34,26 @@
                         </div>
                     </div>
                 </div>
-                <div class="dados dados-gerais">
-                    <h2>DISCIPLINAS</h2>
-                    <div class="group-inputs">
-                        <!-- Selected Padrão -->
-                        <div class="input-select disciplinas" id="disciplinas">
-                            <v-select v-model="arrDisciplinasSelecionadas" :items="arrDisciplinas" item-text="nome" return-object @click="carregaDisciplinas()" multiple placeholder="Disciplinas" attach chips rounded>
-                            </v-select>
+                <div class="add-disciplinas">
 
+                    <div class="filtros">
+                        <div class="group-inputs">
+                            <div class="input-busca-aluno">
+                                <div class="label">
+                                    <label for="selecione-aluno">SELECIONE PARA ADICIONAR DISCIPLINAS</label>
+                                </div>
+                                <!-- Selected Padrão -->
+                                <div class="input-select lista-alunos" id="disciplinas" @change="adicionarDisciplina(arrDisciplinasSelecionadas)" @click="carregaDisciplinas()">
+                                    
+                                    <v-autocomplete id="selecione-aluno" v-model="arrDisciplinasSelecionadas" @change="adicionarDisciplina(arrDisciplinasSelecionadas)" :items="arrDisciplinas" item-text="nome" return-object @click="carregaDisciplinas()" attach chips rounded>
+                                    </v-autocomplete>
+                                </div>
+                            </div>
                         </div>
-                        <button @click="adicionarDisciplina(arrDisciplinasSelecionadas)">
-                            <img src="@/assets/img/icones/icon-add.svg" alt="">
-                        </button>
                     </div>
                 </div>
+
+                
                 <div class="table-espaco" v-if="listaDisciplinas.length >=1">
                     <table class="table table-borderless table-striped m-0 w-970">
                         <thead>
@@ -59,6 +65,11 @@
                             <tr v-for="listaDisciplina in listaDisciplinas" :key="listaDisciplina.id">
                                 <td>{{ listaDisciplina.disciplina_id }}</td>
                                 <td>{{ listaDisciplina.nome }}</td>
+                                <td>
+                                    <div class="input">
+                                        <input class="input-filtro menor" type="text" id="notas" autocomplete="off" required v-model="listaDisciplina.semestre" >
+                                    </div>
+                                </td>
                                 <td><a @click="editarDisciplinas(listaDisciplina)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
                                 <td><a @click="deletaDisciplinas(listaDisciplina)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
                             </tr>
@@ -98,6 +109,7 @@ export default {
             headers: [
                 {texto: 'Código', },
                 {texto: 'Nome', },
+                {texto: 'Semestre', },
                 {texto: '.', },
                 {texto: '..', },
 
@@ -149,7 +161,7 @@ export default {
             pCurso.disciplinas = []
             for (let i = 0; i < this.listaDisciplinas.length; i++) {
                 debugger
-                pCurso.disciplinas.push(this.listaDisciplinas[i].disciplina_id);
+                pCurso.disciplinas.push(this.listaDisciplinas[i]);
                 
             }
 
@@ -234,20 +246,18 @@ export default {
         },
 
         adicionarDisciplina(pDisciplinas) {
-            
-            for (let i = 0; i < pDisciplinas.length; i++) {
-                
-                let addDisciplina = {
-                    disciplina_id: pDisciplinas[i].id, 
-                    nome: pDisciplinas[i].nome, 
-                    professor_id: pDisciplinas[i].professor_id
+            debugger
+            let addDisciplina = {
+                    disciplina_id: pDisciplinas.id, 
+                    nome: pDisciplinas.nome, 
+                    professor_id: pDisciplinas.professor_id
                 }
 debugger
                 this.listaDisciplinas.push(addDisciplina);
-                this.objCurso.disciplinas.push(addDisciplina.disciplinas_id);
+                this.objCurso.disciplinas = addDisciplina.disciplina_id;
                 
-            }
-            this.arrDisciplinasSelecionadas = null
+            
+                this.arrDisciplinasSelecionadas = null;
             
         }
     },

@@ -73,6 +73,10 @@ routes.post('/insere-disciplinas', DashboardController.insereDisciplinas);
 // Carrega Curso Disciplinas
 routes.post('/cursos-disciplinas', DashboardController.carregaCursosDisciplinas);
 
+// Carrega Curso Disciplinas
+routes.post('/salva-notas-disciplinas', DashboardController.salvaNotasDisciplinas);
+
+
 
 
 module.exports = routes;

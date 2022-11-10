@@ -33,6 +33,9 @@
         .input-filtro {
             width: 500px;
         }
+        .menor {
+            width: 125px;
+        }
 
         label {
             position: absolute;
@@ -54,6 +57,7 @@
             }
         }
     }
+
 
     .input input:focus + label,
     .input input:valid + label{
@@ -109,13 +113,7 @@
         }
     }
 
-// INPUT SELECTED
-    .input-select v-select:focus + label,
-    .input-select v-select:valid + label{
-        font-size: 11px;
-        top: -5px;
-        color: rgb(0, 0, 0);
-    }
+
 
 
 // BOTÃO PADRÃO

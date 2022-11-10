@@ -101,6 +101,7 @@ export default {
 
         // Atualiza Pessoa
         atualizar: async function (pDisciplina) {
+            debugger
             await api.put('/atualiza-disciplinas', pDisciplina).then(response => {
                 window.location.href = '/disciplinas-consulta'
 

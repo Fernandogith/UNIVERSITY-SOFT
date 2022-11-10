@@ -41,12 +41,15 @@
                         <div class="input-select" id="tipo">
                             <v-select v-model="tipos_pessoas_selecionado" :items="tipos_pessoas" item-text="nome" return-object @click="carregaTiposPessoa()" @change="tipos_pessoas_selecionado.nome == 'Aluno' ? BuscaProximoNumeroMatricula() : tipos_pessoas_selecionado.nome"  placeholder="Tipo" attach chips rounded></v-select>
                         </div>
-                        
                     </div>
-                </div>
-                <div class="dados informacoes-matricula" v-if="tipos_pessoas_selecionado.nome == 'Professor'">
-                    <h2>INFORMAÇÕES SALARIAIS</h2>
-                    <div class="group-inputs">
+                    <div class="group-inputs"> 
+                        <!-- Input Padrão -->
+                        <div class="input" v-if="tipos_pessoas_selecionado.nome == 'Aluno'">
+                            <input type="text" id="matricula" autocomplete="off" required v-model="objPessoa.numeroMatriculaAluno">
+                            <label for="matricula">N° Matricula</label>
+                        </div>                     
+                    </div>
+                    <div class="group-inputs" v-if="tipos_pessoas_selecionado.nome == 'Professor'">
                         <!-- Input Padrão -->
                         <div class="input">
                             <input type="text" id="salario" autocomplete="off" required v-model="objPessoa.salarioProfessor">
@@ -54,29 +57,24 @@
                         </div>
                     </div>
                 </div>
-                <div class="dados informacoes-salariais" v-if="tipos_pessoas_selecionado.nome == 'Aluno'">
-                    <h2>INFORMAÇÕES SOBRE MATRICULA</h2>
+                <div class="add-cursos" v-if="tipos_pessoas_selecionado.nome == 'Aluno'">
                     <div class="group-inputs">
-                        <!-- Input Padrão -->
-                        <div class="input">
-                            <input type="text" id="matricula" autocomplete="off" required v-model="objPessoa.numeroMatriculaAluno">
-                            <label for="matricula">N° Matricula</label>
+                        <div class="input-busca-aluno">
+                            <div class="label">
+                                <label for="selecione-aluno">SELECIONE OS CURSOS PARA ADICIONAR</label>
+                            </div>
+                            <!-- Selected Padrão -->
+                            <div class="input-select lista-alunos" id="cursos" @change="adicionarCurso(listaCursosSelecionado)" @click="carregaCursos()">
+                                
+                                <v-autocomplete id="selecione-aluno" v-model="listaCursosSelecionado" :items="listaCursos" item-text="nome" return-object @click="carregaCursos()" @change="adicionarCurso(listaCursosSelecionado)" attach chips rounded>
+                                </v-autocomplete>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="dados pessoa-cursos" v-if="tipos_pessoas_selecionado.nome == 'Aluno'">
-                    <h2>CONTRATAÇÃO DE CURSOS</h2>
-                    <div class="group-inputs">
-                        <!-- Selected Padrão -->
-                        <div class="input-select disciplinas" id="disciplinas">
-                            <v-select v-model="listaCursosSelecionado" :items="listaCursos" item-text="nome" return-object @click="carregaCursos()" multiple placeholder="Disciplinas" attach chips rounded>
-                            </v-select>
 
-                        </div>
-                        <button @click="adicionarCurso(listaCursosSelecionado)">
-                            <img src="@/assets/img/icones/icon-add.svg" alt="">
-                        </button>
-                    </div>
+
+                <div class="dados pessoa-cursos" v-if="tipos_pessoas_selecionado.nome == 'Aluno'">
                     <div class="table-espaco" v-if="listaCursosContratados.length >=1">
                     <table class="table table-borderless table-striped m-0 w-970">
                         <thead>
@@ -142,7 +140,7 @@ export default {
             listaCursos: [],
 
             // Array para receber o curso selecionado
-            listaCursosSelecionado: [],
+            listaCursosSelecionado: {},
 
         }
     },
@@ -162,7 +160,7 @@ export default {
 
         // Salva Pessoa ou manda para atualizar
         salvarPessoa: async function (pPessoa) {
-            debugger
+            
             pPessoa.tipo = this.tipos_pessoas_selecionado.id
 
             // Caso o tipo seja aluno, adiciona no objeto que estamos enviando a lista de cursos selecionados
@@ -173,7 +171,7 @@ export default {
 
                 
             }
-            debugger
+            
             if (this.novoRegistro == true) {
                 
                 await api.post('/insere-pessoas', pPessoa).then(response => {
@@ -191,7 +189,6 @@ export default {
             pPessoa.tipo = this.tipos_pessoas_selecionado.nome
 
 
-debugger
             api.put('/atualiza-pessoas', pPessoa).then(response => {
                 window.location.href = '/pessoas-consulta'
 
@@ -217,16 +214,16 @@ debugger
         },
 
         adicionarCurso: function(pCurso) {
-            pCurso.forEach(curso => {
-                this.listaCursosContratados.push(curso)
-            });
-
             
+            
+            this.listaCursosContratados.push(pCurso) 
+            this.limpaInputs()
+            this.listaCursosSelecionado = null;  
         },
 
         // Utilizada para popular os campos clicar em atualizar
         populaCampos: function(pPessoa){
-            debugger
+            
             this.objPessoa.id = pPessoa.id,
             this.objPessoa.nome = pPessoa.nome,
             this.objPessoa.data_nascimento = pPessoa.data_nascimento,
@@ -234,9 +231,11 @@ debugger
             this.objPessoa.numeroMatriculaAluno = pPessoa.numeroMatriculaAluno,
             this.objPessoa.salarioProfessor = pPessoa.salarioProfessor
 
-            pPessoa.cursosAluno.forEach(cursosAluno => {
-                this.listaCursosContratados.push(cursosAluno)
+            pPessoa.cursosAluno.forEach(cursoContratado => {
+                this.listaCursosContratados.push(cursoContratado)
             });
+
+       
             
         },
 
@@ -247,10 +246,10 @@ debugger
 
         // Utilizado para buscar o proximo numero de matricula do aluno
         BuscaProximoNumeroMatricula: async function () {
-            debugger
+            
             if (this.objPessoa.numeroMatriculaAluno == '' || this.objPessoa.numeroMatriculaAluno == null) {
                 api.get('/matriculas').then(response => {
-                    debugger
+                    
                 this.objPessoa.numeroMatriculaAluno = response.data[0]
             
                 });
@@ -259,10 +258,10 @@ debugger
 
         // Utilizado para buscar o proximo ID
         BuscaProximoId: async function () {
-            debugger
+            
             if (this.objPessoa.id == '' || this.objPessoa.id == null) {
                 api.get('/pessoas-proximo-id').then(response => {
-                    debugger
+                    
                 this.objPessoa.id = response.data[0]
             
                 });
@@ -272,7 +271,7 @@ debugger
         // Utilizado para buscar os tipos de pessoa no banco
         carregaTiposPessoa: async function () {
             api.get('/tipos-pessoa').then(response => {
-            debugger
+            
                 response.data.forEach(tipo => {
                     this.tipos_pessoas.push(tipo)
                 })
@@ -281,7 +280,7 @@ debugger
     },
 
     mounted() {
-        debugger
+        
         let parametro = {}
         parametro.id = this.PegaParametro()
 

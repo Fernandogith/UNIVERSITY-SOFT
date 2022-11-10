@@ -51,11 +51,11 @@ module.exports = {
                     }
 
                     // Verifica se a pessoa é um professor e caso seja adiciona o salario no objeto de retorno
-                    if (pessoaCarregada[0].pessoa_tipo == '2') {
+                    if (pessoaCarregada[0].pessoa_tipo.id == '2') {
                         // Adicionar no array o salario do professor
                         for (let i = 0; i < db.professorSalario.length; i++) {
                             if (db.professorSalario[i].pessoa_id == pessoaCarregada[0].id) {
-                                pessoaCarregada[0].salarioProfessor = db.professorSalario[i].salarioProfessor
+                                pessoaCarregada[0].salarioProfessor = db.professorSalario[i].salario
                             };
                             
                         }
@@ -179,7 +179,7 @@ module.exports = {
             if (pessoa.tipo == 'Professor') {
                 for (let i = 0; i < db.professorSalario.length; i++) {
                     if (db.professorSalario[i].pessoa_id == pessoa.id) {
-                        db.professorSalario[i].salarioProfessor = pessoa.salarioProfessor
+                        db.professorSalario[i].salario = pessoa.salarioProfessor
                     }
                     
                 }
@@ -353,8 +353,8 @@ module.exports = {
                 cursoDisciplinaAdd = {
                     id: db.Cursodisciplinas[db.Cursodisciplinas.length - 1].id + 1,
                     curso_id: curso.id,
-                    disciplina_id: req.body.disciplinas[i],
-                    semestre: 1
+                    disciplina_id: req.body.disciplinas[i].disciplina_id,
+                    semestre: req.body.disciplinas[i].semestre
 
                 }   
                 db.Cursodisciplinas.push(cursoDisciplinaAdd)
@@ -406,8 +406,8 @@ module.exports = {
                 cursoDisciplinaAdd = {
                     id: db.Cursodisciplinas[db.Cursodisciplinas.length - 1].id + 1,
                     curso_id: curso.id,
-                    disciplina_id: req.body.disciplinas[i],
-                    semestre: 1
+                    disciplina_id: req.body.disciplinas[i].disciplina_id,
+                    semestre: req.body.disciplinas[i].semestre
                 }
                 db.Cursodisciplinas.push(cursoDisciplinaAdd)
             }
@@ -476,12 +476,12 @@ module.exports = {
     async carregaDisciplinas(req, res) {
         let bind = req.body.id
         
-        debugger
+   
         if (bind != undefined) {
             bind = parseInt(req.body.id)
             let disciplinaCarregada = []
             for (let i = 0; i < db.disciplinas.length; i++) {
-                if (db.cursos[i].id == bind) {
+                if (db.disciplinas[i].id == bind) {
                     
                     // Adiciona a pessoa no array
                     disciplinaCarregada.push(db.disciplinas[i])
@@ -580,8 +580,6 @@ module.exports = {
         res.send(ProximoId)
     },
 
-
-
     // Carrega Disciplinas do curso
     async carregaCursosDisciplinas(req, res) {
         let bind = req.body.id
@@ -613,11 +611,63 @@ module.exports = {
                 }
             }
 
+
+            // Verifica se a disciplina tem nota cadastrada, e caso tenha, adiciona ao objeto de retorno
+            let aux = cursosDisciplinasCarregados
+
+            // Verifica cada um dos itens de cursosDisciplinas para verificar se tem nota na tabela de nota, caso tenha, inclui no objeto de retorno.
+
+
+                for (let y = 0; y < cursosDisciplinasCarregados.length; y++) {
+                    for (let i = 0; i < db.notas.length; i++) {
+                        if (cursosDisciplinasCarregados[y].id == db.notas[i].cursodisciplina_id) {
+                            cursosDisciplinasCarregados[y].nota = db.notas[i].nota
+                        }
+                    }
+                }
             res.send(cursosDisciplinasCarregados)
         } else {
             res.send(db.Cursodisciplinas)
         }
     },
+
+    async salvaNotasDisciplinas(req, res) {
+
+
+        // Ao carregar as disciplinas, enviamos no id o id do CursoDisciplinas, sendo assim, podemos utilizar ele agora
+         
+        console.log(req.body);
+        
+        req.body.forEach(cursoDisciplina => {
+        let verificacao = false
+            // Verifica se a disciplina já tem nota registrada para o curso
+            for (let i = 0; i < db.notas.length; i++) {
+                
+                // Caso a verificação de encontre o CursoDisciplina, atualiza a nota
+                if (cursoDisciplina.id == db.notas[i].id) {
+                    db.notas[i].nota = cursoDisciplina.nota
+                    verificiacao = true
+                }
+            }
+
+            // Caso a verificação de false, insere a nota e a disciplina na db.nota
+            if (verificacao == false) {
+                let addNota = {
+                    id: db.notas[db.notas.length - 1].id + 1,
+                    aluno_id: cursoDisciplina.disciplina_id, 
+                    cursodisciplina_id: cursoDisciplina.id, 
+                    nota: cursoDisciplina.nota
+                }
+                db.notas.push(addNota)
+            }
+        });
+            
+        res.send('Sucesso')
+
+        
+
+
+    }
 
 
 }

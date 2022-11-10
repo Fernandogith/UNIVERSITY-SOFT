@@ -132,7 +132,7 @@ main {
             background: #FFFFFF;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
             border-radius: 20px;
-            .dados {
+            .dados-gerais {
                 padding-bottom: 8rem;
                 display: flex;
                 flex-direction: column;
@@ -150,6 +150,52 @@ main {
                 }
                 img {
                     width: 4rem;
+                }
+            }
+            .add-disciplinas {
+                    .group-inputs {
+                        padding: 2rem;
+                        display: flex;
+                        justify-content: center;
+                        gap: 2rem;
+                        .lista-alunos {
+                            width: 800px;
+                        }
+                        .input-busca-aluno {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            gap: 2rem;
+                            .label {
+                                align-items: flex-start;
+                                display: flex;
+                            }
+                            label {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                font-size: 14px;
+                                font-weight: 600;
+                            }
+                        }
+                    }
+                
+                .voltar {
+                    width: 100%;
+                    display: flex;
+    
+    
+                    h2 {
+                        font-family: 'Lato', sans-serif;
+                        font-size: 1.4rem;
+                        font-weight: 600;
+                        padding: 4rem;
+                        width: 100%;
+                        text-align: center;
+                        margin-right: 3rem;
+                    }
+    
+    
                 }
             }
 

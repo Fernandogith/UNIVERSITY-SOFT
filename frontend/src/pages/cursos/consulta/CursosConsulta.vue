@@ -20,11 +20,10 @@
 
             <div class="main">
                 <div class="filtros">
-                    <h2>FILTRO</h2>
                     <div class="group-inputs">
                         <!-- Input Padrão -->
                         <div class="input">
-                            <input class="input-filtro" type="text" id="nome" autocomplete="off" required>
+                            <input v-model="campoFiltro" class="input-filtro" v-on:keyup.enter="filter(campoFiltro)" type="text" id="nome" autocomplete="off" required>
                             <label for="nome">Pesquisar</label>
                         </div>
                     </div>
@@ -37,11 +36,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="listaCurso in listaCursos" :key="listaCurso.id">
-                                <td>{{ listaCurso.id }}</td>
-                                <td>{{ listaCurso.nome }}</td>
-                                <td><a @click="editarCurso(listaCurso)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
-                                <td><a @click="deletaCurso(listaCurso)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
+                            <tr v-for="listaCursosFiltrado in listaCursosFiltrados" :key="listaCursosFiltrado.id">
+                                <td>{{ listaCursosFiltrado.id }}</td>
+                                <td>{{ listaCursosFiltrado.nome }}</td>
+                                <td><a @click="editarCurso(listaCursosFiltrado)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
+                                <td><a @click="deletaCurso(listaCursosFiltrado)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -80,6 +79,9 @@ export default {
 
             // Dados da Table
             listaCursos: [],
+
+            campoFiltro: '',
+            listaCursosFiltrados: '',
         }
     },
     
@@ -89,10 +91,11 @@ export default {
 
             api.post('/cursos').then(response => {
 
-
+                
                 response.data.forEach(resposta => {
                     this.listaCursos.push(resposta)
                 });
+                this.listaCursosFiltrados = this.listaCursos
 
             });
         },
@@ -120,7 +123,16 @@ export default {
 
         voltar: function () {
             window.location.href = '/inicio'
-        }
+        },
+
+        // FUNÇÕES PARA FILTROS
+        filter (pCampoFiltro) {
+            this.listaCursosFiltrados = this.listaCursos.filter(item => {
+
+                return ((`${item.id}`).includes(pCampoFiltro) || !pCampoFiltro)
+                    || ((`${item.nome}`).includes(pCampoFiltro) || !pCampoFiltro)
+            })
+        },
         
     },
 

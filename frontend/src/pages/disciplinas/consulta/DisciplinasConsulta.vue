@@ -20,11 +20,10 @@
 
             <div class="main">
                 <div class="filtros">
-                    <h2>FILTRO</h2>
                     <div class="group-inputs">
                         <!-- Input Padrão -->
                         <div class="input">
-                            <input class="input-filtro" type="text" id="nome" autocomplete="off" required>
+                            <input v-model="campoFiltro"  class="input-filtro" v-on:keyup.enter="filter(campoFiltro)"  type="text" id="nome" autocomplete="off" required>
                             <label for="nome">Pesquisar</label>
                         </div>
                     </div>
@@ -37,11 +36,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="listaDisciplina in listaDisciplinas" :key="listaDisciplina.id">
-                                <td>{{ listaDisciplina.id }}</td>
-                                <td>{{ listaDisciplina.nome }}</td>
-                                <td><a @click="editarDisciplinas(listaDisciplina)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
-                                <td><a @click="deletaDisciplinas(listaDisciplina)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
+                            <tr v-for="listaDisciplinasFiltrado in listaDisciplinasFiltrados" :key="listaDisciplinasFiltrado.id">
+                                <td>{{ listaDisciplinasFiltrado.id }}</td>
+                                <td>{{ listaDisciplinasFiltrado.nome }}</td>
+                                <td><a @click="editarDisciplinas(listaDisciplinasFiltrado)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
+                                <td><a @click="deletaDisciplinas(listaDisciplinasFiltrado)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -80,6 +79,9 @@ export default {
 
             // Dados da Table
             listaDisciplinas: [],
+
+            campoFiltro: '',
+            listaDisciplinasFiltrados: '',
         }
     },
     
@@ -93,6 +95,8 @@ export default {
                 response.data.forEach(resposta => {
                     this.listaDisciplinas.push(resposta)
                 });
+
+                this.listaDisciplinasFiltrados = this.listaDisciplinas
 
             });
         },
@@ -120,7 +124,16 @@ export default {
 
         voltar: function () {
             window.location.href = '/inicio'
-        }
+        },
+
+        // FUNÇÕES PARA FILTROS
+        filter (pCampoFiltro) {
+            this.listaDisciplinasFiltrados = this.listaDisciplinas.filter(item => {
+
+                return ((`${item.id}`).includes(pCampoFiltro) || !pCampoFiltro)
+                    || ((`${item.nome}`).includes(pCampoFiltro) || !pCampoFiltro)
+            })
+        },
         
     },
 

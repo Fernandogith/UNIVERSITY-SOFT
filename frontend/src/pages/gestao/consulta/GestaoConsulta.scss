@@ -147,13 +147,41 @@ main {
                     .lista-alunos {
                         width: 800px;
                     }
+                    .input-busca-aluno {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 2rem;
+                        .label {
+                            align-items: flex-start;
+                            display: flex;
+                        }
+                        label {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            font-size: 14px;
+                            font-weight: 600;
+                        }
+                    }
                 }
-            }
-            h2 {
-                padding: 40px 0;
             }
             .voltar {
                 width: 100%;
+                display: flex;
+
+
+                h2 {
+                    font-family: 'Lato', sans-serif;
+                    font-size: 1.4rem;
+                    font-weight: 600;
+                    padding: 4rem;
+                    width: 100%;
+                    text-align: center;
+                    margin-right: 3rem;
+                }
+
+
             }
             .table-espaco {
                 padding-right: 1.5rem;
@@ -206,9 +234,12 @@ main {
                                     padding-right:30px;
                                 }
                                 a {
-                                    
+                                    transition: all .3s;
+                                    &:hover {
+                                        opacity: 0.4;
+                                    }
                                     img {
-                                        width: 1.5rem;
+                                        width: 3rem;
                                     }
                                 }
                             }

@@ -29,8 +29,8 @@ let pessoas = [
     {id: 1, nome: 'Mauro', data_nascimento: '22/01/1990', numeroMatriculaAluno: 100, pessoa_tipo: 1},
     {id: 2, nome: 'Lucas', data_nascimento: '22/02/1989', pessoa_tipo: 2},
     {id: 3, nome: 'Julia', data_nascimento: '22/04/1988', numeroMatriculaAluno: 101, pessoa_tipo: 1},
-    {id: 4, nome: 'Mauro', data_nascimento: '22/01/1990', numeroMatriculaAluno: 102, pessoa_tipo: 1},
-    {id: 5, nome: 'Lucas', data_nascimento: '22/02/1989', pessoa_tipo: 2},
+    {id: 4, nome: 'Diego', data_nascimento: '22/01/1990', numeroMatriculaAluno: 102, pessoa_tipo: 1},
+    {id: 5, nome: 'Leo', data_nascimento: '22/02/1989', pessoa_tipo: 2},
     {id: 6, nome: 'Juliana', data_nascimento: '22/04/1988', numeroMatriculaAluno: 103, pessoa_tipo: 1},
     {id: 7, nome: 'Paula', data_nascimento: '22/04/1988', numeroMatriculaAluno: 104, pessoa_tipo: 1},
     {id: 8, nome: 'Ana', data_nascimento: '22/04/1988', numeroMatriculaAluno: 105, pessoa_tipo: 1},
@@ -45,7 +45,7 @@ let pessoasTipo = [
 
 let professorSalario = [
     {id: 1, salario: 2000, pessoa_id: 1},
-    {id: 1, salario: 2000, pessoa_id: 1},
+    {id: 2, salario: 2000, pessoa_id: 2},
 ];
 
 let alunos = [
@@ -61,7 +61,8 @@ let alunos = [
 ];
 
 let notas = [
-    {id: 1, aluno_id: 1, disciplina_id: 1, nota: 7}
+    {id: 1, aluno_id: 3, cursodisciplina_id: 3, nota: 10},
+    {id: 2, aluno_id: 3, cursodisciplina_id: 4, nota: 8}
 ];
 
 module.exports = {

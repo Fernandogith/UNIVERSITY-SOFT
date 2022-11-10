@@ -13,28 +13,30 @@
                         <button @click="voltar()" class="btn-padrao">Voltar</button>
                     </div>
                     <div class="button">
-                        <button @click="DirecionarPaginaCursoCadastro()" class="btn-padrao">Novo</button>
+                        <button @click="salvaNotasDisciplina()" class="btn-padrao" v-if="ambienteDisciplinas == true">Salvar</button>
                     </div>
                 </div>
             </div>
 
             <div class="main">
                 <div class="filtros">
-                    <h2>SELECIONE O ALUNO</h2>
                     <div class="group-inputs">
-                        <!-- Selected Padrão -->
-                        <div class="input-select lista-alunos" id="disciplinas" @click="carregaAlunos()">
-                            <v-autocomplete v-model="listaAlunoSelecionado" :items="listaAlunos" item-text="nome" return-object  @click="carregaAlunos()" placeholder="Selecione o Aluno" attach chips rounded>
-                            </v-autocomplete>
-
+                        <div class="input-busca-aluno">
+                            <div class="label">
+                                <label for="selecione-aluno">SELECIONE O ALUNO</label>
+                            </div>
+                            <!-- Selected Padrão -->
+                            <div class="input-select lista-alunos" id="disciplinas" @click="carregaAlunos()">
+                                
+                                <v-autocomplete id="selecione-aluno" v-model="listaAlunoSelecionado" :items="listaAlunos" item-text="nome" @change="carregaCursosAluno(listaAlunoSelecionado.id)" return-object  @click="carregaAlunos()" attach chips rounded>
+                                </v-autocomplete>
+                                
+                            </div>
                         </div>
-                        <button @click="carregaCursosAluno(listaAlunoSelecionado.id)">
-                            <img src="@/assets/img/icones/icon-search.svg" alt="">
-                        </button>
                     </div>
                 </div>
                 
-                <div class="ambiente-cursos table-espaco " v-if="ambienteCursos == true">
+                <div class="ambiente-cursos table-espaco " v-if="ambienteCursos == true && listaAlunoSelecionado != null">
                     <div class="voltar">
                         <h2>CURSOS</h2>
                     </div>
@@ -42,7 +44,7 @@
                     <table class="table table-borderless table-striped m-0 w-970">
                         <thead>
                             <tr>
-                                <th v-for="header in headers" :key="header.texto">{{ header.texto }}</th>
+                                <th v-for="headersCurso in headersCursos" :key="headersCurso.texto">{{ headersCurso.texto }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,16 +59,21 @@
 
 
 
-                <div class="ambiente-disciplinas table-espaco  " v-if="ambienteDisciplinas == true">
+                <div class="ambiente-disciplinas table-espaco " v-if="ambienteDisciplinas == true">
                     <div class="voltar">
-                        <h2>DISCIPLINAS</h2>
-                        <button @click="voltarCursoDisciplina('cursos')"><img src="@/assets/img/icones/icon-voltar.svg" alt=""></button>
+          
+                            <button @click="voltarCursoDisciplina('cursos')"><img src="@/assets/img/icones/icon-voltar.svg" alt=""></button>
+          
+       
+                            <h2>DISCIPLINAS</h2>
+              
+                        
                     </div>
                     
                     <table class="table table-borderless table-striped m-0 w-970">
                         <thead>
                             <tr>
-                                <th v-for="header in headers" :key="header.texto">{{ header.texto }}</th>
+                                <th v-for="headersDisciplina in headersDisciplinas" :key="headersDisciplina.texto">{{ headersDisciplina.texto }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -74,11 +81,10 @@
                                 <td>{{ listaDisciplina.id }}</td>
                                 <td>{{ listaDisciplina.nome }}</td>
                                 <td>
-                                <div class="input">
-                                    <input class="input-filtro" type="text" id="nome" autocomplete="off" required>
-                                </div>
+                                    <div class="input">
+                                        <input class="input-filtro menor" type="text" id="notas" autocomplete="off" required v-model="listaDisciplina.nota" >
+                                    </div>
                                 </td>
-                                <td><a @click="abrirDisciplinas(true, listaDisciplina.id)"><img src="@/assets/img/icones/icon-abrir.svg"></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -109,13 +115,17 @@ export default {
         return {
 
             // Cabeçalho da table
-            headers: [
+            headersCursos: [
                 {texto: 'Código', },
                 {texto: 'Nome', },
-                {texto: 'Nota', },
-                {texto: '.', },
-
-
+                {texto: '', },
+            ],
+            
+            // Cabeçalho da table
+            headersDisciplinas: [
+                {texto: 'Código', },
+                {texto: 'Nome', },
+                {texto: 'Notas', },
             ],
 
             // Dados da Table
@@ -130,28 +140,29 @@ export default {
             // Utilizada para verificar se o ambiente de cursos está ativo
             ambienteCursos: true,
 
+            notasDisciplina: [],
+
             // Utilizada para verificar se o ambiente de cursos está ativo
             ambienteDisciplinas: false,
 
             // Dados da Table Disciplina
-            listaDisciplinas: []
+            listaDisciplinas: [],
         }
     },
     
     methods: {
 
-        carregaDisciplinas: function (pCurso) {
+        carregaDisciplinas: async function (pCurso) {
             debugger
             this.listaDisciplinas = []
-            api.post('/cursos-disciplinas', {id: pCurso}).then(response => {
-
-
+            await api.post('/cursos-disciplinas', {id: pCurso}).then(response => {
                 response.data.forEach(resposta => {
                     this.listaDisciplinas.push(resposta)
                 });
-
             });
-            },
+            
+
+        },
 
         carregaAlunos: async function () {
             await api.post('/pessoas').then(response => {
@@ -166,6 +177,8 @@ export default {
                 });
 
             });
+            
+
         },
 
         carregaCursosAluno: async function (pAluno) {
@@ -188,6 +201,15 @@ export default {
             this.carregaDisciplinas(pCursoId)
         },
 
+        salvaNotasDisciplina: async function () {
+            await api.post('/salva-notas-disciplinas', this.listaDisciplinas).then(response => {
+                if (response.data == 'Sucesso') {
+                    this.carregaDisciplinas(this.listaDisciplinas[0].curso_id)
+                }
+
+            });
+            
+        },
 
         editarCurso: function(pCurso) {
             window.location.href = '/cursos-cadastro'+ pCurso.id
@@ -213,8 +235,6 @@ export default {
         voltar: function () {
             window.location.href = '/inicio'
         },
-
-
 
         voltarCursoDisciplina: function (pMovimento) {
             if (pMovimento == 'cursos') {
