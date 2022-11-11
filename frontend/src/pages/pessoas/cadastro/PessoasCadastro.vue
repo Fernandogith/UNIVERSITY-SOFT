@@ -216,7 +216,7 @@ export default {
         atualizar: function (pPessoa) {
             try {
             pPessoa.tipo = this.tipos_pessoas_selecionado.nome
-                api.put('/atualiza-pessoas', pPessoa).then(response => {
+                api.post('/atualiza-pessoas', pPessoa).then(response => {
                     alert('Atualizado com sucesso!')
                     window.location.href = '/pessoas-consulta'
                 })   
@@ -306,7 +306,7 @@ export default {
         BuscaProximoNumeroMatricula: async function () {
             
             if (this.objPessoa.numeroMatriculaAluno == '' || this.objPessoa.numeroMatriculaAluno == null) {
-                api.get('/matriculas').then(response => {
+                api.post('/matriculas').then(response => {
                     
                 this.objPessoa.numeroMatriculaAluno = response.data[0]
             
@@ -318,7 +318,7 @@ export default {
         BuscaProximoId: async function () {
             
             if (this.objPessoa.id == '' || this.objPessoa.id == null) {
-                api.get('/pessoas-proximo-id').then(response => {
+                api.post('/pessoas-proximo-id').then(response => {
                     
                 this.objPessoa.id = response.data[0]
             
@@ -328,7 +328,7 @@ export default {
 
         // Utilizado para buscar os tipos de pessoa no banco
         carregaTiposPessoa: async function () {
-            api.get('/tipos-pessoa').then(response => {
+            api.post('/tipos-pessoa').then(response => {
             
                 response.data.forEach(tipo => {
                     this.tipos_pessoas.push(tipo)

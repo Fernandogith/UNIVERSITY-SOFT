@@ -305,7 +305,6 @@ module.exports = {
         res.send(professoresCarregados)
     },
 
-
     // Carrega Alunos
     async carregaAlunos(req, res) {
         let bind = req.body.id
@@ -414,7 +413,7 @@ module.exports = {
 
     },
 
-    // Atualiza Pessoas
+    // Atualiza Cursos
     async atualizaCursos(req, res) {
         try {
 
@@ -514,8 +513,6 @@ module.exports = {
         }
 
     },
-
-
 
     // Carrega Disciplinas
     async carregaDisciplinas(req, res) {
@@ -720,6 +717,7 @@ module.exports = {
         } 
     },
 
+    // Deleta curso contratado pela pessoa/aluno
     async deletaCursoContratado(req, res) {
         try {
 
@@ -751,13 +749,10 @@ module.exports = {
         } 
     },
 
+    // Salva as notas das disciplinas
     async salvaNotasDisciplinas(req, res) {
 
-
         // Ao carregar as disciplinas, enviamos no id o id do CursoDisciplinas, sendo assim, podemos utilizar ele agora
-         
-        console.log(req.body);
-        
         req.body.forEach(cursoDisciplina => {
         let verificacao = false
             // Verifica se a disciplina já tem nota registrada para o curso
@@ -789,6 +784,7 @@ module.exports = {
 
     },
 
+    // Utilizada para buscar as informações de usuários para login
     async usuarios(req, res) {
         verificaUsuario = {
             usuario: req.body.usuario,

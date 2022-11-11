@@ -146,7 +146,7 @@ export default {
     methods: {
 
         carregaDisciplinas: async function (pCurso) {
-            debugger
+            
             this.listaDisciplinas = []
             await api.post('/cursos-disciplinas', {id: pCurso}).then(response => {
                 response.data.forEach(resposta => {
@@ -159,7 +159,7 @@ export default {
 
         carregaAlunos: async function () {
             await api.post('/pessoas').then(response => {
-                debugger
+                
 
                 response.data.forEach(resposta => {
                     
@@ -180,7 +180,7 @@ export default {
                 
                 let aux = response.data
                 aux.forEach(resposta => {
-                    debugger
+                    
                     this.arrCursos.push(resposta)   
                 });
 

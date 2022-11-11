@@ -7,28 +7,25 @@ const DashboardController = require ('./controllers/DashboardController')
 routes.post('/pessoas', DashboardController.carregaPessoas);
 
 // Carrega o proximo ID da Pessoas
-routes.get('/pessoas-proximo-id', DashboardController.PessoasProximoId);
+routes.post('/pessoas-proximo-id', DashboardController.PessoasProximoId);
 
 // Salva Pessoas
 routes.post('/insere-pessoas', DashboardController.inserePessoas);
 
 // Atualizar Pessoas
-routes.put('/atualiza-pessoas', DashboardController.atualizaPessoas);
+routes.post('/atualiza-pessoas', DashboardController.atualizaPessoas);
 
 // Deleta Pessoas
 routes.post('/deleta-pessoas', DashboardController.deletaPessoas);
 
 // Busca Ultima Matricula
-routes.get('/matriculas', DashboardController.buscaProximoNumeroMatricula);
+routes.post('/matriculas', DashboardController.buscaProximoNumeroMatricula);
 
-// Busca Ultima Matricula
-routes.get('/tipos-pessoa', DashboardController.buscaTiposPessoa);
+// Busca tipos pessoa
+routes.post('/tipos-pessoa', DashboardController.buscaTiposPessoa);
 
-
-
-// Carrega Pessoas
+// Carrega Alunos
 routes.post('/alunos', DashboardController.carregaAlunos);
-
 
 
 
@@ -45,11 +42,10 @@ routes.post('/cursos-proximo-id', DashboardController.cursosProximoId);
 routes.post('/insere-cursos', DashboardController.insereCursos);
 
 // Atualizar Cursos
-routes.put('/atualiza-cursos', DashboardController.atualizaCursos);
+routes.post('/atualiza-cursos', DashboardController.atualizaCursos);
 
 // Deleta Cursos
 routes.post('/deleta-cursos', DashboardController.deletaCursos);
-
 
 
 
@@ -57,10 +53,10 @@ routes.post('/deleta-cursos', DashboardController.deletaCursos);
 routes.post('/disciplinas', DashboardController.carregaDisciplinas);
 
 // Carrega o proximo ID do Disciplina
-routes.get('/disciplina-proximo-id', DashboardController.disciplinaProximoId);
+routes.post('/disciplina-proximo-id', DashboardController.disciplinaProximoId);
 
 // Atualizar Disciplina
-routes.put('/atualiza-disciplinas', DashboardController.atualizaDisciplinas);
+routes.post('/atualiza-disciplinas', DashboardController.atualizaDisciplinas);
 
 // Deleta Disciplinas
 routes.post('/deleta-disciplinas', DashboardController.deletaDisciplinas);
@@ -79,13 +75,13 @@ routes.post('/deleta-disciplina-curso', DashboardController.deletaDisciplinaCurs
 // Deleta Curso Contratado
 routes.post('/deleta-curso-contratado', DashboardController.deletaCursoContratado);
 
-// Carrega Curso Disciplinas
+// Salva as notas das disciplinas
 routes.post('/salva-notas-disciplinas', DashboardController.salvaNotasDisciplinas);
 
 // Carrega professores
-routes.get('/carrega-professores', DashboardController.carregaProfessores);
+routes.post('/carrega-professores', DashboardController.carregaProfessores);
 
-// Carrega Pessoas
+// Utilizada para os dados de acesso do login
 routes.post('/login', DashboardController.usuarios);
 
 

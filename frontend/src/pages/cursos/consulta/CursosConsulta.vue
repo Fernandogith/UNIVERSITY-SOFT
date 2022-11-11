@@ -105,14 +105,14 @@ export default {
         },
 
         deletaCurso: function (pCurso) {
-            debugger
+            
             api.post('/deleta-cursos', pCurso).then(response => {
                 if (response.data == 'Sucesso') {
                     alert('Deletado com sucesso!')
                     window.location.href = ('/cursos-consulta')
                 }
                 
-                debugger
+                
 
 
             });

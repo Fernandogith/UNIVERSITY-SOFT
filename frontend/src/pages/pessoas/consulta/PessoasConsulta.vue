@@ -114,7 +114,7 @@ export default {
                 response.data.forEach(resposta => {
                     this.listaPessoas.push(resposta)
                 });
-                debugger
+                
                 this.listaPessoasFiltradas = this.listaPessoas
                 
 
@@ -127,14 +127,14 @@ export default {
         },
 
         deletaPessoa: function (pPessoa) {
-            debugger
+            
             api.post('/deleta-pessoas', pPessoa).then(response => {
                 if (response.data == 'Sucesso') {
                     window.location.href = ('/pessoas-consulta')
                     alert('Deletado com sucesso!')
                 }
                 
-                debugger
+                
 
 
             });

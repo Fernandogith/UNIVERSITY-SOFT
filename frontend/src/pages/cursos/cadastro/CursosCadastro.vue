@@ -138,19 +138,19 @@ export default {
 
                 await api.post('/cursos', pId).then(response => {
                     let retorno = response.data[0]
-                    debugger
+                    
                     this.objCurso = {
                         curso_id: retorno.id,
                         nome: retorno.nome
                     }
                 });
-debugger
+
                 await api.post('/cursos-disciplinas', pId).then(response => {
-                        debugger
+                        
                     response.data.forEach(DadosCursoDisciplina => {
-                        debugger
+                        
                         this.listaDisciplinas.push(DadosCursoDisciplina)
-                        debugger
+                        
                     });
 
 
@@ -167,17 +167,17 @@ debugger
 
         // Salva Curso ou manda para atualizar
         salvarCurso: function (pCurso) {
-            debugger
+            
             pCurso.disciplinas = []
             for (let i = 0; i < this.listaDisciplinas.length; i++) {
-                debugger
+                
                 pCurso.disciplinas.push(this.listaDisciplinas[i]);
                 
             }
 
             
             if (this.novoRegistro) {
-                debugger
+                
                 api.post('/insere-cursos', pCurso).then(response => {
                 alert('Salvo com sucesso!')
                 window.location.href = '/cursos-consulta'
@@ -191,7 +191,7 @@ debugger
 
         // Atualiza Pessoa
         atualizar: async function (pCurso) {
-            await api.put('/atualiza-cursos', pCurso).then(response => {
+            await api.post('/atualiza-cursos', pCurso).then(response => {
                 alert('Atualizado com sucesso!')
                 window.location.href = '/cursos-consulta'
 
@@ -207,13 +207,13 @@ debugger
         // Utilizada para popular os campos clicar em atualizar
         populaCampos: function (pCurso) {
             // Popula campos
-            debugger
+            
             this.objCurso = {
                 curso_id: pCurso.curso_id,
                 nome: pCurso.nome,
             }
    
-            debugger
+            
 
 
 
@@ -230,7 +230,7 @@ debugger
         BuscaProximoNumeroMatricula: async function () {
             
             if (this.objPessoa.numeroMatriculaAluno == '' || this.objPessoa.numeroMatriculaAluno == null) {
-                api.get('/matriculas').then(response => {
+                api.post('/matriculas').then(response => {
                     
                 this.objPessoa.numeroMatriculaAluno = response.data[0]
             
@@ -243,7 +243,7 @@ debugger
             
             if (this.objCurso.curso_id == '' || this.objCurso.curso_id == null) {
                  api.post('/cursos-proximo-id').then(response => {
-                    debugger
+                    
                 this.objCurso = {
                     curso_id: response.data.curso_id
                 }
@@ -253,23 +253,23 @@ debugger
         },
 
         carregaDisciplinas: async function() {
-            debugger
+            
             await api.post('/disciplinas').then(response => {
                
                this.arrDisciplinas = response.data
             });
-            debugger
+            
             
         },
 
         adicionarDisciplina: function (pDisciplinas) {
-            debugger
+            
             let addDisciplina = {
                     disciplina_id: pDisciplinas.id, 
                     nome: pDisciplinas.nome, 
                     professor_id: pDisciplinas.professor_id
                 }
-debugger
+
                 this.listaDisciplinas.push(addDisciplina);
                 this.objCurso.disciplinas = addDisciplina.disciplina_id;
                 

@@ -111,8 +111,8 @@ export default {
 
         // Atualiza Pessoa
         atualizar: async function (pDisciplina) {
-            debugger
-            await api.put('/atualiza-disciplinas', pDisciplina).then(response => {
+            
+            await api.post('/atualiza-disciplinas', pDisciplina).then(response => {
                 alert('Atualizado com sucesso!')
                 window.location.href = '/disciplinas-consulta'
 
@@ -127,7 +127,7 @@ export default {
 
         // Utilizada para popular os campos clicar em atualizar
         populaCampos: function (pDisciplina) {
-            debugger
+            
             this.carregaProfessores()
             this.objDisciplina.id = pDisciplina.id,
             this.objDisciplina.nome = pDisciplina.nome,
@@ -143,7 +143,7 @@ export default {
         BuscaProximoId: async function () {
             
             if (this.objDisciplina.id == '' || this.objDisciplina.id == null) {
-                api.get('/disciplina-proximo-id').then(response => {
+                api.post('/disciplina-proximo-id').then(response => {
                     
                 this.objDisciplina.id = response.data[0]
             
@@ -153,7 +153,7 @@ export default {
 
         // Utilizado para buscar os tipos de pessoa no banco
         carregaProfessores: async function () {
-            api.get('/carrega-professores').then(response => {
+            api.post('/carrega-professores').then(response => {
             
                 response.data.forEach(professor => {
                     this.listaProfessores.push(professor)

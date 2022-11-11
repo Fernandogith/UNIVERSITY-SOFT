@@ -55,9 +55,7 @@ export default {
 
         buscarNoBack: function () {
 
-            api.get('/').then(response => {
-
-                console.log(response.data); 
+            api.post('/').then(response => {
             });
         },
 

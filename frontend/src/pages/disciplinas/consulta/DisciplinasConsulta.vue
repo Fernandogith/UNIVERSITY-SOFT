@@ -106,14 +106,14 @@ export default {
         },
 
         deletaDisciplinas: function (pDisciplinas) {
-            debugger
+            
             api.post('/deleta-disciplinas', pDisciplinas).then(response => {
                 if (response.data == 'Sucesso') {
                     alert('Deletado com sucesso!')
                     window.location.href = ('/disciplinas-consulta')
                 }
                 
-                debugger
+                
 
 
             });

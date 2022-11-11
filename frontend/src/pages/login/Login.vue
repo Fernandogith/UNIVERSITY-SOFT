@@ -88,7 +88,7 @@ export default {
 
         // Valida o acesso no sistema
         acessar: async function (pDadosAcesso) {
-debugger
+
 
             await api.post('/login', pDadosAcesso).then(response => {
 
