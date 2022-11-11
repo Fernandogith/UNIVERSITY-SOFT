@@ -39,7 +39,7 @@
                 <div class="right" >
                     <div class="items-login" data-aos="fade-left">
                         <div class="div-user">
-                            <input class="user" placeholder="Usuário" type="text" v-model="objDadosAcesso.usuario">
+                            <input id="usuario" class="user" placeholder="Usuário" type="text" v-model="objDadosAcesso.usuario">
                         </div>
                         <div class="div-password">
                             <input class="password" placeholder="Senha" type="password" v-model="objDadosAcesso.senha">
@@ -102,6 +102,9 @@ debugger
             });
         }
     },
+    mounted() {
+        usuario.focus()
+    }
 }
 
 </script>

@@ -40,6 +40,7 @@
                             <tr v-for="listaPessoasFiltrada in listaPessoasFiltradas" :key="listaPessoasFiltrada.id">
                                 <td>{{ listaPessoasFiltrada.id }}</td>
                                 <td>{{ listaPessoasFiltrada.nome }}</td>
+                                <td>{{ listaPessoasFiltrada.pessoa_tipo_descricao}}</td>
                                 <td><a @click="editarPessoa(listaPessoasFiltrada)"><img src="@/assets/img/icones/icon-editar.svg"></a></td>
                                 <td><a @click="deletaPessoa(listaPessoasFiltrada)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
                             </tr>
@@ -73,6 +74,7 @@ export default {
             headers: [
                 {texto: 'Código', },
                 {texto: 'Nome', },
+                {texto: 'Tipo', },
                 {texto: null, },
                 {texto: null, },
 
@@ -95,7 +97,10 @@ export default {
                 response.data.forEach(resposta => {
                     this.listaPessoas.push(resposta)
                 });
+                debugger
                 this.listaPessoasFiltradas = this.listaPessoas
+                
+
 
             });
         },

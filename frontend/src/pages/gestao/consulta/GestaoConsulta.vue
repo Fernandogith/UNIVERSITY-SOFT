@@ -62,12 +62,8 @@
                 <div class="ambiente-disciplinas table-espaco " v-if="ambienteDisciplinas == true">
                     <div class="voltar">
           
-                            <button @click="voltarCursoDisciplina('cursos')"><img src="@/assets/img/icones/icon-voltar.svg" alt=""></button>
-          
-       
-                            <h2>DISCIPLINAS</h2>
-              
-                        
+                        <button @click="voltarCursoDisciplina('cursos')"><img src="@/assets/img/icones/icon-voltar.svg" alt=""></button>
+                        <h2>DISCIPLINAS</h2>
                     </div>
                     
                     <table class="table table-borderless table-striped m-0 w-970">
@@ -82,7 +78,7 @@
                                 <td>{{ listaDisciplina.nome }}</td>
                                 <td>
                                     <div class="input">
-                                        <input class="input-filtro menor" type="text" id="notas" autocomplete="off" required v-model="listaDisciplina.nota" >
+                                        <input class="input-filtro menor"  v-mask="listaDisciplina.nota.length == 3 ? '#.##'  : '##.##'" type="text" id="notas" autocomplete="off" required v-model="listaDisciplina.nota" >
                                     </div>
                                 </td>
                             </tr>

@@ -73,7 +73,22 @@ module.exports = {
                 
             }
         } else {
-            res.send(db.pessoas)
+            let resp = []
+            let aux = {}
+            db.pessoas.forEach(pessoa => {
+
+                aux = {
+                    id: pessoa.id, 
+                    nome: pessoa.nome, 
+                    data_nascimento: pessoa.data_nascimento,
+                    numeroMatriculaAluno: pessoa.numeroMatriculaAluno, 
+                    pessoa_tipo: pessoa.pessoa_tipo,
+                    pessoa_tipo_descricao: pessoa.pessoa_tipo == 1 ? 'Aluno' : 'Professor'
+                }
+                resp.push(aux)
+            });
+            res.send(resp)
+            
         }
     },
 

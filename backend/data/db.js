@@ -85,35 +85,35 @@ let alunos = [
 ];
 
 let notas = [
-    {id: 1, aluno_id: 1, cursodisciplina_id: 1, nota: 10.0},
-    {id: 2, aluno_id: 1, cursodisciplina_id: 2, nota: 9.2},
-    {id: 3, aluno_id: 1, cursodisciplina_id: 3, nota: 8.0},
-    {id: 4, aluno_id: 1, cursodisciplina_id: 4, nota: 5.0},
+    {id: 1, aluno_id: 1, cursodisciplina_id: 1, nota: '10.0'},
+    {id: 2, aluno_id: 1, cursodisciplina_id: 2, nota: '9.2'},
+    {id: 3, aluno_id: 1, cursodisciplina_id: 3, nota: '8.0'},
+    {id: 4, aluno_id: 1, cursodisciplina_id: 4, nota: '5.0'},
     
-    {id: 5, aluno_id: 2, cursodisciplina_id: 5, nota: 10.0},
-    {id: 6, aluno_id: 2, cursodisciplina_id: 6, nota: 9.8},
-    {id: 7, aluno_id: 2, cursodisciplina_id: 7, nota: 8.8},
-    {id: 8, aluno_id: 2, cursodisciplina_id: 8, nota: 7.0},
+    {id: 5, aluno_id: 2, cursodisciplina_id: 5, nota: '10.0'},
+    {id: 6, aluno_id: 2, cursodisciplina_id: 6, nota: '9.8'},
+    {id: 7, aluno_id: 2, cursodisciplina_id: 7, nota: '8.8'},
+    {id: 8, aluno_id: 2, cursodisciplina_id: 8, nota: '7.0'},
 
-    {id: 9, aluno_id: 3, cursodisciplina_id: 9, nota: 10.0},
-    {id: 10, aluno_id: 3, cursodisciplina_id: 10, nota: 9.0},
-    {id: 11, aluno_id: 3, cursodisciplina_id: 11, nota: 9.8},
-    {id: 12, aluno_id: 3, cursodisciplina_id: 12, nota: 9.0},
+    {id: 9, aluno_id: 3, cursodisciplina_id: 9, nota: '10.0'},
+    {id: 10, aluno_id: 3, cursodisciplina_id: 10, nota: '9.0'},
+    {id: 11, aluno_id: 3, cursodisciplina_id: 11, nota: '9.8'},
+    {id: 12, aluno_id: 3, cursodisciplina_id: 12, nota: '9.0'},
 
-    {id: 13, aluno_id: 4, cursodisciplina_id: 17, nota: 10.0},
-    {id: 14, aluno_id: 4, cursodisciplina_id: 18, nota: 9.0},
-    {id: 15, aluno_id: 4, cursodisciplina_id: 19, nota: 8.2},
-    {id: 16, aluno_id: 4, cursodisciplina_id: 20, nota: 5.8},
+    {id: 13, aluno_id: 4, cursodisciplina_id: 17, nota: '10.0'},
+    {id: 14, aluno_id: 4, cursodisciplina_id: 18, nota: '9.0'},
+    {id: 15, aluno_id: 4, cursodisciplina_id: 19, nota: '8.2'},
+    {id: 16, aluno_id: 4, cursodisciplina_id: 20, nota: '5.8'},
 
-    {id: 17, aluno_id: 5, cursodisciplina_id: 13, nota: 10.0},
-    {id: 18, aluno_id: 5, cursodisciplina_id: 14, nota: 9.2},
-    {id: 19, aluno_id: 5, cursodisciplina_id: 15, nota: 8.0},
-    {id: 20, aluno_id: 5, cursodisciplina_id: 16, nota: 5.0},
+    {id: 17, aluno_id: 5, cursodisciplina_id: 13, nota: '10.0'},
+    {id: 18, aluno_id: 5, cursodisciplina_id: 14, nota: '9.2'},
+    {id: 19, aluno_id: 5, cursodisciplina_id: 15, nota: '8.0'},
+    {id: 20, aluno_id: 5, cursodisciplina_id: 16, nota: '5.0'},
 
-    {id: 21, aluno_id: 6, cursodisciplina_id: 13, nota: 10.0},
-    {id: 22, aluno_id: 6, cursodisciplina_id: 14, nota: 9.2},
-    {id: 23, aluno_id: 6, cursodisciplina_id: 15, nota: 8.0},
-    {id: 24, aluno_id: 6, cursodisciplina_id: 16, nota: 5.0},
+    {id: 21, aluno_id: 6, cursodisciplina_id: 13, nota: '10.0'},
+    {id: 22, aluno_id: 6, cursodisciplina_id: 14, nota: '9.2'},
+    {id: 23, aluno_id: 6, cursodisciplina_id: 15, nota: '8.1'},
+    {id: 24, aluno_id: 6, cursodisciplina_id: 16, nota: '5.0'},
 ];
 
 let usuarios = [
