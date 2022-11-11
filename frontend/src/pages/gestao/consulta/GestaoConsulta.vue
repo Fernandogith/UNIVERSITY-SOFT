@@ -65,7 +65,6 @@
                         <button @click="voltarCursoDisciplina('cursos')"><img src="@/assets/img/icones/icon-voltar.svg" alt=""></button>
                         <h2>DISCIPLINAS</h2>
                     </div>
-                    
                     <table class="table table-borderless table-striped m-0 w-970">
                         <thead>
                             <tr>
@@ -85,8 +84,6 @@
                         </tbody>
                     </table>
                 </div>
-
-
             </div>
         </section>
     </main>
@@ -201,6 +198,9 @@ export default {
             await api.post('/salva-notas-disciplinas', this.listaDisciplinas).then(response => {
                 if (response.data == 'Sucesso') {
                     this.carregaDisciplinas(this.listaDisciplinas[0].curso_id)
+                    
+                    alert('Salvo com Sucesso!')
+                  
                 }
 
             });
@@ -215,6 +215,7 @@ export default {
             
             api.post('/deleta-cursos', pCurso).then(response => {
                 if (response.data == 'Sucesso') {
+                    alert('Deletado com Sucesso!')
                     window.location.href = ('/cursos-consulta')
                 }
                 

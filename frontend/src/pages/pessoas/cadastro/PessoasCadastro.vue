@@ -95,8 +95,21 @@
 
             </div>
         </section>
+        <!-- Caixa de Mensagem/notificação -->
+        <template>
+            <div class="text-center ma-2">
+                <v-snackbar v-model="exibeMensagem">
+                    {{ textoMensagem }}
+        
+                    <template v-slot:action="{ attrs }">
+                        <v-btn color="pink" text v-bind="attrs" @click="exibeMensagem = false">
+                            Close
+                        </v-btn>
+                    </template>
+                </v-snackbar>
+            </div>
+        </template>
     </main>
-
 
 </template>
 
@@ -152,7 +165,11 @@ export default {
             parametro: {},
 
             currencyMask, 
-            myInputModel : ' '
+            myInputModel : ' ',
+
+            // Mensagem
+            exibeMensagem: false,
+            textoMensagem: `Hello, I'm a snackbar`,
         }
     },
     
@@ -186,7 +203,7 @@ export default {
             if (this.novoRegistro == true) {
                 
                 await api.post('/insere-pessoas', pPessoa).then(response => {
-                
+                alert('Salvo com sucesso!')
                 window.location.href = '/pessoas-consulta'
 
             });
@@ -197,13 +214,17 @@ export default {
 
         // Atualiza Pessoa
         atualizar: function (pPessoa) {
+            try {
             pPessoa.tipo = this.tipos_pessoas_selecionado.nome
-
-
-            api.put('/atualiza-pessoas', pPessoa).then(response => {
-                window.location.href = '/pessoas-consulta'
-
-            })
+                api.put('/atualiza-pessoas', pPessoa).then(response => {
+                    alert('Atualizado com sucesso!')
+                    window.location.href = '/pessoas-consulta'
+                })   
+                 
+            } catch (error) {
+                alert(error)
+            }
+            
 
         },
 
@@ -232,11 +253,10 @@ export default {
         },
 
         adicionarCurso: function(pCurso) {
-            
-            
-            this.listaCursosContratados.push(pCurso) 
+            this.listaCursosContratados.push(pCurso)
             this.limpaInputs()
             this.listaCursosSelecionado = null;  
+            
         },
 
         deletaCurso: async function(pCursoId) {
@@ -250,6 +270,7 @@ export default {
                
                 if (response.data == 'Sucesso') {
                     window.location.href = window.location.pathname
+                    alert('Deletado com Sucesso!')
                 }
             });
         },

@@ -49,6 +49,20 @@
                 </div>
             </div>
         </section>
+        <!-- Caixa de Mensagem/notificação -->
+        <template>
+            <div class="text-center ma-2">
+                <v-snackbar v-model="exibeMensagem">
+                    {{ textoMensagem }}
+        
+                    <template v-slot:action="{ attrs }">
+                        <v-btn color="pink" text v-bind="attrs" @click="exibeMensagem = false">
+                            Close
+                        </v-btn>
+                    </template>
+                </v-snackbar>
+            </div>
+        </template>
     </main>
 
 
@@ -83,9 +97,12 @@ export default {
             // Dados da Table
             listaPessoas: [],
 
-            
             campoFiltro: '',
             listaPessoasFiltradas: '',
+
+            // Mensagem
+            exibeMensagem: false,
+            textoMensagem: `Hello, I'm a snackbar`,
         }
     },
     
@@ -114,6 +131,7 @@ export default {
             api.post('/deleta-pessoas', pPessoa).then(response => {
                 if (response.data == 'Sucesso') {
                     window.location.href = ('/pessoas-consulta')
+                    alert('Deletado com sucesso!')
                 }
                 
                 debugger

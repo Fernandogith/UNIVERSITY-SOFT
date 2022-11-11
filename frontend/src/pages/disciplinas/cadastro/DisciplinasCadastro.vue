@@ -100,7 +100,7 @@ export default {
             if (this.novoRegistro) {
                 
                 await api.post('/insere-disciplinas', pDisciplina).then(response => {
-                
+                alert('Salvo com sucesso!')
                 window.location.href = '/disciplinas-consulta'
 
             })
@@ -113,6 +113,7 @@ export default {
         atualizar: async function (pDisciplina) {
             debugger
             await api.put('/atualiza-disciplinas', pDisciplina).then(response => {
+                alert('Atualizado com sucesso!')
                 window.location.href = '/disciplinas-consulta'
 
             })

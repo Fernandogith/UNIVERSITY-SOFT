@@ -179,7 +179,7 @@ debugger
             if (this.novoRegistro) {
                 debugger
                 api.post('/insere-cursos', pCurso).then(response => {
-                
+                alert('Salvo com sucesso!')
                 window.location.href = '/cursos-consulta'
 
             })
@@ -192,6 +192,7 @@ debugger
         // Atualiza Pessoa
         atualizar: async function (pCurso) {
             await api.put('/atualiza-cursos', pCurso).then(response => {
+                alert('Atualizado com sucesso!')
                 window.location.href = '/cursos-consulta'
 
             })
@@ -284,9 +285,10 @@ debugger
             itemDelete.curso_id = this.objCurso.curso_id;
 
 
-            await api.post('/deleta-disciplina-curso', itemDelete).then(response => {
+            await api.post('/Deleta-disciplina-curso', itemDelete).then(response => {
                
                 if (response.data == 'Sucesso') {
+                    alert('deletado com sucesso!')
                     window.location.href = window.location.pathname
                 }
             });
