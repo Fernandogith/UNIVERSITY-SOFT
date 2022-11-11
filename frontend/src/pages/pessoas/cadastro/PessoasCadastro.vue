@@ -6,7 +6,7 @@
         </section>
 
         <section class="right">
-            <div class="top">
+            <div class="top" data-aos="fade-left">
                 <span>| Cadastro</span>
                 <div class="actions">
                     <div class="button">
@@ -18,7 +18,7 @@
                 </div>
             </div>
 
-            <div class="main">
+            <div class="main" data-aos="fade-left">
                 <div class="dados dados-gerais">
                     <h2>DADOS GERAIS</h2>
                     <div class="group-inputs">
@@ -29,12 +29,12 @@
                         </div>
                         <!-- Input Padrão -->
                         <div class="input">
-                            <input type="text" id="nome" autocomplete="off" required v-model="objPessoa.nome">
+                            <input type="text" id="nome"  autocomplete="off" required v-model="objPessoa.nome">
                             <label for="nome">Nome</label>
                         </div>
                         <!-- Input Padrão -->
                         <div class="input">
-                            <input type="text" id="data_nascimento" autocomplete="off" required v-model="objPessoa.data_nascimento">
+                            <input type="text" v-mask="'##/##/####'" placeholder = " 00/00/0000 " id="data_nascimento" autocomplete="off" required v-model="objPessoa.data_nascimento">
                             <label for="data_nascimento">Data Nascimento</label>
                         </div>
                         <!-- Selected Padrão -->
@@ -52,7 +52,7 @@
                     <div class="group-inputs" v-if="tipos_pessoas_selecionado.nome == 'Professor'">
                         <!-- Input Padrão -->
                         <div class="input">
-                            <input type="text" id="salario" autocomplete="off" required v-model="objPessoa.salarioProfessor">
+                            <input type="text" id="salario" autocomplete="off" required  v-mask = " currencyMask "  v-model="objPessoa.salarioProfessor"  placeholder = " € 100.00 ">
                             <label for="salario">Salário Negociado</label>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                             <tr v-for="listaCursosContratado in listaCursosContratados" :key="listaCursosContratado.id">
                                 <td>{{ listaCursosContratado.curso_id }}</td>
                                 <td>{{ listaCursosContratado.nome }}</td>
-                                <td><a @click="deletaCurso(listaCursosContratado.id)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
+                                <td><a @click="deletaCurso(listaCursosContratado.curso_id)"><img src="@/assets/img/icones/icon-excluir.svg"></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -105,6 +105,14 @@
 import api from '@/services/api'
 import Menu from '../../../components/menu/Menu..vue';
 
+// Mascara para Moedas
+import createNumberMask from 'text-mask-addons/dist/createNumberMask';
+  const currencyMask = createNumberMask({
+    prefix: '€ ',
+    allowDecimal: true,
+    includeThousandsSeparator: true,
+    allowNegative: false,
+  });
 
 export default {
     components: { Menu },
@@ -142,6 +150,9 @@ export default {
 
             // Utilizado para pegar o parametro enviado pela rota ao editar
             parametro: {},
+
+            currencyMask, 
+            myInputModel : ' '
         }
     },
     
@@ -238,8 +249,7 @@ export default {
             await api.post('/deleta-curso-contratado', itemDelete).then(response => {
                
                 if (response.data == 'Sucesso') {
-                    this.listaCursos = []
-                    this.carregarDados(this.parametro)
+                    window.location.href = window.location.pathname
                 }
             });
         },

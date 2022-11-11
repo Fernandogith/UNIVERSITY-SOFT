@@ -29,23 +29,23 @@
 
         <section class="main">
             <div class="container-fluid">
-                <div class="left">
+                <div class="left" data-aos="fade-right">
                     <h1>Bem vindo ao <br/>Futuro em educação</h1>
                     <p>Somos uma startup conceito em gestão de educação e visamos <br/> revolucionar a educação em todo o mundo</p>
                     <div class="img">
                         <img src="@/assets/img/img-foguete-login.svg" alt="">
                     </div>
                 </div>
-                <div class="right">
-                    <div class="items-login">
+                <div class="right" >
+                    <div class="items-login" data-aos="fade-left">
                         <div class="div-user">
-                            <input class="user" placeholder="Usuário" type="text">
+                            <input class="user" placeholder="Usuário" type="text" v-model="objDadosAcesso.usuario">
                         </div>
                         <div class="div-password">
-                            <input class="password" placeholder="Senha" type="password">
+                            <input class="password" placeholder="Senha" type="password" v-model="objDadosAcesso.senha">
                         </div>
                         <div class="btn-access">
-                            <button class="access" @click="acessar()">Acessar</button>
+                            <button class="access" @click="acessar(objDadosAcesso)">Acessar</button>
                         </div>
                         <span>━━━━━━━━━━&nbsp;&nbsp;&nbsp;&nbsp;continue por&nbsp;&nbsp;&nbsp;&nbsp;━━━━━━━━━━</span>
                         <div class="social">
@@ -72,13 +72,14 @@
 
 <script>
 
-
+import api from '@/services/api'
 export default {
     name: "Login",
     
 
     data() {
         return {
+            objDadosAcesso: {usuario: '', senha: ''}
     
         }
     },
@@ -86,11 +87,20 @@ export default {
     methods: {
 
         // Valida o acesso no sistema
-        acessar: function () {
-            window.location.href = '/inicio'
+        acessar: async function (pDadosAcesso) {
+debugger
 
+            await api.post('/login', pDadosAcesso).then(response => {
+
+                if (response.data == 'Sucesso') {
+                    localStorage.setItem('usuario', pDadosAcesso.usuario);
+                    window.location.href = '/inicio'
+                } else {
+                    alert('Dados Incorretos, verifique!')
+                }
+
+            });
         }
-        
     },
 }
 

@@ -6,7 +6,7 @@
         </section>
 
         <section class="right">
-            <div class="top">
+            <div class="top" data-aos="fade-left">
                 <span>| Cadastro</span>
                 <div class="actions">
                     <div class="button">
@@ -18,13 +18,13 @@
                 </div>
             </div>
 
-            <div class="main">
+            <div class="main" data-aos="fade-left">
                 <div class="dados dados-gerais">
                     <h2>DADOS GERAIS</h2>
                     <div class="group-inputs">
                         <!-- Input Padrão -->
                         <div class="input">
-                            <input type="text" id="codigo" autocomplete="off" required v-model="objCurso.id">
+                            <input type="text" id="codigo" autocomplete="off" required v-model="objCurso.curso_id">
                             <label for="codigo" >Código</label>
                         </div>
                         <!-- Input Padrão -->
@@ -132,33 +132,42 @@ export default {
 
         // Carrega dados da pessoa pelo ID para popular os campos e atualizar
         carregarDados: async function (pId) {
-            let vDadosCurso
 
-            await api.post('/cursos', pId).then(response => {
-                debugger
-            vDadosCurso = response.data[0]
-            debugger
+            try {
+                let vDadosCurso = {}
 
-            });
+                await api.post('/cursos', pId).then(response => {
+                    let retorno = response.data[0]
+                    debugger
+                    this.objCurso = {
+                        curso_id: retorno.id,
+                        nome: retorno.nome
+                    }
+                });
+debugger
+                await api.post('/cursos-disciplinas', pId).then(response => {
+                        debugger
+                    response.data.forEach(DadosCursoDisciplina => {
+                        debugger
+                        this.listaDisciplinas.push(DadosCursoDisciplina)
+                        debugger
+                    });
 
-            await api.post('/cursos-disciplinas', pId).then(response => {
-                    debugger
-                response.data.forEach(DadosCursoDisciplina => {
-                    debugger
-                    this.listaDisciplinas.push(DadosCursoDisciplina)
-                    debugger
+
                 });
 
-            
-            });
 
 
-            
-            this.populaCampos(vDadosCurso)
+   
+            } catch (error) {
+                alert(error)
+            }
+
         },
 
         // Salva Curso ou manda para atualizar
-        salvarCurso: async function (pCurso) {
+        salvarCurso: function (pCurso) {
+            debugger
             pCurso.disciplinas = []
             for (let i = 0; i < this.listaDisciplinas.length; i++) {
                 debugger
@@ -169,7 +178,7 @@ export default {
             
             if (this.novoRegistro) {
                 debugger
-                await api.post('/insere-cursos', pCurso).then(response => {
+                api.post('/insere-cursos', pCurso).then(response => {
                 
                 window.location.href = '/cursos-consulta'
 
@@ -197,7 +206,11 @@ export default {
         // Utilizada para popular os campos clicar em atualizar
         populaCampos: function (pCurso) {
             // Popula campos
-            this.objCurso = {id: pCurso.id, nome: pCurso.nome}
+            debugger
+            this.objCurso = {
+                curso_id: pCurso.curso_id,
+                nome: pCurso.nome,
+            }
    
             debugger
 
@@ -225,12 +238,14 @@ export default {
         },
 
         // Utilizado para buscar o proximo ID
-        BuscaProximoId: async function () {
+        BuscaProximoId:  function () {
             
-            if (this.objCurso.id == '' || this.objCurso.id == null) {
-                api.get('/cursos-proximo-id').then(response => {
-                    
-                this.objCurso.id = response.data[0]
+            if (this.objCurso.curso_id == '' || this.objCurso.curso_id == null) {
+                 api.post('/cursos-proximo-id').then(response => {
+                    debugger
+                this.objCurso = {
+                    curso_id: response.data.curso_id
+                }
             
                 })
             }
@@ -266,14 +281,13 @@ debugger
 
             let itemDelete = {}
             itemDelete.disciplina_id = pDisciplina_id;
-            itemDelete.curso_id = this.objCurso.id;
+            itemDelete.curso_id = this.objCurso.curso_id;
 
 
             await api.post('/deleta-disciplina-curso', itemDelete).then(response => {
                
                 if (response.data == 'Sucesso') {
-                    this.listaDisciplinas = []
-                    this.carregarDados(this.parametro)
+                    window.location.href = window.location.pathname
                 }
             });
             
@@ -294,13 +308,9 @@ debugger
         } else {
             // Se for um novo registro, busca-se o próximo ID no backend
             this.novoRegistro = true
-            this.objCurso.id = this.BuscaProximoId()
+            this.BuscaProximoId()
+            
         }
-
-         
-
-
-        
     }
 }
 

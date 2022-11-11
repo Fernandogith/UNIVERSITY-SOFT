@@ -6,7 +6,7 @@
         </section>
 
         <section class="right">
-            <div class="top">
+            <div class="top" data-aos="fade-left">
                 <span>| Cadastro</span>
                 <div class="actions">
                     <div class="button">
@@ -18,7 +18,7 @@
                 </div>
             </div>
 
-            <div class="main">
+            <div class="main" data-aos="fade-left">
                 <div class="dados dados-gerais">
                     <h2>DADOS GERAIS</h2>
                     <div class="group-inputs">

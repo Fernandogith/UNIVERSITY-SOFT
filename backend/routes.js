@@ -39,7 +39,7 @@ routes.post('/cursos', DashboardController.carregaCursos);
 routes.post('/cursos-aluno', DashboardController.carregaCursosAluno);
 
 // Carrega o proximo ID do Curso
-routes.get('/cursos-proximo-id', DashboardController.cursosProximoId);
+routes.post('/cursos-proximo-id', DashboardController.cursosProximoId);
 
 // Salva Cursos
 routes.post('/insere-cursos', DashboardController.insereCursos);
@@ -84,6 +84,9 @@ routes.post('/salva-notas-disciplinas', DashboardController.salvaNotasDisciplina
 
 // Carrega professores
 routes.get('/carrega-professores', DashboardController.carregaProfessores);
+
+// Carrega Pessoas
+routes.post('/login', DashboardController.usuarios);
 
 
 

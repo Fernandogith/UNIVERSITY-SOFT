@@ -116,6 +116,12 @@ let notas = [
     {id: 24, aluno_id: 6, cursodisciplina_id: 16, nota: 5.0},
 ];
 
+let usuarios = [
+    {usuario: 'Magnifinance', senha: '1'},
+    {usuario: 'Usuario', senha: '1'},
+    {usuario: 'Fernando', senha: '1'}
+];
+
 module.exports = {
     cursos,
     disciplinas,
@@ -124,5 +130,6 @@ module.exports = {
     pessoasTipo,
     professorSalario,
     alunos,
-    notas
+    notas,
+    usuarios
 };

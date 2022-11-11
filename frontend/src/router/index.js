@@ -30,6 +30,11 @@ const routes = [
     name: 'inicio',
     component: Inicio
     },
+    {
+    path: '/inicio:id',
+    name: 'inicio-parametro',
+    component: Inicio
+    },
     // PESSOAS
     {
     path: '/pessoas-consulta',

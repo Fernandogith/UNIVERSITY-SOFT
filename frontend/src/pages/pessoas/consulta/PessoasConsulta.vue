@@ -6,7 +6,8 @@
         </section>
 
         <section class="right">
-            <div class="top">
+            <div class="top" data-aos="fade-left">
+
                 <span>| Consulta</span>
                 <div class="actions">
                     <div class="button">
@@ -18,7 +19,7 @@
                 </div>
             </div>
 
-            <div class="main">
+            <div class="main" data-aos="fade-left">
                 <div class="filtros">
                     <div class="group-inputs">
                         <!-- Input Padrão -->

@@ -1,6 +1,6 @@
 <template>
 
-    <div class="menu">
+    <div class="menu" data-aos="fade-right">
         <div class="container-fluid">
             <div class="top">
                 <div class="logo">

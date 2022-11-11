@@ -6,6 +6,9 @@
     .input {
         position: relative;
         margin-bottom: 25px;
+        .rule {
+            border: 1px solid rgb(141, 4, 4);
+        }
 
         input {
             display: block;
@@ -49,7 +52,7 @@
             font-size: 1.4rem;
             color: #10002E;
             background-color: #ffffff; 
-            padding: 0 10px;
+            padding: 3px 10px;
             color: #999;
             transition: all .3s ease;
             &:focus {

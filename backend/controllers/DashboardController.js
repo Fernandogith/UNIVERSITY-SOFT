@@ -213,9 +213,17 @@ module.exports = {
                 numeroMatriculaAluno: req.body.numeroMatriculaAluno,
             }
 
+            // Deleta pessoa da db.pessoas
             for (let i = 0; i < db.pessoas.length; i++) {
                 if (db.pessoas[i].id == pessoa.id) {
                     db.pessoas.splice(i, 1)
+                }
+            }
+
+            // Deleta registro de aluno da pessoa
+            for (let i = 0; i < db.alunos[0].length; i++) {
+                if (db.alunos[i].pessoa_id == pessoa.id) {
+                    db.alunos[i].splice(i, 1)
                 }
             }
 
@@ -362,7 +370,7 @@ module.exports = {
 
             // Monta objeto para inserir novo curso
             let curso = {
-                id: req.body.id, 
+                id: req.body.curso_id, 
                 nome: req.body.nome, 
             }
 
@@ -373,7 +381,7 @@ module.exports = {
             for (let i = 0; i < req.body.disciplinas.length; i++) {
                 cursoDisciplinaAdd = {
                     id: db.Cursodisciplinas[db.Cursodisciplinas.length - 1].id + 1,
-                    curso_id: curso.curso_id,
+                    curso_id: curso.id,
                     disciplina_id: req.body.disciplinas[i].disciplina_id,
                     semestre: req.body.disciplinas[i].semestre
 
@@ -397,13 +405,13 @@ module.exports = {
 
             // Monta objeto com o curso que se deseja atualizar
             curso = {
-                id: req.body.id, 
+                id: req.body.curso_id, 
                 nome: req.body.nome
             }
             
             // Atualiza o Curso
             for (let i = 0; i < db.cursos.length; i++) {
-                if (db.cursos[i].id == curso.curso_id) {
+                if (db.cursos[i].id == curso.id) {
                     db.cursos[i].nome = curso.nome
                 };
                 
@@ -412,7 +420,7 @@ module.exports = {
 
             // Remove o curso e suas disciplinas da db.Cursodisciplinas
             for (let i = 0; i < db.Cursodisciplinas.length; i++) {  
-                if (db.Cursodisciplinas[i].curso_id == curso.curso_id) {
+                if (db.Cursodisciplinas[i].curso_id == curso.id) {
                     db.Cursodisciplinas.splice(i,1)
                     i = i-1
                 }
@@ -426,7 +434,7 @@ module.exports = {
                 // Objeto utilizado na verificação
                 cursoDisciplinaAdd = {
                     id: db.Cursodisciplinas[db.Cursodisciplinas.length - 1].id + 1,
-                    curso_id: curso.curso_id,
+                    curso_id: curso.id,
                     disciplina_id: req.body.disciplinas[i].disciplina_id,
                     semestre: req.body.disciplinas[i].semestre
                 }
@@ -480,15 +488,16 @@ module.exports = {
 
     // Utilizado para buscar o proximo ID
     async cursosProximoId(req, res) {
-        let ultimoCursoCadastrado = db.cursos[db.cursos.length - 1]
-        let ProximoId = []
-        if (ultimoCursoCadastrado != undefined) {
-            ProximoId.push(ultimoCursoCadastrado.id + 1)
+        let proximoId = db.cursos[db.cursos.length - 1].id + 1
+        
+        if (proximoId != undefined) {
+            res.send({curso_id: proximoId})
         } else {
-            let PrimeiroId = 0
-            ProximoId.push(PrimeiroId + 1)
+            proximoId = 1
+            
+            res.send({curso_id: proximoId})
         }
-        res.send(ProximoId)
+
     },
 
 
@@ -763,7 +772,26 @@ module.exports = {
         
 
 
+    },
+
+    async usuarios(req, res) {
+        verificaUsuario = {
+            usuario: req.body.usuario,
+            senha: req.body.senha
+        }
+        
+        let resposta = ''
+
+        for (let i = 0; i < db.usuarios.length; i++) {
+            if (verificaUsuario.usuario == db.usuarios[i].usuario) {
+                if (verificaUsuario.senha == db.usuarios[i].senha) {
+                    resposta = 'Sucesso'                    
+                } else {
+                    resposta = 'Falhou'
+                }     
+            } 
+            
+        }
+        res.send(resposta)
     }
-
-
 }
