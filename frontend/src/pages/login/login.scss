@@ -35,6 +35,7 @@ section.main {
             .img {
                 display: flex;
                 justify-content: flex-end;
+                animation: floating 6s infinite;
             }
         }
         .right {
@@ -123,4 +124,20 @@ section.main {
             }
         }
     }
+    @keyframes floating {
+        0% {
+          transform: translateY(0);  
+        }
+        
+        65% {
+            
+            transform: translateY(-55px);
+        }
+        
+        
+        100% {
+            transform: translateY(0);  
+        }
+    }
+
 }
