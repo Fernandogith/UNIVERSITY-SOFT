@@ -28,7 +28,7 @@
                             <!-- Selected Padrão -->
                             <div class="input-select lista-alunos" id="disciplinas" @click="carregaAlunos()">
                                 
-                                <v-autocomplete id="selecione-aluno" v-model="listaAlunoSelecionado" :items="listaAlunos" item-text="nome" @change="carregaCursosAluno(listaAlunoSelecionado.id)" return-object  @click="carregaAlunos()" attach chips rounded>
+                                <v-autocomplete id="selecione-aluno" v-model="listaAlunoSelecionado" :disabled="ambienteDisciplinas == true ? true : false" :items="listaAlunos" item-text="nome" @change="carregaCursosAluno(listaAlunoSelecionado.id)" return-object  @click="carregaAlunos()" attach chips rounded>
                                 </v-autocomplete>
                                 
                             </div>
