@@ -1,4 +1,4 @@
-# byte-new
+# university-soft
 
 ## Project setup
 ```
