@@ -7,7 +7,7 @@
 
         <section class="right">
             <div class="top" data-aos="fade-left">
-                <span>| Consulta</span>
+                <span>| Cursos Consulta</span>
                 <div class="actions">
                     <div class="button">
                         <button @click="voltar()" class="btn-padrao">Voltar</button>

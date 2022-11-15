@@ -7,7 +7,7 @@
 
         <section class="right">
             <div class="top" data-aos="fade-left">
-                <span>| Consulta</span>
+                <span>| Gestão Consulta</span>
                 <div class="actions">
                     <div class="button">
                         <button @click="voltar()" class="btn-padrao">Voltar</button>
@@ -27,7 +27,6 @@
                             </div>
                             <!-- Selected Padrão -->
                             <div class="input-select lista-alunos" id="disciplinas" @click="carregaAlunos()">
-                                
                                 <v-autocomplete id="selecione-aluno" v-model="listaAlunoSelecionado" :disabled="ambienteDisciplinas == true ? true : false" :items="listaAlunos" item-text="nome" @change="carregaCursosAluno(listaAlunoSelecionado.id)" return-object  @click="carregaAlunos()" attach chips rounded>
                                 </v-autocomplete>
                                 
@@ -75,9 +74,10 @@
                             <tr v-for="listaDisciplina in listaDisciplinas" :key="listaDisciplina.id">
                                 <td>{{ listaDisciplina.id }}</td>
                                 <td>{{ listaDisciplina.nome }}</td>
+                                <td>{{ listaDisciplina.professor }}</td>
                                 <td>
                                     <div class="input">
-                                        <input class="input-filtro menor"  v-mask="listaDisciplina.nota.length == 3 ? '#.##'  : '##.##'" type="text" id="notas" autocomplete="off" required v-model="listaDisciplina.nota" >
+                                        <input class="input-filtro menor" v-mask="listaDisciplina.nota.length == 3 ? '#.##' : '##.##'" @change="listaDisciplinas" type="text" id="notas" autocomplete="off" required v-model="listaDisciplina.nota" >
                                     </div>
                                 </td>
                             </tr>
@@ -118,6 +118,7 @@ export default {
             headersDisciplinas: [
                 {texto: 'Código', },
                 {texto: 'Nome', },
+                {texto: 'Professor(a)', },
                 {texto: 'Notas', },
             ],
 
@@ -148,10 +149,22 @@ export default {
         carregaDisciplinas: async function (pCurso) {
             
             this.listaDisciplinas = []
-            await api.post('/cursos-disciplinas', {id: pCurso}).then(response => {
-                response.data.forEach(resposta => {
-                    this.listaDisciplinas.push(resposta)
-                });
+            
+            await api.post('/cursos-disciplinas', {curso_id: pCurso, aluno_id: this.listaAlunoSelecionado.id}).then(response => {
+
+                
+                    response.data.forEach(resposta => {
+                        if (resposta.nota == undefined) {
+                            resposta.nota = ''
+                         
+                        }
+                        this.listaDisciplinas.push(resposta)
+                        
+                    });
+
+                
+                    
+                
             });
             
 
@@ -162,8 +175,8 @@ export default {
                 
 
                 response.data.forEach(resposta => {
-                    
-                    if (resposta.pessoa_tipo == 1 || resposta.pessoa_tipo.id) {
+                
+                    if (resposta.tipo == 1) {
                         this.listaAlunos.push(resposta)
                     }
                     
@@ -195,6 +208,7 @@ export default {
         },
 
         salvaNotasDisciplina: async function () {
+            
             await api.post('/salva-notas-disciplinas', this.listaDisciplinas).then(response => {
                 if (response.data == 'Sucesso') {
                     this.carregaDisciplinas(this.listaDisciplinas[0].curso_id)
