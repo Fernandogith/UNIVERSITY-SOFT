@@ -257,7 +257,6 @@ export default {
 
         adicionarCurso: function(pCurso) {
             this.listaCursosContratados.push(pCurso)
-            this.limpaInputs()
             this.listaCursosSelecionado = null;  
             
         },
