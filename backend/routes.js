@@ -30,7 +30,7 @@ routes.post('/alunos', DashboardController.carregaAlunos);
 
 
 // Carrega Cursos
-routes.post('/cursos', DashboardController.carregaCursos);
+routes.post('/cursos', DashboardController.carregaCursosDisciplinas);
 
 // Carrega Cursos do aluno
 routes.post('/cursos-aluno', DashboardController.carregaCursosAluno);
@@ -47,6 +47,8 @@ routes.post('/atualiza-cursos', DashboardController.atualizaCursos);
 // Deleta Cursos
 routes.post('/deleta-cursos', DashboardController.deletaCursos);
 
+// Carrega Curso Disciplinas
+routes.post('/cursos-disciplinas', DashboardController.carregaCursosDisciplinasNotas);
 
 
 // Carrega Disciplinas
@@ -66,8 +68,6 @@ routes.post('/insere-disciplinas', DashboardController.insereDisciplinas);
 
 
 
-// Carrega Curso Disciplinas
-routes.post('/cursos-disciplinas', DashboardController.carregaCursosDisciplinas);
 
 // Deleta Curso Disciplinas
 routes.post('/deleta-disciplina-curso', DashboardController.deletaDisciplinaCurso);

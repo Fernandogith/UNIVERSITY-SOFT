@@ -13,7 +13,7 @@
                         <button @click="voltar()"  class="btn-padrao">Voltar</button>
                     </div>
                     <div class="button">
-                        <button @click="salvarCurso(objCurso)" class="btn-padrao">Salvar</button>
+                        <button @click="salvarCursoDisiciplinas(objCurso)" class="btn-padrao">Salvar</button>
                     </div>
                 </div>
             </div>
@@ -63,7 +63,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="listaDisciplina in listaDisciplinas" :key="listaDisciplina.id">
-                                <td>{{ listaDisciplina.disciplina_id }}</td>
+                                <td>{{ listaDisciplina.id }}</td>
                                 <td>{{ listaDisciplina.nome }}</td>
                                 <td>
                                     <div class="input">
@@ -131,33 +131,29 @@ export default {
     methods: {
 
         // Carrega dados da pessoa pelo ID para popular os campos e atualizar
-        carregarDados: async function (pId) {
+        carregarCursosDisciplinas: async function (pId) {
 
             try {
-                let vDadosCurso = {}
-
                 await api.post('/cursos', pId).then(response => {
-                    let retorno = response.data[0]
-                    
-                    this.objCurso = {
-                        curso_id: retorno.id,
-                        nome: retorno.nome
-                    }
-                });
+                    // Criação do objeto que receberá o retorno do backend
+                    let retorno = {}
 
-                await api.post('/cursos-disciplinas', pId).then(response => {
-                        
-                    response.data.forEach(DadosCursoDisciplina => {
-                        
-                        this.listaDisciplinas.push(DadosCursoDisciplina)
-                        
+
+                    // Atribui ao objeto de retorno, o retorno do backend
+                    retorno = response.data
+                    
+
+                    // Atribui ao objeto ligado aos campos, as informações do curso
+                    this.objCurso = {curso_id: retorno[0].id, nome: retorno[0].nome}
+
+
+                    // Atribui ao array ligado a tabela de disciplinas, as disciplinas ligadas ao curso vindas do backend
+                    retorno[0].disciplinas.forEach(item => {
+                        this.listaDisciplinas.push(item)
                     });
 
-
+                    
                 });
-
-
-
    
             } catch (error) {
                 alert(error)
@@ -166,35 +162,57 @@ export default {
         },
 
         // Salva Curso ou manda para atualizar
-        salvarCurso: function (pCurso) {
+        salvarCursoDisiciplinas: function (pCurso) {
             
-            pCurso.disciplinas = []
+            
+            // Criação do objeto que será enviado ao backend
+            let objCursoDisciplinas = {}
+
+
+            // Adicionando ao objeto de envio, as informações dos campos que vieram pelo parametro
+            objCursoDisciplinas = pCurso
+
+
+            // Criação do array no objeto de envio que receberá as disciplinas para salvar ou atualizar
+            objCursoDisciplinas.disciplinas = []
+
+
+            // Adicionando ao objeto de retorno as disciplinas para salvar ou atualizar 
             for (let i = 0; i < this.listaDisciplinas.length; i++) {
-                
-                pCurso.disciplinas.push(this.listaDisciplinas[i]);
-                
+                objCursoDisciplinas.disciplinas.push(this.listaDisciplinas[i]);
             }
 
             
+            // Verifica se é um novo registro (Mediante clique no botão novo var novoRegistro recebe true na mouted)
             if (this.novoRegistro) {
                 
-                api.post('/insere-cursos', pCurso).then(response => {
+                // Envia objeto para salvar no backend
+                api.post('/insere-cursos', objCursoDisciplinas).then(response => {
+                
+                // Retorna com sucesso
                 alert('Salvo com sucesso!')
-                window.location.href = '/cursos-consulta'
 
+                // Redireciona para a pagina de consulta
+                window.location.href = '/cursos-consulta'
             })
+
+            // Caso não seja um novo registro, chama função para atualizar o registro
             } else {
-                    
-                this.atualizar(pCurso)
+                // Chama a função para atualizar o curso
+                this.atualizar(objCursoDisciplinas)
             }
         },
 
         // Atualiza Pessoa
-        atualizar: async function (pCurso) {
-            await api.post('/atualiza-cursos', pCurso).then(response => {
-                alert('Atualizado com sucesso!')
-                window.location.href = '/cursos-consulta'
+        atualizar: async function (pCursoDisciplinas) {
+            // Envia o objeto para atualizar no backend
+            await api.post('/atualiza-cursos', pCursoDisciplinas).then(response => {
 
+                // Retorna com sucesso
+                alert('Atualizado com sucesso!')
+
+                // Redireciona para a pagina de consulta
+                window.location.href = '/cursos-consulta'
             })
 
         },
@@ -306,7 +324,7 @@ export default {
 
         // Caso veio parametro na rota, utilizando ele solicitamos o carregamento no backend
         if (this.parametro.id != undefined) {
-            this.carregarDados(this.parametro)
+            this.carregarCursosDisciplinas(this.parametro)
         } else {
             // Se for um novo registro, busca-se o próximo ID no backend
             this.novoRegistro = true

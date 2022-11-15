@@ -73,7 +73,7 @@
                         <tbody>
                             <tr v-for="listaDisciplina in listaDisciplinas" :key="listaDisciplina.id">
                                 <td>{{ listaDisciplina.id }}</td>
-                                <td>{{ listaDisciplina.nome }}</td>
+                                <td>{{ listaDisciplina.nome_disciplina }}</td>
                                 <td>{{ listaDisciplina.professor }}</td>
                                 <td>
                                     <div class="input">
@@ -152,15 +152,11 @@ export default {
             
             await api.post('/cursos-disciplinas', {curso_id: pCurso, aluno_id: this.listaAlunoSelecionado.id}).then(response => {
 
-                
-                    response.data.forEach(resposta => {
-                        if (resposta.nota == undefined) {
-                            resposta.nota = ''
-                         
-                        }
-                        this.listaDisciplinas.push(resposta)
-                        
-                    });
+                response.data.forEach(resposta => {
+
+                    this.listaDisciplinas.push(resposta)
+                    
+                });
 
                 
                     
@@ -208,7 +204,6 @@ export default {
         },
 
         salvaNotasDisciplina: async function () {
-            
             await api.post('/salva-notas-disciplinas', this.listaDisciplinas).then(response => {
                 if (response.data == 'Sucesso') {
                     this.carregaDisciplinas(this.listaDisciplinas[0].curso_id)
