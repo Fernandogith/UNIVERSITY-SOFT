@@ -7,7 +7,7 @@
 
         <section class="right">
             <div class="top" data-aos="fade-left">
-                <span>| Cadastro</span>
+                <span>| Pessoas Cadastro</span>
                 <div class="actions">
                     <div class="button">
                         <button @click="voltar()"  class="btn-padrao">Voltar</button>
@@ -179,6 +179,7 @@ export default {
         carregarDados: async function (pId) {
 
             await api.post('/pessoas', pId).then(response => {
+                
                 this.carregaTiposPessoa()
                 this.populaCampos(response.data[0])
                 
@@ -208,6 +209,7 @@ export default {
 
             });
             } else {
+                
                 this.atualizar(pPessoa)
             }
         },
@@ -216,6 +218,7 @@ export default {
         atualizar: function (pPessoa) {
             try {
             pPessoa.tipo = this.tipos_pessoas_selecionado.nome
+            
                 api.post('/atualiza-pessoas', pPessoa).then(response => {
                     alert('Atualizado com sucesso!')
                     window.location.href = '/pessoas-consulta'
@@ -281,7 +284,7 @@ export default {
             this.objPessoa.id = pPessoa.id,
             this.objPessoa.nome = pPessoa.nome,
             this.objPessoa.data_nascimento = pPessoa.data_nascimento,
-            this.tipos_pessoas_selecionado = pPessoa.pessoa_tipo,
+            this.tipos_pessoas_selecionado = {id: pPessoa.tipo, nome: pPessoa.tipo == 1 ? 'Aluno' : 'Professor'}
             this.objPessoa.numeroMatriculaAluno = pPessoa.numeroMatriculaAluno,
             this.objPessoa.salarioProfessor = pPessoa.salarioProfessor
 
@@ -329,7 +332,6 @@ export default {
         // Utilizado para buscar os tipos de pessoa no banco
         carregaTiposPessoa: async function () {
             api.post('/tipos-pessoa').then(response => {
-            
                 response.data.forEach(tipo => {
                     this.tipos_pessoas.push(tipo)
                 })

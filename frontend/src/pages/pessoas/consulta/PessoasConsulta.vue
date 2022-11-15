@@ -8,7 +8,7 @@
         <section class="right">
             <div class="top" data-aos="fade-left">
 
-                <span>| Consulta</span>
+                <span>| Pessoas Consulta</span>
                 <div class="actions">
                     <div class="button">
                         <button @click="buscarNoBack()" class="btn-padrao">Voltar</button>
@@ -113,6 +113,7 @@ export default {
             api.post('/pessoas').then(response => {
                 response.data.forEach(resposta => {
                     this.listaPessoas.push(resposta)
+                    
                 });
                 
                 this.listaPessoasFiltradas = this.listaPessoas
