@@ -147,7 +147,6 @@ export default {
     methods: {
 
         carregaDisciplinas: async function (pCurso) {
-            
             this.listaDisciplinas = []
             
             await api.post('/cursos-disciplinas', {curso_id: pCurso, aluno_id: this.listaAlunoSelecionado.id}).then(response => {
@@ -158,9 +157,6 @@ export default {
                     
                 });
 
-                
-                    
-                
             });
             
 

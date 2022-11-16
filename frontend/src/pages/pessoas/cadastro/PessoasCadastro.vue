@@ -197,7 +197,6 @@ export default {
                 this.listaCursosContratados.forEach(curso => {
                     pPessoa.infos_aluno.push(curso)
                 });
-
                 
             }
             
@@ -217,8 +216,20 @@ export default {
         // Atualiza Pessoa
         atualizar: function (pPessoa) {
             try {
-            pPessoa.tipo = this.tipos_pessoas_selecionado.nome
+                let objAtualizaPessoa = {}
+                objAtualizaPessoa = pPessoa
+                let arrAux = pPessoa.infos_aluno
             
+                objAtualizaPessoa.tipo = this.tipos_pessoas_selecionado.nome
+            
+            for (let i = 0; i < arrAux.length; i++) {
+                if (arrAux[i].pessoa_id == undefined) {
+                    arrAux[i].pessoa_id = objAtualizaPessoa.id
+                }
+                
+            }
+            objAtualizaPessoa.infos_aluno = arrAux
+
                 api.post('/atualiza-pessoas', pPessoa).then(response => {
                     alert('Atualizado com sucesso!')
                     window.location.href = '/pessoas-consulta'

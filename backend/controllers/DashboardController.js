@@ -174,30 +174,24 @@ module.exports = {
 
             // Se o tipo da pessoa for aluno, atualiza os cursos
             if (objPessoa.tipo == 1 || objPessoa.tipo == "Aluno") {
-                req.body.infos_aluno.forEach(curso => {
-                    if (curso.pessoa_id == undefined) {
-                        aluno = {
-                            id: db.alunos[db.alunos.length - 1].id + 1, 
-                            curso_id: curso.curso_id,
-                            pessoa_id: objPessoa.id, 
-                            matricula: objPessoa.numeroMatriculaAluno
-                        }
-                        db.alunos.push(aluno)
-                    } else {
-                        for (let i = 0; i < db.alunos.length; i++) {
-                            if (curso.pessoa_id == db.alunos[i].pessoa_id) {
-                                if (curso.curso_id == db.alunos[i].curso_id) {
-                                    db.alunos[i].curso_id = req.body.infos_aluno.curso_id
-                                    db.alunos[i].pessoa_id = req.body.infos_pessoa.pessoa_id
-                                    db.alunos[i].curso_id = req.body.infos_aluno.matricula
-                                }
-                            }
-                        }
-                    }
-                })
-                
-            }
 
+                for (let i = 0; i < req.body.infos_aluno.length; i++) {
+
+                        if (req.body.infos_aluno[i].matricula == undefined) {
+                            req.body.infos_aluno[i].matricula = objPessoa.numeroMatriculaAluno
+
+                            let novoAluno = {
+                                id: db.alunos[db.alunos.length - 1].id + 1, 
+                                curso_id: req.body.infos_aluno[i].curso_id,
+                                matricula: objPessoa.numeroMatriculaAluno,
+                                pessoa_id: req.body.infos_aluno[i].pessoa_id
+                            }
+                            db.alunos.push(novoAluno)
+                        }
+                        
+                    }
+                    
+                }
 
             // Caso o tipo seja professor, encontra a pessoa_id do professor e atualiza o salario
             if (objPessoa.tipo == 2) {
@@ -418,6 +412,16 @@ module.exports = {
         }
 
 
+        // Adiciona ao objeto de retorno o curso disciplina
+        // for (let i = 0; i < cursosDisciplinasSelecionado.length; i++) {
+        //     for (let y = 0; y < db.Cursodisciplinas.length; y++) {
+        //         if (cursosDisciplinasSelecionado[i].curso_id == cursosDisciplinasSelecionado[i].curso_id && db.Cursodisciplinas[y].disciplina_id == db.Cursodisciplinas[y].disciplina_id) {
+        //             cursosDisciplinasSelecionado[i].curso_disciplina = db.Cursodisciplinas[y].id
+        //         }   
+        //     }
+        // }
+
+
         // Verifica se existe notas para o aluno selecionado
         let notasAluno = db.notas.filter(item => {
             return item.aluno_id == cursosDisciplinasSelecionado[0].aluno_id
@@ -427,17 +431,20 @@ module.exports = {
         if (notasAluno.length > 0) {
             for (let i = 0; i < cursosDisciplinasSelecionado.length; i++) {
                 for (let y = 0; y < notasAluno.length; y++) {
-                    if (cursosDisciplinasSelecionado[i].id == notasAluno[y].cursodisciplina_id)
-                    cursosDisciplinasSelecionado[i].nota = notasAluno[y].nota
+                    if (cursosDisciplinasSelecionado[i].id == notasAluno[y].cursodisciplina_id) {
+                        cursosDisciplinasSelecionado[i].nota = notasAluno[y].nota
+                    } 
                 }
             }
 
         // Adiciona ao objeto de retrno, o item nota com null
         } else {
-            cursosDisciplinasSelecionado.forEach(item => {
-                item.nota = 00
-            });
+            for (let i = 0; i < cursosDisciplinasSelecionado.length; i++) {
+                cursosDisciplinasSelecionado[i].nota = 00;
+                
+            }
         }
+
 
         
         // Resposta ao Frontend
@@ -800,26 +807,29 @@ module.exports = {
 
     // Salva as notas das disciplinas
     async salvaNotasDisciplinas(req, res) {
-
-        // O ID que recebemos no req.body é o ID do cursoDisciplina
-        req.body.forEach(notasRecebidas => {
+        for (let i = 0; i < req.body.length; i++) {
             for (let y = 0; y < db.notas.length; y++) {
-                if (notasRecebidas.id == db.notas[y].cursodisciplina_id) {
-                    db.notas[y].aluno_id = notasRecebidas.aluno_id
-                    db.notas[y].cursodisciplina_id = notasRecebidas.id
-                    db.notas[y].nota = notasRecebidas.nota
+                if (req.body[i].id == db.notas[y].cursodisciplina_id) {
+                    db.notas[y].nota = req.body[i].nota 
                 } else {
-                    let objNotas = {
+                    
+                    notas = {
                         id: db.notas[db.notas.length - 1].id + 1,
-                        aluno_id: notasRecebidas.aluno_id,
-                        cursodisciplina_id: notasRecebidas.id,
-                        nota: notasRecebidas.nota
+                        aluno_id: req.body[i].aluno_id,
+                        cursodisciplina_id: req.body[i].id,
+                        nota: req.body[i].nota,
                     }
-                    db.notas.push(objNotas)
-                }
-                
-            }    
-        });
+
+                    db.notas.push(notas)
+
+                }    
+
+            }
+        }
+        
+
+
+
             
     res.send('Sucesso')
 
