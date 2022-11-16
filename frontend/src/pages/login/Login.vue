@@ -1,51 +1,51 @@
 <template>
     <main>
 
-            <header>
-                <div class="container-fluid">
-                    <div class="logo">
-                        <a href="/">
-                            <img src="@/assets/img/traco-logo.svg" alt="">
-                            <strong>University</strong> <span>&nbsp;Soft</span>
-                        </a>
-                    </div>
-                    <!-- Botão menu responsivo -->
-                    <button class="btn-menu-responsivo" @click="abrirMenu">
-                        <img src="@/assets/img/icones/icon-menu-responsivo.svg" alt="">
-                    </button>
-            
-                    <!-- Navegação Desktop -->
-                    <nav class="menu-desktop">
-                        <ul>
-                            <li><a href="/">Inicio</a></li>
-                            <li><a href="/">Quem Somos</a></li>
-                            <li><a href="/">Contate-nos</a></li>
-                        </ul>
-                    </nav>
+        <header>
+            <div class="container-fluid">
+                <div class="logo">
+                    <a href="/">
+                        <img src="@/assets/img/traco-logo.svg" alt="">
+                        <strong>University</strong> <span>&nbsp;Soft</span>
+                    </a>
                 </div>
-            
-                <!-- Menu Responsivo -->
-                <nav class="menu-responsivo" id="menu-responsivo">
-                    <div class="logo">
-                        <a href="/">
-                            <img src="@/assets/img/traco-logo.svg" alt="">
-                            <strong>University</strong> <span>&nbsp;Soft</span>
-                        </a>
-                    </div>
-            
+                <!-- Botão menu responsivo -->
+                <button class="btn-menu-responsivo" @click="abrirMenu">
+                    <img src="@/assets/img/icones/icon-menu-responsivo.svg" alt="">
+                </button>
+        
+                <!-- Navegação Desktop -->
+                <nav class="menu-desktop">
                     <ul>
-                        <li><a href="/" @click="fecharMenu">Quem Somos</a></li>
-                        <li><a href="/" @click="fecharMenu">Contate-nos</a></li>
+                        <li><a href="/">Inicio</a></li>
+                        <li><a href="/">Quem Somos</a></li>
+                        <li><a href="/">Contate-nos</a></li>
                     </ul>
-                    
                 </nav>
-            
-                <!-- Overley Responsivo -->
-                <div class="overlay" id="overlay" @click="fecharMenu">
-            
+            </div>
+        
+            <!-- Menu Responsivo -->
+            <nav class="menu-responsivo" id="menu-responsivo">
+                <div class="logo">
+                    <a href="/">
+                        <img src="@/assets/img/traco-logo.svg" alt="">
+                        <strong>University</strong> <span>&nbsp;Soft</span>
+                    </a>
                 </div>
-            
-            </header>
+        
+                <ul>
+                    <li><a href="/" @click="fecharMenu">Quem Somos</a></li>
+                    <li><a href="/" @click="fecharMenu">Contate-nos</a></li>
+                </ul>
+                
+            </nav>
+        
+            <!-- Overley Responsivo -->
+            <div class="overlay" id="overlay" @click="fecharMenu">
+        
+            </div>
+        
+        </header>
         
 
         <section class="main">
@@ -65,7 +65,7 @@
                         <div class="div-password">
                             <input class="password" placeholder="Senha" type="password" v-model="objDadosAcesso.senha">
                         </div>
-                        <div class="btn-access">
+                        <div class="btn-access" @click="acessar(objDadosAcesso)">
                             <button class="access" @click="acessar(objDadosAcesso)">Acessar</button>
                         </div>
                         <span>━━━━━━━━━━&nbsp;&nbsp;&nbsp;&nbsp;continue por&nbsp;&nbsp;&nbsp;&nbsp;━━━━━━━━━━</span>
