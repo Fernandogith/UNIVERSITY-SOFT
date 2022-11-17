@@ -65,9 +65,9 @@
                         <div class="div-password">
                             <input class="password" placeholder="Senha" type="password" v-model="objDadosAcesso.senha">
                         </div>
-                        <div class="btn-access">
+                        <div class="btn-access" @click="acessar(objDadosAcesso)">
 
-                            <a class="button" @click="acessar">-Acessar-</a>
+                            <a class="button" @click="acessar(objDadosAcesso)" onclick="acessar(objDadosAcesso)" >Acessar</a>
                             
                         </div>
                         <span>━━━━━━━━━━&nbsp;&nbsp;&nbsp;&nbsp;continue por&nbsp;&nbsp;&nbsp;&nbsp;━━━━━━━━━━</span>
@@ -113,13 +113,13 @@ export default {
     methods: {
 
         // Valida o acesso no sistema
-        acessar: async function () {
+        acessar: async function (pDadosAcesso) {
 
 
-            await api.post('/login', objDadosAcesso).then(response => {
+            await api.post('/login', pDadosAcesso).then(response => {
 
                 if (response.data == 'Sucesso') {
-                    localStorage.setItem('usuario', objDadosAcesso.usuario);
+                    localStorage.setItem('usuario', pDadosAcesso.usuario);
                     window.location.href = '/inicio'
                 } else {
                     alert('Dados Incorretos, verifique!')
