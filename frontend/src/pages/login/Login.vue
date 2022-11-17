@@ -66,7 +66,9 @@
                             <input class="password" placeholder="Senha" type="password" v-model="objDadosAcesso.senha">
                         </div>
                         <div class="btn-access">
-                            <button class="access" @click="acessar(objDadosAcesso)">Acessar</button>
+
+                            <a class="button" @click="acessar(objDadosAcesso)">Acessar</a>
+                            
                         </div>
                         <span>━━━━━━━━━━&nbsp;&nbsp;&nbsp;&nbsp;continue por&nbsp;&nbsp;&nbsp;&nbsp;━━━━━━━━━━</span>
                         <div class="social">
