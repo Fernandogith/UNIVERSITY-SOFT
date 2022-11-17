@@ -67,7 +67,7 @@
                         </div>
                         <div class="btn-access">
 
-                            <a class="button" @click="acessar(objDadosAcesso)">Acessar</a>
+                            <a class="button" @click="acessar">Acessar</a>
                             
                         </div>
                         <span>━━━━━━━━━━&nbsp;&nbsp;&nbsp;&nbsp;continue por&nbsp;&nbsp;&nbsp;&nbsp;━━━━━━━━━━</span>
@@ -113,13 +113,13 @@ export default {
     methods: {
 
         // Valida o acesso no sistema
-        acessar: async function (pDadosAcesso) {
+        acessar: async function () {
 
 
-            await api.post('/login', pDadosAcesso).then(response => {
+            await api.post('/login', objDadosAcesso).then(response => {
 
                 if (response.data == 'Sucesso') {
-                    localStorage.setItem('usuario', pDadosAcesso.usuario);
+                    localStorage.setItem('usuario', objDadosAcesso.usuario);
                     window.location.href = '/inicio'
                 } else {
                     alert('Dados Incorretos, verifique!')
