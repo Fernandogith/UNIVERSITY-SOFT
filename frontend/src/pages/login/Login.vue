@@ -65,7 +65,7 @@
                         <div class="div-password">
                             <input class="password" placeholder="Senha" type="password" v-model="objDadosAcesso.senha">
                         </div>
-                        <div class="btn-access" @click="acessar(objDadosAcesso)">
+                        <div class="btn-access">
 
                             <a class="button" @click="acessar(objDadosAcesso)" onclick="acessar(objDadosAcesso)" >Acessar</a>
                             
@@ -113,10 +113,10 @@ export default {
     methods: {
 
         // Valida o acesso no sistema
-        acessar: async function (pDadosAcesso) {
+        acessar: function (pDadosAcesso) {
 
 
-            await api.post('/login', pDadosAcesso).then(response => {
+            api.post('/login', pDadosAcesso).then(response => {
 
                 if (response.data == 'Sucesso') {
                     localStorage.setItem('usuario', pDadosAcesso.usuario);
