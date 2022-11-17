@@ -5,7 +5,7 @@ main {
     display: flex;
 
     section.left {
-        width: 15%;
+        width: 28.5rem;
         .menu {
             background-color: white;
             width: 100%;
@@ -155,7 +155,7 @@ main {
                 flex-direction: column;
                 align-items: center;                  
                 .table{
-                    width: 145rem;
+                    width: 100%;
                     border-collapse: collapse;
                     font-family: 'Inter', sans-serif;
                     font-weight: 400;
@@ -207,8 +207,50 @@ main {
                     }
                 }
             }
+        }
+    }
+
+
+    @include responsive (1650px) {
+        section.left {
+            width: 6.5rem;
+        }
+        section.right {
+            width: 96%;
+
+        }
+        .actions {
+            button {
+                width: 10.3rem;
+            }
+        }
+
+    }
+
+    @include responsive (750px) {
+        
+        section.right {
+            width: 96%;
+            .top {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            div.main {
+                .filtros {
+                    .group-inputs {
+                        .input {
+                            width: 80%;
+                            .input-filtro {
+                                width: 100%;
+                            }
+                        }
+                    }
+                }
+                
+            }
             
         }
 
     }
+
 }
