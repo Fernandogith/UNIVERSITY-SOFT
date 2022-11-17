@@ -2,6 +2,7 @@
     <main>
 
         <section class="left">
+
             <Menu />
         </section>
 
@@ -11,7 +12,7 @@
                 <span>| Pessoas Consulta</span>
                 <div class="actions">
                     <div class="button">
-                        <button @click="buscarNoBack()" class="btn-padrao">Voltar</button>
+                        <button @click="voltar()" class="btn-padrao">Voltar</button>
                     </div>
                     <div class="button">
                         <button @click="DirecionarPaginaPessoasCadastro()" class="btn-padrao">Novo</button>
@@ -108,9 +109,9 @@ export default {
     
     methods: {
 
-        carregarDados: function () {
+        carregarDados: async function () {
 
-            api.post('/pessoas').then(response => {
+            await api.post('/pessoas').then(response => {
                 response.data.forEach(resposta => {
                     this.listaPessoas.push(resposta)
                     
@@ -143,6 +144,10 @@ export default {
 
         DirecionarPaginaPessoasCadastro: function() {
             window.location.href = 'pessoas-cadastro'
+        },
+
+        voltar: function () {
+            window.location.href = '/inicio'
         },
 
         // FUNÇÕES PARA FILTROS

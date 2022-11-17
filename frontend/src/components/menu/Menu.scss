@@ -1,27 +1,134 @@
 @import "@/assets/scss/main.scss";
 
-
-.menu {
-    background-color: white;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    .container-fluid {
-        height: 100%;
+main {
+    .menu-desktop{
+        background-color: white;
+        width: 100%;
+        height: 100vh;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-    
-        .top {
+
+        .container-fluid {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        
+            .top {
+                .logo {
+                    padding: 5rem;
+                    a {
+                        display: flex;
+                        align-items: center;
+                        transition: all .3s;
+                        &:hover {
+                            opacity: 0.4;
+                        }
+                        strong {
+                            font-family: 'Poppins', sans-serif;
+                            font-weight: 400;
+                            font-size: 2.5rem;
+                            color: #000100;
+                            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                        }
+                        span {
+                            font-family: 'Poppins', sans-serif;
+                            font-weight: 400;
+                            font-size: 1.5rem;
+                            color: #000100;
+                            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                        }
+                    }
+                }
+                nav {
+                    ul {
+                        padding: 3rem;
+                        li {
+                            &:not(:last-child) {
+                                margin-bottom: 3rem;
+                            }
+                            a {
+                                transition: all .3s;
+                                display: flex;
+                                align-items: center;
+                                &:hover {
+                                    opacity: 0.4;
+                                }
+                                span {
+                                    font-family: 'Poppins', sans-serif;
+                                    font-style: normal;
+                                    font-weight: 500;
+                                    font-size: 1.6rem;
+                                    color: #000000;
+                                    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                                    margin-left: 2.5rem;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .versao {
+                width: 100%;
+                padding: 2rem 0;
+                display: flex;
+                justify-content: center;
+                
+                span {
+                    font-family: 'Poppins';
+                    font-weight: 400;
+                    font-size: 1.6rem;
+                    color: #000000;
+                    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                    white-space: nowrap;
+                }
+            }
+        }
+    }
+
+    .menu-mobile {
+        display: none;
+        width: 5rem;
+        height: 5rem;
+        background-color: white;
+        border-radius: 30px;
+        padding: 2rem 2rem;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        position: absolute;
+        bottom: 0;
+        margin: 2rem;
+        
+        // Btn Abrir Menu Mobile
+        .btn-menu-responsivo {
+            display: none;
+            img {
+                min-width: 2.3rem
+            }
+        }
+
+        // Menu Responsivo
+        nav.menu-responsivo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20%;
+            height: 100vh;
+            background-color: rgb(255, 255, 255);
+            display: flex;
+            flex-direction: column;
+            display: none;
+            align-items: center;
             .logo {
-                padding: 5rem;
                 a {
                     display: flex;
                     align-items: center;
+                    justify-content: center;
                     transition: all .3s;
+                    padding: 2rem;
                     &:hover {
                         opacity: 0.4;
                     }
@@ -31,6 +138,7 @@
                         font-size: 2.5rem;
                         color: #000100;
                         text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                        margin-left: 1.8rem;
                     }
                     span {
                         font-family: 'Poppins', sans-serif;
@@ -41,48 +149,71 @@
                     }
                 }
             }
-            nav {
-                ul {
-                    padding: 3rem;
-                    li {
-                        &:not(:last-child) {
-                            margin-bottom: 3rem;
+            ul {
+                padding: 3rem;
+                li {
+                    &:not(:last-child) {
+                        margin-bottom: 3rem;
+                    }
+                    a {
+                        transition: all .3s;
+                        display: flex;
+                        align-items: center;
+                        &:hover {
+                            opacity: 0.4;
                         }
-                        a {
-                            transition: all .3s;
-                            display: flex;
-                            align-items: center;
-                            &:hover {
-                                opacity: 0.4;
-                            }
-                            span {
-                                font-family: 'Poppins', sans-serif;
-                                font-style: normal;
-                                font-weight: 500;
-                                font-size: 1.6rem;
-                                color: #000000;
-                                text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-                                margin-left: 2.5rem;
-                            }
+                        span {
+                            font-family: 'Poppins', sans-serif;
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 1.6rem;
+                            color: #000000;
+                            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                            margin-left: 2.5rem;
                         }
                     }
                 }
             }
         }
 
-        .versao {
-            width: 100%;
-            padding: 2rem 0;
+        .overlay {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 80%;
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.466);
+            display: none;
+        }
+    }
+
+    // Menu Responsivo
+    @include responsive(1650px) {
+        .menu-desktop{
+            display: none;
+        }
+        
+        .menu-mobile {
             display: flex;
-            justify-content: center;
-            
-            span {
-                font-family: 'Poppins';
-                font-weight: 400;
-                font-size: 1.6rem;
-                color: #000000;
-                text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-                white-space: nowrap;
+            z-index: 2028;
+        
+            .btn-menu-responsivo {
+                display: flex;
+                align-items: center;
+            }
+
+            nav.menu-responsivo.active {
+                display: flex;
+                .logo {
+                    width: 100%;
+                    a {
+                        font-size: 1.5rem;
+                    }
+                }
+            }
+    
+            .overlay.active {
+                display: flex;
             }
         }
     }
