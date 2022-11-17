@@ -118,8 +118,6 @@ export default {
                 });
                 
                 this.listaPessoasFiltradas = this.listaPessoas
-                
-
 
             });
         },
