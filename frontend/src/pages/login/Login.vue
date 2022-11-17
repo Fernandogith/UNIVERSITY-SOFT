@@ -67,7 +67,7 @@
                         </div>
                         <div class="btn-access">
 
-                            <a class="button" @click="acessar">Acessar</a>
+                            <a class="button" @click="acessar">-Acessar-</a>
                             
                         </div>
                         <span>━━━━━━━━━━&nbsp;&nbsp;&nbsp;&nbsp;continue por&nbsp;&nbsp;&nbsp;&nbsp;━━━━━━━━━━</span>
