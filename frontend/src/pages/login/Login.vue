@@ -115,7 +115,6 @@ export default {
         // Valida o acesso no sistema
         acessar: function (pDadosAcesso) {
             try {
-                debugger
                 api.post('/login', pDadosAcesso).then(response => {
 
                     if (response.data == 'Sucesso') {
