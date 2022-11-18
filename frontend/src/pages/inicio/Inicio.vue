@@ -11,7 +11,7 @@
             </div>
 
             <div class="indicadores">
-                <div class="indicadores-grupo-01">
+                <div class="indicadores-grupo-01 grupo">
                     <div class="indicador indicador-02" data-aos="zoom-in">
                         <img src="@/assets/img/img-01.svg" alt="">
                     </div>
@@ -19,7 +19,7 @@
                         <img src="@/assets/img/img-02.svg" alt="">
                     </div>
                 </div>
-                <div class="indicadores-grupo-02">
+                <div class="indicadores-grupo-02 grupo">
                     <div class="indicador indicador-01" data-aos="zoom-in">
                         <img src="@/assets/img/img-03.svg" alt="">
                     </div>
