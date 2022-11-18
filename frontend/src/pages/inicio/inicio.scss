@@ -176,12 +176,15 @@ main {
     }
 
     @include responsive (500px) {
-
+        section.left {
+            width: 0;
+        }
         section.right {
+            padding: 1rem;
             .indicadores {
                 .grupo {
                     .indicador {
-                        height: 10rem;
+                        height: 16rem;
                     }
                 }
             }
