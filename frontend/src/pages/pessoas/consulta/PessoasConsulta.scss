@@ -211,6 +211,7 @@ main {
     }
 
 
+    // Responsividade
     @include responsive (1650px) {
         section.left {
             width: 6.5rem;

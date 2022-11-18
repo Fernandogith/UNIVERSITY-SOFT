@@ -217,6 +217,17 @@ main {
             }
         }
     }
+
+    @include responsive(1650px) {
+        .menu-mobile {
+            nav.menu-responsivo {
+                width: 80%;
+            }
+            .overlay {
+                width: 20%;
+            }
+        }
+    }
 }
 
 
