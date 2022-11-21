@@ -151,7 +151,12 @@ main {
             }
             ul {
                 padding: 3rem;
+                align-items: center;
                 li {
+                    padding: 1rem 1.1rem;
+                    min-width: 154px;
+                    display: flex;
+                    justify-content: space-between;
                     &:not(:last-child) {
                         margin-bottom: 3rem;
                     }
@@ -219,6 +224,39 @@ main {
     }
 
     @include responsive(1650px) {
+        .menu-mobile {
+            nav.menu-responsivo {
+                width: 20%;
+            }
+            .overlay {
+                width: 80%;
+            }
+        }
+    }
+
+    @include responsive(1492px) {
+        .menu-mobile {
+            nav.menu-responsivo {
+                width: 30%;
+            }
+            .overlay {
+                width: 70%;
+            }
+        }
+    }
+
+    @include responsive(992px) {
+        .menu-mobile {
+            nav.menu-responsivo {
+                width: 40%;
+            }
+            .overlay {
+                width: 60%;
+            }
+        }
+    }
+
+    @include responsive(650px) {
         .menu-mobile {
             nav.menu-responsivo {
                 width: 80%;
