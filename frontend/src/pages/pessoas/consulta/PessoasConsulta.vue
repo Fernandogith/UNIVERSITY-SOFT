@@ -1,5 +1,8 @@
 <template>
     <main>
+        <header>
+            <Menu />
+        </header>
 
         <section class="left">
 
@@ -50,6 +53,7 @@
                 </div>
             </div>
         </section>
+        
         <!-- Caixa de Mensagem/notificação -->
         <template>
             <div class="text-center ma-2">
