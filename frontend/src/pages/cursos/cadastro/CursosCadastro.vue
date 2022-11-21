@@ -1,6 +1,8 @@
 <template>
     <main>
-
+        <header>
+            <Menu />
+        </header>
         <section class="left">
             <Menu />
         </section>
@@ -35,19 +37,16 @@
                     </div>
                 </div>
                 <div class="add-disciplinas">
-
-                    <div class="filtros">
-                        <div class="group-inputs">
-                            <div class="input-busca-aluno">
-                                <div class="label">
-                                    <label for="selecione-aluno">SELECIONE PARA ADICIONAR DISCIPLINAS</label>
-                                </div>
-                                <!-- Selected Padrão -->
-                                <div class="input-select lista-alunos" id="disciplinas" @change="adicionarDisciplina(arrDisciplinasSelecionadas)" @click="carregaDisciplinas()">
-                                    
-                                    <v-autocomplete id="selecione-aluno" v-model="arrDisciplinasSelecionadas" @change="adicionarDisciplina(arrDisciplinasSelecionadas)" :items="arrDisciplinas" item-text="nome" return-object @click="carregaDisciplinas()" attach chips rounded>
-                                    </v-autocomplete>
-                                </div>
+                    <div class="group-inputs">
+                        <div class="input-busca-disciplinas">
+                            <div class="label">
+                                <label for="selecione-disciplina">SELECIONE PARA ADICIONAR DISCIPLINAS</label>
+                            </div>
+                            <!-- Selected Padrão -->
+                            <div class="input-select lista-disciplinas" id="disciplinas" @change="adicionarDisciplina(arrDisciplinasSelecionadas)" @click="carregaDisciplinas()">
+                                
+                                <v-autocomplete class="selecione-disciplina" id="selecione-disciplina" v-model="arrDisciplinasSelecionadas" @change="adicionarDisciplina(arrDisciplinasSelecionadas)" :items="arrDisciplinas" item-text="nome" return-object @click="carregaDisciplinas()" attach chips rounded>
+                                </v-autocomplete>
                             </div>
                         </div>
                     </div>
