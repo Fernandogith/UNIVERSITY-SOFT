@@ -1,6 +1,9 @@
 <template>
     <main>
-
+        <header>
+            <Menu />
+        </header>
+        
         <section class="left">
             <Menu />
         </section>

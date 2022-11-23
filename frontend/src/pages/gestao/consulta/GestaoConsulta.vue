@@ -1,11 +1,14 @@
 <template>
     <main>
+        <header>
+            <Menu />
+        </header>
 
         <section class="left">
             <Menu />
         </section>
 
-        <section class="right">
+        <section class="right" data-aos="fade-left">
             <div class="top" data-aos="fade-left">
                 <span>| Gestão Consulta</span>
                 <div class="actions">
