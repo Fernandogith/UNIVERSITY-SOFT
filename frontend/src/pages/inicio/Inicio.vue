@@ -1,15 +1,18 @@
 <template>
     <main>
 
+        <header>
+            <Menu />
+            <div class="usuario">
+                <span data-aos="zoom-in">Olá, {{usuario}}</span>
+            </div>
+        </header>
+
         <section class="left">
             <Menu />
         </section>
 
         <section class="right">
-            <div class="top">
-                <span data-aos="zoom-in">Olá, {{usuario}}</span>
-            </div>
-
             <div class="indicadores">
                 <div class="indicadores-grupo-01 grupo">
                     <div class="indicador indicador-02" data-aos="zoom-in">

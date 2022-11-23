@@ -5,11 +5,10 @@
         </header>
 
         <section class="left">
-
             <Menu />
         </section>
 
-        <section class="right">
+        <section class="right" data-aos="fade-left">
             <div class="top" data-aos="fade-left">
 
                 <span>| Pessoas Consulta</span>
@@ -33,7 +32,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="table-espaco">
+                <div class="table-espaco" data-aos="fade-left">
                     <table class="table table-borderless table-striped m-0 w-970">
                         <thead>
                             <tr>
