@@ -158,6 +158,7 @@ section.main {
    //------ Responsividade -------
 
    @include responsive(1280px) {
+    margin-bottom: 12rem;
         .container-fluid {
             flex-direction: column;
             align-items: center;

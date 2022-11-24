@@ -28,7 +28,7 @@ main {
         display: flex;
         flex-direction: column;
         width: 85%;
-        height: 100vh;
+        min-height: 100vh;
         padding: 4rem;
         
         .top {
@@ -87,6 +87,7 @@ main {
     @include responsive (1280px) {
 
         section.right {
+            margin-bottom: 5rem;
             .indicadores {
                 flex-direction: column;
                 .grupo {

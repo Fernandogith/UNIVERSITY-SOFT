@@ -138,6 +138,7 @@ main {
         
         section.right {
             width: 96%;
+            min-height: 100vh;
             .top {
                 flex-direction: row;
                 gap: 2rem;
