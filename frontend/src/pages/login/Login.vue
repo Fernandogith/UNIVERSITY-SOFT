@@ -60,10 +60,10 @@
                 <div class="right" >
                     <div class="items-login" data-aos="fade-left">
                         <div class="div-user">
-                            <input id="usuario" class="user" placeholder="Usuário" type="text" v-model="objDadosAcesso.usuario">
+                            <input id="usuario" class="user" placeholder="Usuário" type="text" v-model="objDadosAcesso.usuario" v-on:keyup.enter="acessar(objDadosAcesso)">
                         </div>
                         <div class="div-password">
-                            <input class="password" placeholder="Senha" type="password" v-model="objDadosAcesso.senha">
+                            <input class="password" placeholder="Senha" type="password" v-model="objDadosAcesso.senha" v-on:keyup.enter="acessar(objDadosAcesso)">
                         </div>
                         <div class="btn-access">
 
