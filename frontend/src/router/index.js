@@ -4,6 +4,8 @@ import Login from '../pages/login/Login.vue'
 import Inicio from '../pages/inicio/Inicio.vue'
 import PessoasConsulta from '../pages/pessoas/consulta/PessoasConsulta.vue'
 import PessoasCadastro from '../pages/pessoas/cadastro/PessoasCadastro.vue'
+import UsuariosConsulta from '../pages/usuarios/consulta/UsuariosConsulta.vue'
+import UsuariosCadastro from '../pages/usuarios/cadastro/UsuariosCadastro.vue'
 import CursosConsulta from '../pages/cursos/consulta/CursosConsulta.vue'
 import CursosCadastro from '../pages/cursos/cadastro/CursosCadastro.vue'
 import DisciplinasConsulta from '../pages/disciplinas/consulta/DisciplinasConsulta.vue'
@@ -85,6 +87,23 @@ const routes = [
     path: '/disciplinas-cadastro:id',
     name: 'disciplinas-cadastro-parametro',
     component: DisciplinasCadastro
+    },
+    // USUARIOS
+    {
+    path: '/usuarios-consulta',
+    name: 'usuarios-consulta',
+    component: UsuariosConsulta
+    },
+    {
+    path: '/usuarios-cadastro',
+    name: 'usuarios-cadastro',
+    component: UsuariosCadastro
+    },
+    // USUARIOS CADASTRO COM PARAMETRO
+    {
+    path: '/usuarios-cadastro:id',
+    name: 'usuarios-cadastro-parametro',
+    component: UsuariosCadastro
     },
     // DISCIPLINAS
     {

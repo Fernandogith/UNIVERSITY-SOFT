@@ -42,6 +42,12 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="/usuarios-consulta">
+                                    <img src="@/assets/img/icones/icon-pessoas.svg" alt="">
+                                    <span>Usuários</span>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="/">
                                     <img src="@/assets/img/icones/icon-sair.svg" alt="">
                                     <span>Saír</span>

@@ -440,7 +440,7 @@ module.exports = {
         // Adiciona ao objeto de retrno, o item nota com null
         } else {
             for (let i = 0; i < cursosDisciplinasSelecionado.length; i++) {
-                cursosDisciplinasSelecionado[i].nota = 00;
+                cursosDisciplinasSelecionado[i].nota = 0;
                 
             }
         }
